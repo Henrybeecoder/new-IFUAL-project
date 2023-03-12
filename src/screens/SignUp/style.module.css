@@ -1,0 +1,49 @@
+.accountUpdateModal h2 {
+   margin-bottom: 20px;
+}
+
+.accountUpdateModal button {
+    margin: 8px 0;
+}
+
+.buttonFlex {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+}
+
+.otp {
+    border: 0.5px solid #344437;
+    border-radius: 8px;
+    height: 60px;
+    width: 50px;
+    margin: 10px;
+    text-align: center;
+    font-size: 1.2rem;
+}
+
+.otpText {
+    color: #2F3930 !important;
+    font-weight: 300 !important;
+    font-size: 1.1rem !important;
+    margin: 20px 0 !important;
+}
+
+.otpText span {
+    color: #36B44A;
+    text-decoration: underline;
+    cursor: pointer;
+
+}
+
+.accountUpdateModal h2 {
+  color: #344437;
+  font-weight: 400;
+}
+
+.accountUpdateModal .paragraph {
+    color: #2F3930;
+    font-weight: 300;
+    font-size: 1rem;
+    text-align: center;
+}

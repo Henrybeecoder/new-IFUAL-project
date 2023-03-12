@@ -1,0 +1,44 @@
+.indicator {
+  border-radius: 50%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+}
+
+.indicator p {
+  font-weight: 300;
+  font-size: 14px;
+  line-height: 14px;
+}
+
+.indicator h2 {
+  font-weight: 400;
+  font-size: 40px;
+  line-height: 40px;
+}
+
+.indicatorsFlex {
+  display: flex;
+  align-items: center;
+  gap: 50px;
+}
+
+.Ilight {
+  border: 2px solid #ffffff;
+}
+
+.Idark {
+  border: 2px solid #344437;
+}
+
+.Imd {
+  width: 90px;
+  height: 90px;
+}
+
+.Ilg {
+  width: 120px;
+  height: 120px;
+}

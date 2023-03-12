@@ -1,0 +1,66 @@
+.container {
+  width: 47%;
+  margin: auto;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px;
+  gap: 23px;
+}
+
+.container h3 {
+  font-size: 1.2rem;
+  /* margin: 40px 0; */
+  color: #344437;
+  font-weight: 400;
+}
+
+.container p {
+  font-size: 1.5rem;
+  font-weight: 300;
+  color: #344437;
+}
+
+.message {
+  text-align: center;
+  color: #344437;
+  letter-spacing: 0.01em;
+  padding: 150px 0;
+  font-size: 1.3rem;
+  font-weight: 200;
+}
+
+.messageContainer {
+  text-align: center;
+  color: #344437;
+  letter-spacing: 0.01em;
+  padding: 100px 0 50px 0;
+  font-size: 1.3rem;
+  font-weight: 200;
+  display: flex;
+  flex-direction: column;
+  gap: 50px;
+  width: 80%;
+  margin: auto;
+}
+
+@media screen and (max-width: 800px) {
+  .container {
+    width: 100%;
+    padding: 10px;
+  }
+  .container p {
+    font-size: 0.8rem;
+  }
+
+  .container h3 {
+    margin: 20px 0;
+    font-weight: 500;
+    font-size: 1.3rem;
+  }
+  .message {
+    padding: 100px 0;
+  }
+}

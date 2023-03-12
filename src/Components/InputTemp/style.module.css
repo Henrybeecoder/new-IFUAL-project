@@ -1,0 +1,78 @@
+.formHolder input,
+.formHolder select,
+.formHolder textarea {
+  outline: none;
+  border: none;
+  padding: 14px 16px;
+  height: 48px;
+  border: 0.5px solid rgba(50, 50, 50, 0.3);
+  border-radius: 5px;
+  width: 100%;
+  font-weight: 400;
+  font-size: "14px";
+  line-height: "18px";
+}
+
+.formHolder textarea {
+  height: auto;
+  resize: none;
+}
+
+input::placeholder,
+textarea::placeholder {
+  font-weight: 400;
+  font-size: "15px";
+  line-height: "18px";
+}
+
+.formHolder label {
+  font-size: 0.7rem;
+  margin: 0 0 10px 0;
+  text-align: left;
+
+}
+
+.formHolder {
+  position: relative;
+  color: #acb5bd;
+  letter-spacing: 0.08em;
+  display: flex;
+  flex-direction: column;
+  margin: 10px 0 0 0;
+  width: 100%;
+  font-family: "Sofia Pro";
+  font-style: "normal";
+  font-weight: 400;
+  font-size: "18px";
+  line-height: "18px";
+}
+
+.marginLeft {
+  margin-left: 13px;
+}
+
+.marginRight {
+  margin-right: 13px;
+}
+
+.marginLeftSm {
+  margin-left: 13px;
+}
+
+.marginRightSm {
+  margin-right: 13px;
+}
+
+.relative {
+  position: relative;
+}
+
+@media screen and (max-width: 800px) {
+  .marginLeft {
+    margin-left: auto;
+  }
+
+  .marginRight {
+    margin-right: auto;
+  }
+}

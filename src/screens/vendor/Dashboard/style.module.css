@@ -1,0 +1,163 @@
+.delivered {
+  color: #36b44a;
+  background: #f3fff3;
+  border-radius: 20px;
+  width: 100%;
+}
+
+.pending {
+  color: #344437;
+  background: #f2f6f2;
+  border-radius: 20px;
+}
+
+.cancelled {
+  color: #cd2b65;
+  background: #fcdee4;
+  border-radius: 20px;
+}
+
+.chartContainer {
+  border: 0.5px solid #3444372e;
+  border-radius: 10px;
+  width: 70%;
+  padding: 20px 20px 0 20px;
+}
+
+.chartHeader {
+  display: flex;
+  /* justify-content: space-between; */
+  /* padding: 20px 10px; */
+}
+
+.firstCon {
+  flex: 1;
+}
+
+.firstCon h2 {
+  font-size: 1.8rem;
+  font-weight: 600;
+}
+
+.firstCon h3 {
+  color: #344437;
+  font-weight: 600;
+  opacity: 0.5;
+  font-size: 0.8rem;
+}
+
+.linkContainer {
+  display: flex;
+  margin-right: 50px;
+}
+
+.linkContainer button {
+  margin: 0 10px;
+  color: #34443770;
+  font-weight: 600;
+  font-size: 0.8rem;
+}
+
+.chartHeader button {
+  display: inline-flex;
+  gap: 5px;
+  align-items: center;
+  height: fit-content;
+}
+
+.title {
+  color: #344437;
+  font-weight: 300;
+}
+
+.subText {
+  color: #344437;
+  font-weight: 200;
+}
+
+.tableHeader {
+  color: #344437;
+  display: flex;
+  justify-content: space-between;
+  margin: 30px 0;
+}
+
+.tableHeader h2 {
+  font-weight: 400;
+  font-size: 21px;
+  line-height: 21px;
+}
+
+.orderLink {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+.orderLink p {
+  text-decoration: underline;
+}
+.orderLink img {
+  margin-left: 10px;
+  width: 7%;
+}
+
+.orderStatusChart {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 30%;
+  margin-left: 20px;
+}
+
+.orderCard {
+  display: flex;
+  border: 0.5px solid #3444373a;
+  border-radius: 10px;
+  padding: 20px;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+.orderCard p {
+  color: #ad9fa0;
+  font-size: 0.8rem;
+  margin: 5px 0;
+}
+
+.orderCard span {
+  color: #36b44a;
+}
+
+.orderCard b {
+  font-size: 1.5rem;
+  margin: 5px 0;
+}
+
+.textContainer {
+  display: flex;
+  flex-direction: column;
+}
+
+.performance {
+  letter-spacing: 0.09em;
+  color: #2f3930;
+  margin: 20px 0;
+}
+
+@media screen and (max-width: 800px) {
+  .orderStatusChart {
+    padding-top: 50px;
+    gap: 20px;
+    width: 100%;
+    margin: 0;
+    justify-content: center;
+  }
+  .chartContainer {
+    width: 100%;
+  }
+
+  .linkContainer {
+    display: none;
+  }
+}

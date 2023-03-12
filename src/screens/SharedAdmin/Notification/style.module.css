@@ -1,0 +1,132 @@
+.notificationsContainer {
+  display: flex;
+  width: 100%;
+  border: 0.5px solid #34443769;
+  border-radius: 8px;
+}
+
+.flexCenter {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+
+.notificationsList {
+  width: 50%;
+}
+
+.notificationContainer {
+  display: flex;
+  /* justify-content: space-between; */
+  padding: 15px;
+  margin: 0;
+  cursor: pointer;
+  /* border-top: 0.5px solid #344437; */
+  /* border-bottom: 0.5px solid #344437; */
+}
+
+.textContents {
+  margin: 5px;
+  width: 100%;
+  /* flex: 1; */
+}
+
+.textContents h2 {
+  font-style: normal;
+  font-weight: 400;
+  font-size: 18px;
+  line-height: 18px;
+}
+
+.textContents p {
+  font-style: normal;
+  font-weight: 300;
+  font-size: 17px;
+  line-height: 27px;
+}
+
+.timeAgo {
+  color: #344437;
+}
+
+.notificationsList {
+  padding: 2px;
+}
+
+.badge {
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+}
+
+.selectedContainer {
+  border-left: 0.5px solid #344437;
+  width: 50%;
+}
+
+.noneSelected {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+}
+
+.noneSelectedContent p {
+  margin-top: 5px;
+}
+
+.selectedNotificationContainer {
+  padding: 20px;
+  font-size: 18px;
+}
+
+.selectedNotificationContainer h2 {
+  font-style: normal;
+  font-weight: 400;
+  font-size: 18px;
+  line-height: 18px;
+  text-decoration-line: underline;
+  color: #2f3930;
+}
+
+.selectedNotificationContainer p {
+  font-style: normal;
+  font-weight: 300;
+  font-size: 18px;
+  line-height: 27px;
+  color: #344437;
+  margin: 10px 0;
+}
+
+.checkBoxWithTextContainer {
+  padding: 10px 25px;
+}
+
+.breadCrumb {
+  display: none;
+}
+
+.checkboxFlex {
+  display: flex;
+  padding: 10px;
+  align-items: center;
+}
+
+.checkboxFlex p {
+  font-style: normal;
+  font-weight: 300;
+  font-size: 16px;
+  line-height: 16px;
+  margin-left: 20px;
+}
+
+@media screen and (max-width: 800px) {
+  .notificationsContainer {
+    display: block;
+    border-radius: 15px;
+  }
+  .selectedContainer {
+    border-left: none;
+    width: 90%;
+  }
+}

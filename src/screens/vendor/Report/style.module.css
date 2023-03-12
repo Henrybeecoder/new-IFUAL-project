@@ -1,0 +1,422 @@
+.btnNewReport {
+  margin-left: 20px;
+  width: 180px;
+  height: 40px;
+}
+
+.btnBack {
+  border: none;
+  display: inline-flex;
+  align-items: center;
+  text-decoration: underline;
+  padding: 0;
+  font-size: 18px;
+}
+
+.pageContainer {
+  padding: 0 40px;
+  position: relative;
+}
+
+.pageHeader {
+  display: flex;
+  justify-content: space-between;
+  margin: 20px 0 30px 0;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 32px;
+}
+
+.paginations {
+  display: flex;
+  align-items: center;
+}
+
+.paginations .holders {
+  display: flex;
+  height: 100%;
+}
+
+.paginations p {
+  margin-right: 13px;
+}
+
+.paginations .holders img {
+  margin: 0 20px;
+  width: 13%;
+}
+
+.pagerHeaderContainer {
+  display: flex;
+}
+
+.filter {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+
+.filter h2 {
+  margin: 0 20px;
+  font-size: 1.3rem;
+}
+
+.filter img {
+  width: 20%;
+}
+
+.title {
+  color: #344437;
+  font-weight: 300;
+}
+
+.subText {
+  color: #344437;
+  font-weight: 200;
+}
+
+.filterContainerBackground {
+  background: rgba(52, 68, 55, 0.05);
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  z-index: 50;
+  background: red;
+}
+
+.filterContainer {
+  background: #ffffff;
+  box-shadow: 0px 1px 10px 2px rgba(52, 68, 55, 0.06);
+  border-radius: 15px 0px 15px 15px;
+  width: 160px;
+  position: absolute;
+  left: 78%;
+  top: 22%;
+  z-index: 50;
+}
+
+.filterHeader {
+  padding: 20px 0;
+  border-bottom: 1px solid #3444372c;
+  color: #2f3930;
+}
+
+.filterHeader p {
+  margin: 0 30px;
+}
+
+.filterContent {
+  padding: 0 30px;
+  color: #2f3930;
+}
+
+.filterContent p {
+  margin: 10px 0;
+  font-weight: 300;
+  cursor: pointer;
+  font-size: 0.8rem;
+}
+
+.filterContainer p:hover {
+  color: #36b44a;
+}
+
+.details {
+  padding: 20px 0;
+}
+
+.details p {
+  padding-top: 5px;
+}
+
+.reportsContainer {
+  display: flex;
+  width: 100%;
+  border: 0.5px solid #344437;
+  border-radius: 8px;
+  height: 430px;
+  padding: 0;
+  margin-bottom: 20px;
+}
+
+.flexBetween {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+.flexBetweenPadding {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  padding: 10px 0;
+}
+
+.flexCenter {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+
+.reportsList {
+  width: 100%;
+  padding: 0;
+  overflow-y: auto;
+}
+
+.reportContainer {
+  display: flex;
+  /* justify-content: space-between; */
+  padding: 15px;
+  margin: 0;
+  cursor: pointer;
+}
+.reportContainer:hover {
+  opacity: 0.6;
+}
+.textContents {
+  padding: 5px;
+  width: 100%;
+}
+
+.textContents h2 {
+  font-style: normal;
+  font-weight: 400;
+  font-size: 17px;
+  line-height: 18px;
+  margin-bottom: 10px;
+}
+
+.textContents p {
+  font-style: normal;
+  font-weight: 300;
+  font-size: 17px;
+  line-height: 18px;
+}
+
+.timeAgo {
+  color: #344437;
+}
+
+.indicator {
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  margin-right: 10px;
+}
+
+.selectedContainer {
+  border-left: 0.5px solid #344437;
+  width: 100%;
+}
+
+.noneSelected {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+}
+
+.noneSelectedContent p {
+  margin-top: 5px;
+  text-align: center;
+}
+
+.selectedReportContainer {
+  padding: 20px;
+  font-size: 18px;
+  width: 100%;
+}
+
+.selectedReportContainer h2 {
+  font-style: normal;
+  font-weight: 500;
+  font-size: 18px;
+  line-height: 18px;
+  /* text-decoration-line: underline; */
+  color: #2f3930;
+}
+
+.selectedReportContainer p {
+  font-style: normal;
+  font-weight: 300;
+  font-size: 18px;
+  line-height: 27px;
+  color: #344437;
+  /* margin: 10px 0; */
+}
+
+.flexCenter button {
+  font-size: 18px;
+  outline: none;
+  margin-top: 30px;
+}
+
+.spanGreen {
+  color: #36b44a;
+}
+
+.divider {
+  opacity: 0.7;
+  border-bottom: 0.5px solid #344437;
+}
+
+.breadCrumb {
+  display: none;
+}
+.formHolder {
+  position: relative;
+  color: #acb5bd;
+  letter-spacing: 0.08em;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  /* margin: 15px 0 0 0; */
+}
+
+.formHolder input,
+.formHolder select {
+  outline: none;
+  border: none;
+  padding: 14px 16px;
+  border: 0.5px solid #344437;
+  border-radius: 5px;
+  width: 100%;
+}
+
+.formHolder textarea {
+  resize: none;
+  width: 100%;
+  padding: 14px 16px;
+  border: 0.5px solid #344437;
+  border-radius: 5px;
+  outline: none;
+}
+
+.lengthHalf {
+  margin: 30px 0;
+  width: 49%;
+}
+
+.formHolder label {
+  font-size: 0.7rem;
+  margin: 0 0 8px 0;
+}
+
+.btnBackFooter {
+  /* opacity: 0.5; */
+  border: 1px solid #344437;
+  border-radius: 8px;
+  width: 160px;
+  height: 50px;
+  margin-right: 10px;
+}
+
+.btnSendFooter {
+  background-color: #36b44a;
+  width: 220px;
+  height: 50px;
+  border: 1px solid transparent;
+  margin-left: 10px;
+  color: #ffffff;
+}
+
+.btnsNewR {
+  display: flex;
+  justify-content: space-between;
+  width: 47%;
+  margin: 20px auto 0 auto;
+}
+
+@media screen and (max-width: 800px) {
+  button {
+    margin-right: 10px;
+  }
+  .pageContainer {
+    padding: 0 20px;
+  }
+  .paginations {
+    display: none;
+  }
+  .filter img {
+    width: 30%;
+  }
+  .pageHeader h1 {
+    font-size: 20px;
+  }
+  .pageHeader {
+    align-items: center;
+  }
+  .filterContainer {
+    left: 60%;
+    top: 18%;
+  }
+  .selectedContainer {
+    border-left: none;
+    width: 100%;
+  }
+  .pageHeader {
+    margin: 10px 0;
+  }
+  .breadCrumb {
+    display: inline-flex;
+    align-items: center;
+    margin: 20px 0;
+    padding: 0;
+    border: none;
+  }
+  .breadCrumb p {
+    font-style: normal;
+    font-weight: 400;
+    font-size: 20px;
+    line-height: 18px;
+    text-decoration-line: underline;
+    color: #344437;
+  }
+  .btnBack {
+    margin-top: 10px;
+  }
+  .reportsContainer {
+    box-shadow: 0px 1px 10px 2px rgba(52, 68, 55, 0.06);
+    border-radius: 15px;
+    border-color: gainsboro;
+    width: 100%;
+    height: auto;
+  }
+  .divider {
+    border-color: gainsboro;
+  }
+  .btnNewReport {
+    width: 70px;
+    height: 29px;
+    border-radius: 5px;
+    color: #ffffff;
+    border: 0.5px solid transparent;
+    background-color: #36b44a;
+    padding: 0;
+  }
+  .filter h2 {
+    font-size: 16px;
+  }
+  .filter img {
+    width: 21px;
+    height: 21px;
+    font-weight: 400;
+  }
+
+  .flexBetweenPadding .timeAgo {
+    font-size: 14px;
+    color: #344437;
+  }
+  .formHolder {
+    margin: 20px 0;
+  }
+  .formHolder input,
+  .formHolder select,
+  .formHolder textarea {
+    border-radius: 8px;
+    padding: 20px;
+  }
+}

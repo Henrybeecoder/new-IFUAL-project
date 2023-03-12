@@ -1,0 +1,47 @@
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.header h3 {
+  font-weight: 500;
+  font-size: 21px;
+  line-height: 21px;
+  color: #2f3930;
+}
+
+.filterFlex {
+  display: flex;
+  align-items: center;
+}
+
+.filterFlex h3 {
+  margin-right: 10px;
+}
+
+.filterFlex button {
+  margin-left: 15px;
+  padding: 10px 15px;
+  border: 0.5px solid #344437;
+  border-radius: 8px;
+}
+
+.overdue {
+  color: #ca0814;
+}
+
+.statusContainer {
+  display: flex;
+  justify-content: center;
+  width: 60%;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 16px;
+}
+
+@media screen and (max-width: 800px) {
+  .statusContainer {
+    width: auto;
+  }
+}

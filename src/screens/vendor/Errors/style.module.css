@@ -1,0 +1,112 @@
+.header {
+  padding: 30px 70px;
+}
+
+.header img {
+  width: 72px;
+}
+
+.container {
+  padding: 0 50px;
+  width: 100%;
+}
+
+.container2 {
+  width: 100%;
+  height: 270px;
+  background: linear-gradient(90deg, #344437 0%, #36b44a 100%);
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 100px;
+  margin-top: 10px;
+}
+
+.textArea p {
+  font-weight: 300;
+  font-size: 21px;
+  line-height: 21px;
+}
+
+.textArea h2 {
+  font-weight: 600;
+  font-size: 50px;
+  line-height: 50px;
+  margin: 10px 0;
+}
+
+.textArea h3 {
+  font-weight: 500;
+  font-size: 26px;
+  line-height: 26px;
+}
+
+.inputSection {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.infoText {
+  font-weight: 300;
+  font-size: 14px;
+  line-height: 14px;
+  color: #2f3930;
+}
+
+.btns {
+  display: flex;
+  justify-content: space-between;
+  width: 40%;
+  margin: 20px auto;
+}
+
+.headerText {
+  font-weight: 500;
+  font-size: 28px;
+  line-height: 28px;
+  color: #2f3930;
+  margin: 10px 0 30px 0;
+}
+
+.messageContainer {
+  text-align: center;
+  color: #344437;
+  letter-spacing: 0.01em;
+  padding: 100px 0 50px 0;
+  font-size: 1.3rem;
+  font-weight: 200;
+  display: flex;
+  flex-direction: column;
+  gap: 50px;
+  width: 80%;
+  margin: auto;
+}
+
+.indicatorsFlex {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+@media screen and (max-width: 800px) {
+  .container {
+    padding: 0 20px;
+    width: 100%;
+  }
+  .btns {
+    width: 100%;
+  }
+  .headerText {
+    font-weight: 500;
+    font-size: 19px;
+    line-height: 19px;
+    white-space: nowrap;
+    color: #2f3930;
+  }
+  .messageContainer {
+    padding: 30px 0 0 0;
+  }
+}

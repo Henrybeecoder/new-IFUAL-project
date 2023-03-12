@@ -1,0 +1,28 @@
+.flexLink {
+  display: flex;
+  align-items: center;
+  color: #2f3930;
+  stroke: #2f3930;
+  padding: 0;
+  border: none;
+}
+
+.marginLg {
+  margin: 28px 0;
+}
+
+.marginMd {
+  margin: 14px 0;
+}
+
+.active {
+  color: #36b44a;
+  stroke: #36b44a;
+}
+
+.flexLink h3 {
+  margin: 0 10px;
+  font-weight: 400;
+  font-size: 19px;
+  line-height: 21px;
+}

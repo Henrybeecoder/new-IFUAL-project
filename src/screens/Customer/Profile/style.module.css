@@ -1,0 +1,56 @@
+.breadCrumb {
+  display: flex;
+  align-items: center;
+}
+
+.breadCrumb button {
+  display: flex;
+  align-items: center;
+}
+
+.breadCrumb p {
+  margin-left: 10px;
+  text-decoration: underline;
+  font-weight: 500;
+  font-size: 18px;
+  line-height: 18px;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 20px 0;
+}
+
+.flexEdit {
+  display: flex;
+  align-items: center;
+}
+
+.header h3 {
+  font-weight: 500;
+  font-size: 32px;
+  line-height: 32px;
+}
+
+.flexEdit h2 {
+  color: #36b44a;
+  font-weight: 500;
+  font-size: 28px;
+  line-height: 28px;
+  margin-right: 5px;
+}
+
+.flexEditActive h2 {
+  color: gainsboro;
+}
+.flexEdit svg {
+  stroke: #36b44a;
+  margin-top: 5px;
+}
+
+.flexEditActive svg {
+  stroke: gainsboro;
+  margin-top: 5px;
+}

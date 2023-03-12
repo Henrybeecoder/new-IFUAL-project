@@ -1,0 +1,159 @@
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+}
+
+.header h2 {
+  font-weight: 500;
+  font-size: 28px;
+  line-height: 28px;
+}
+
+.header button {
+  display: flex;
+  align-items: center;
+  border: none;
+  padding: 0;
+}
+
+.header button svg {
+  stroke: #36b44a;
+}
+
+.header button p {
+  font-weight: 500;
+  font-size: 25px;
+  line-height: 25px;
+  margin-right: 4px;
+  color: #36b44a;
+}
+
+.btnBack {
+  border: none;
+  padding: 5px;
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+}
+.btnBack h2 {
+  margin-left: 8px;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 18px;
+  text-decoration-line: underline;
+  color: #344437;
+}
+
+.btns {
+  width: 480px;
+  margin: auto;
+  padding-top: 5px;
+}
+
+.btns button {
+  margin-top: 15px;
+}
+
+.payWSavedAcc {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 60px;
+}
+
+.payWSavedAcc h2 {
+  font-weight: 400;
+  font-size: 25px;
+  line-height: 42px;
+}
+
+.payWSavedAcc h3 {
+  font-weight: 400;
+  font-size: 19px;
+  line-height: 32px;
+  padding: 5px 0 10px 0;
+}
+
+.payWSavedAcc p {
+  font-weight: 300;
+  font-size: 19px;
+  line-height: 32px;
+  padding: 20px;
+}
+
+.btnOtpModal {
+  margin: auto;
+  width: 300px;
+}
+
+.btnOtpModal button {
+  margin-top: 15px;
+}
+
+.requestOtp {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 30px 20px;
+  gap: 10px;
+}
+.cfm h2,
+.requestOtp h2,
+.orderSuccessful h2 {
+  font-weight: 400;
+  font-size: 25px;
+  line-height: 25px;
+}
+
+.requestOtp h3 {
+  font-weight: 400;
+  font-size: 19px;
+  line-height: 32px;
+}
+.requestOtp p {
+  /* padding: 20px; */
+  font-weight: 300;
+  font-size: 21px;
+  line-height: 21px;
+}
+
+.cfm,
+.orderSuccessful {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 20px;
+  width: 80%;
+  margin: auto;
+}
+
+.orderSuccessful p {
+  margin-top: 20px;
+}
+
+.cfm p {
+  padding: 10px;
+  text-align: center;
+}
+
+.btnCfm {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+
+@media screen and (max-width: 800px) {
+  /* .filterArea {
+    display: none;
+  } */
+  .header h2 {
+    font-size: 23px;
+    line-height: 23px;
+  }
+}

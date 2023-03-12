@@ -1,0 +1,136 @@
+.container {
+  display: flex;
+  gap: 25px;
+  width: 100%;
+}
+
+.inputSection {
+  width: 80%;
+}
+
+.inputFlex {
+  display: flex;
+  align-items: center;
+}
+
+.metaSection {
+  width: 20%;
+  margin-top: 30px;
+}
+
+.metaSection h3 {
+  text-decoration: underline;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 16px;
+  color: #344437;
+  margin: 10px 0;
+}
+
+.metaSection h2 {
+  font-weight: 300;
+  font-size: 16px;
+  line-height: 16px;
+  margin: 10px 0 20px 0;
+}
+
+.btns button {
+  display: block;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 16px;
+  text-decoration-line: underline;
+  color: #36b44a;
+  margin: 10px 0;
+}
+.inputSection {
+  width: 100%;
+}
+.quickStatsSection h3,
+.inputSection h3 {
+  font-style: normal;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 16px;
+  margin: 10px 0;
+}
+
+.quickStatsContainer {
+  margin: 30px 0;
+  padding: 10px 30px;
+  border: 0.5px solid gainsboro;
+  width: 285px;
+  border-radius: 15px;
+}
+
+.quickStatsContainer p {
+  font-weight: 300;
+  font-size: 14px;
+  line-height: 14px;
+  margin: 15px 0;
+}
+
+.section2 {
+  width: 80%;
+}
+
+.inputFlex {
+  display: flex;
+  align-items: center;
+}
+
+.buttonFlex {
+  display: flex;
+ justify-content: center;
+  align-items: center;
+  margin-top: 20px;
+  
+}
+
+.btnVisibility {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  right: 3%;
+  border: none;
+  padding: 0;
+}
+
+.click {
+  color: #2F3930 !important;
+opacity: 0.3;
+}
+
+.passwordMisMatch {
+  color: #FF3441;
+  display: flex;
+  margin-top: 10px;
+}
+
+.passwordMisMatch img {
+  margin-right: 10px;
+}
+
+.changePassword {
+  width: 60%;
+}
+
+.cancelButton {
+  margin-right: 30px;
+}
+
+@media screen and (max-width: 800px) {
+  .changePassword {
+  width: 100%;
+}
+  .container {
+    display: block;
+  }
+  .metaSection {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+  }
+}

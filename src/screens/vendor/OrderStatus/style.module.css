@@ -1,0 +1,172 @@
+.delivered {
+ color: #36B44A;
+ background: #F3FFF3;
+border-radius: 20px;
+width: 100%;
+
+}
+
+.pending {
+    color: #344437;
+    background: #F2F6F2;
+    border-radius: 20px;
+}
+
+.cancelled {
+    color: #CD2B65;
+    background: #FCDEE4;
+  border-radius: 20px;
+}
+
+.pageContainer {
+    padding: 0 40px;
+    position: relative;
+}
+
+.pageHeader {
+    display: flex;
+    justify-content: space-between;
+    margin: 30px 0;
+}
+
+.paginations {
+    display: flex;
+    align-items: center;
+}
+
+.paginations .holders {
+    display: flex;
+    height: 100%;
+}
+
+.paginations p {
+    margin-right: 13px;
+}
+
+.paginations .holders img {
+    margin: 0 20px;
+    width: 13%;
+
+}
+
+.pagerHeaderContainer {
+    display: flex;
+}
+
+.filter {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+}
+
+.filter h2 {
+    margin: 0 20px;
+    font-size: 1.3rem;
+}
+
+.filter img {
+    width: 20%;
+}
+
+.title {
+    color: #344437;
+    font-weight: 300;
+}
+
+.subText {
+    color: #344437;
+    font-weight: 200;
+}
+
+.subModal {
+    background: white;
+    box-shadow: 0px 1px 10px 2px rgba(52, 68, 55, 0.06);
+   border-radius: 15px 0px 15px 15px;
+   color: #344437;
+   width: 100px;
+   /* position: absolute; */
+   position: relative;
+   top: 90%;
+   left: 30%;
+   display: flex;
+   align-items: center;
+   justify-content: center;
+   padding: 30px 10px;
+   flex-direction: column;
+}
+
+.subModal p {
+    cursor: pointer;
+}
+
+.filterContainerBackground {
+    background: rgba(52, 68, 55, 0.05);
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    z-index: 50;
+    background: red;
+
+}
+
+.filterContainer {
+    
+    background: #FFFFFF;
+box-shadow: 0px 1px 10px 2px rgba(52, 68, 55, 0.06);
+border-radius: 15px 0px 15px 15px;
+width: 160px;
+position: absolute;
+left: 85%;
+top: 22%;
+z-index: 50;
+
+}
+
+.filterHeader {
+    padding: 20px 0;
+    border-bottom: 1px solid  #3444372c;
+    color: #2F3930;
+   
+}
+
+.filterHeader p {
+    margin: 0 30px;
+}
+
+.filterContent {
+    padding: 0 30px;
+    color: #2F3930;
+}
+
+.filterContent p {
+    margin: 10px 0;
+    font-weight: 300;
+    cursor: pointer;
+    font-size: 0.8rem;
+}
+
+.filterContainer p:hover {
+    color: #36B44A;
+}
+
+@media screen and (max-width: 800px) {
+    .pageContainer {
+        padding: 0 10px;
+    }
+    .paginations {
+        display: none;
+    }
+    .filter img {
+        width: 30%;
+    }
+    .pageHeader h1{
+     font-size: 1.1rem;
+}
+.pageHeader {
+    align-items: center;
+}
+.filterContainer {
+    left: 60%;
+    top: 18%;
+}
+}

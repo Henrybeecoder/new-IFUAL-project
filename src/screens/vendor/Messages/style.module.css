@@ -1,0 +1,14 @@
+.container {
+    text-align: center;
+    color: #344437;
+    letter-spacing: 0.01em;
+    padding: 180px 0;
+    font-size: 1.3rem;
+    font-weight: 200;
+}
+
+@media screen and (max-width: 800px) {
+    .container {
+        padding: 100px 0;
+    }
+}

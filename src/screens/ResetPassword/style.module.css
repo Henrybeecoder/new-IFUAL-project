@@ -1,0 +1,44 @@
+.container {
+  width: 48%;
+  padding: 60px 100px;
+  text-align: center;
+  margin: auto;
+}
+
+.container h3 {
+  color: #344437;
+  font-weight: 400;
+  font-size: 28px;
+  line-height: 42px;
+}
+
+.input {
+  margin-bottom: 30px;
+}
+
+.ModalContainer h4 {
+  font-weight: 300;
+  font-size: 1.2rem;
+}
+
+.ModalContainer img {
+  margin: 20px 0;
+  width: 20%;
+}
+
+.btnVisibility {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  right: 3%;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+}
+
+@media screen and (max-width: 800px) {
+  .container {
+    padding: 0;
+    width: 100%;
+  }
+}

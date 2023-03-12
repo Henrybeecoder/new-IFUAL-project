@@ -1,0 +1,72 @@
+.metaSection {
+  display: flex;
+  gap: 20px;
+}
+
+.metaSection h3 {
+  text-decoration: underline;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 16px;
+  color: #344437;
+  margin: 10px 0;
+}
+
+.metaSection h2 {
+  font-weight: 300;
+  font-size: 16px;
+  line-height: 16px;
+  margin: 10px 0 20px 0;
+}
+
+.textArea {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 20px 0;
+}
+
+.textArea button {
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 16px;
+  color: #36b44a;
+  text-decoration: underline;
+}
+
+.inputSection h2,
+.CPSection h2 {
+  font-weight: 500;
+  font-size: 21px;
+  line-height: 21px;
+  margin-bottom: 20px;
+}
+
+.changeImage {
+  position: absolute;
+  inset: 0;
+  z-index: 30;
+  background: #3444374b;
+  /* opacity: 0.3; */
+  border-radius: 15px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+}
+
+.changeImage button {
+  font-weight: 500;
+  font-size: 18px;
+  line-height: 18px;
+  color: #ffffff;
+  opacity: 1;
+}
+
+.CPSection {
+  width: 50%;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}

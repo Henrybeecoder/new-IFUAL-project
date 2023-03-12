@@ -1,0 +1,160 @@
+.flexEdit h2 {
+  color: #36b44a;
+  font-weight: 500;
+  font-size: 28px;
+  line-height: 28px;
+  margin-right: 5px;
+}
+
+.flexEditActive h2 {
+  color: gainsboro;
+}
+.flexEdit svg {
+  stroke: #36b44a;
+  margin-top: 5px;
+}
+
+.flexEditActive svg {
+  stroke: gainsboro;
+  margin-top: 5px;
+}
+
+.container {
+  display: flex;
+  width: 100%;
+}
+.metaSection {
+  width: 20%;
+}
+.inputSection {
+  width: 80%;
+}
+
+.inputFlex {
+  display: flex;
+  align-items: center;
+}
+
+.metaSection {
+  margin-top: 30px;
+}
+
+.metaSection img {
+  width: 160px;
+  height: 160px;
+  border-radius: 20px;
+}
+
+.changeImage button {
+  text-decoration: none;
+  font-weight: 500;
+  font-size: 18px;
+  line-height: 18px;
+  color: #ffffff;
+  text-align: center;
+}
+
+.changeImage {
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  inset: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(0, 0, 0, 0.3);
+  border-radius: 20px;
+}
+
+.metaSection h3 {
+  text-decoration: underline;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 16px;
+  color: #344437;
+  margin: 10px 0;
+}
+
+.metaSection h2 {
+  font-weight: 300;
+  font-size: 16px;
+  line-height: 16px;
+  margin: 10px 0 20px 0;
+}
+
+.btnContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 60%;
+}
+
+.btnSuspend {
+  padding: 10px 25px;
+  background-color: #ca0814;
+  color: white;
+  border-radius: 8px;
+}
+
+.customerStatus {
+  display: flex;
+  align-items: center;
+  justify-content: end;
+  margin: 10px 0;
+}
+
+.customerStatus h3 {
+  font-weight: 300;
+  font-size: 21px;
+  line-height: 21px;
+}
+
+.modal {
+  padding: 30px 60px;
+  text-align: center;
+}
+
+.modal h3 {
+  margin: 10px 0;
+  font-weight: 400;
+  font-size: 28px;
+  line-height: 42px;
+}
+.modal p {
+  font-weight: 300;
+  font-size: 19px;
+  line-height: 32px;
+  margin: 10px 0;
+}
+
+.btns {
+  margin-top: 30px;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  font-weight: 500;
+  font-size: 19px;
+  line-height: 18px;
+}
+
+.disabledBtnContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+@media screen and (max-width: 800px) {
+  .container {
+    display: block;
+  }
+  .metaSection {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+  }
+  .inputSection {
+    width: 100%;
+  }
+}

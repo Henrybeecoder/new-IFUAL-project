@@ -1,0 +1,44 @@
+.pointerFlex .container {
+    border: 0.5px solid #34443731;
+    border-radius: 8px;
+    margin: 0 15px;
+    width: 45%;
+    cursor: pointer;
+    padding: 14px 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.pointerFlex .container p {
+    color: #344437; 
+}
+
+.pointerFlex {
+    display: flex;
+    justify-content: space-between;
+}
+
+.startContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 80%;
+    padding: 60px 0;
+}
+
+.startContainer h1 {
+    color: #344437;
+    font-weight: 300;
+    letter-spacing: 0.03em;
+    font-size: 1.5rem;
+    margin: 0 0 1.5rem 0;
+}
+
+.startContainer .select {
+    color: #2F3930;
+    letter-spacing: 0.02em;
+    margin: 0 0 1.5rem 0;
+}

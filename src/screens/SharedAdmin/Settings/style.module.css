@@ -1,0 +1,120 @@
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.header h3 {
+  font-weight: 500;
+  font-size: 21px;
+  line-height: 21px;
+}
+
+.header button {
+  display: flex;
+  align-items: center;
+}
+
+.header button h2 {
+  font-weight: 500;
+  font-size: 17px;
+  line-height: 17px;
+  letter-spacing: 0.08em;
+  margin-right: 3px;
+}
+
+.header button svg {
+  stroke: #2f3930;
+  width: 20px;
+}
+.container {
+  margin-top: 30px;
+  border: 0.5px solid gainsboro;
+  padding: 0 20px;
+  border-radius: 8px;
+}
+
+.sectionContainer {
+  display: flex;
+  padding: 30px;
+}
+
+.sectionContainer h3 {
+  font-weight: 400;
+  font-size: 18px;
+  line-height: 18px;
+  width: 25%;
+}
+
+.flex {
+  display: flex;
+  align-items: center;
+}
+
+.flex p {
+  margin-right: 15px;
+  font-weight: 400;
+  font-size: 17px;
+  line-height: 17px;
+}
+
+.radioGroup {
+  margin: 15px 0;
+}
+
+.opacityDisabled {
+  opacity: 0.25;
+}
+
+.flexBtns {
+  display: flex;
+  padding: 20px;
+}
+
+.flexBtns .cancel {
+  border: 1px solid #344437;
+  border-radius: 8px;
+  width: 200px;
+  height: 48px;
+  margin-right: 20px;
+}
+
+.flexBtns .saveChanges {
+  border: 1px solid #344437;
+  background-color: #2f3930;
+  color: white;
+  border-radius: 8px;
+  width: 310px;
+  height: 48px;
+}
+
+.rglabel {
+  font-weight: 300;
+  font-size: 12px;
+  line-height: 12px;
+}
+
+@media screen and (max-width: 800px) {
+  .container {
+    padding: 0 10px;
+  }
+  .sectionContainer {
+    padding: 10px 5px;
+  }
+  .sectionContainer h3 {
+    width: 28%;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 24px;
+  }
+  .flex p {
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 14px;
+  }
+  .rglabel {
+    font-weight: 300;
+    font-size: 12px;
+    line-height: 12px;
+  }
+}

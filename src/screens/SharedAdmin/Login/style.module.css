@@ -1,0 +1,153 @@
+.container {
+  padding: 20px;
+  height: 100vh;
+}
+.container h2 {
+  font-weight: 500;
+  font-size: 50px;
+  line-height: 42px;
+  text-align: center;
+  letter-spacing: 0.01em;
+  color: #2f3930;
+  /* margin: 40px 0; */
+}
+
+.pageContainer {
+  width: 600px;
+  border: 0.5px solid gainsboro;
+  border-radius: 15px;
+  margin: 50px auto;
+  padding: 35px 50px;
+}
+.form {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+.logoFlex {
+  display: flex;
+  align-items: center;
+  padding: 5px 50px;
+  margin-bottom: 30px;
+}
+
+.pageContainer h3 {
+  font-weight: 400;
+  font-size: 28px;
+  line-height: 42px;
+}
+
+.pageContainer p {
+  font-weight: 300;
+  font-size: 16px;
+  line-height: 20px;
+  margin: 20px 0;
+}
+
+.filterFlex {
+  display: flex;
+  align-items: center;
+}
+
+.filterFlex h3 {
+  margin-right: 10px;
+}
+
+.filterFlex button {
+  margin-left: 15px;
+  padding: 10px 15px;
+  border: 0.5px solid #344437;
+  border-radius: 8px;
+}
+
+.footer {
+  display: flex;
+  justify-content: center;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 5px;
+  color: #344437;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 14px;
+}
+
+.btnLogin {
+  background-color: #2f3930;
+  border-radius: 8px;
+  font-weight: 500;
+  font-size: 18px;
+  line-height: 18px;
+  width: 100%;
+  color: white;
+  padding: 13px;
+  margin: 30px 0;
+}
+.btnLogin:disabled,
+.btnBack:disabled,
+.btnSubmit:disabled {
+  opacity: 0.7;
+  cursor: default;
+}
+
+.altLink span {
+  color: #36b44a;
+}
+
+.mTokenText {
+  margin: 30px 0 15px 0;
+  font-weight: 300;
+  font-size: 16px;
+  line-height: 24px;
+}
+
+.btns {
+  display: flex;
+  align-items: center;
+  border-radius: 8px;
+  margin-top: 40px;
+  font-weight: 500;
+  font-size: 18px;
+  line-height: 18px;
+  width: 100%;
+  justify-content: space-between;
+}
+.btnBack {
+  border: 0.5px solid #344437;
+  width: 40%;
+  height: 47px;
+}
+
+.btnSubmit {
+  background-color: #2f3930;
+  color: white;
+  width: 55%;
+  height: 47px;
+}
+
+@media screen and (max-width: 800px) {
+  .container {
+    display: block;
+  }
+  .logoFlex {
+    justify-content: center;
+  }
+  .logoFlex img {
+    width: 120px;
+  }
+  .pageContainer {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    border: 0.5px solid transparent;
+    border-radius: 15px;
+    margin: 50px auto;
+    padding: 25px 5px;
+  }
+}

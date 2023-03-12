@@ -1,0 +1,297 @@
+button {
+  padding: 0;
+  border: none;
+}
+
+.flexGreetings {
+  margin: 10px 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.flexGreetings h3 {
+  font-weight: 500;
+  font-size: 18px;
+  line-height: 18px;
+}
+
+.flexGreetings p {
+  font-weight: 300;
+  font-size: 16px;
+  line-height: 16px;
+}
+
+.flexTitle {
+  margin: 25px 0 10px 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.flexTitle h3 {
+  font-weight: 500;
+  font-size: 21px;
+  line-height: 21px;
+}
+
+.flexTitle button,
+.actionHeading button {
+  display: flex;
+}
+
+.flexTitle button p,
+.actionHeading button p {
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 12px;
+  text-decoration: underline;
+  margin-right: 5px;
+}
+
+.statsContainer {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.statsCard {
+  border: 0.5px solid gainsboro;
+  border-radius: 10px;
+  height: 110px;
+  width: 220px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.actionCard {
+  border: 0.5px solid gainsboro;
+  border-radius: 10px;
+  height: 120px;
+  width: 315px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  /* align-items: center; */
+  padding: 10px 20px 0 20px;
+}
+
+.statsCard h3,
+.actionCard h3 {
+  color: #ad9fa0;
+  font-weight: 500;
+  font-size: 12px;
+  /* line-height: 12px; */
+}
+
+.statsCard p {
+  font-weight: 600;
+  font-size: 28px;
+  line-height: 28px;
+  margin: 5px 0 5px 0;
+}
+
+.actionCard p {
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 16px;
+  margin: 10px 0 10px 0;
+  align-self: center;
+}
+
+.statsCard button {
+  border: none;
+  padding: 0;
+  color: #36b44a;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 14px;
+}
+
+.actionCard button {
+  border: none;
+  padding: 0;
+  color: #36b44a;
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 12px;
+  align-self: flex-end;
+  text-decoration: underline;
+}
+
+.chartsFlex {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  margin: 10px 0;
+  gap: 20px;
+}
+
+.actionsFlex {
+  display: flex;
+  justify-content: space-between;
+}
+
+.chartSection {
+  margin: 30px 0 10px 0;
+}
+
+.chartContainer {
+  padding: 10px;
+  width: 48%;
+  border: 1px solid #34443730;
+  border-radius: 10px;
+}
+
+.chartMeta {
+  display: flex;
+  margin: 5px 0;
+  align-items: flex-start;
+}
+.chartMeta div {
+  flex: 1;
+}
+.chartMeta div h3 {
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 12px;
+  color: #34443774;
+}
+
+.chartMeta div h2 {
+  font-weight: 600;
+  font-size: 18px;
+  line-height: 18px;
+  margin-top: 7px;
+}
+
+.chartMeta button {
+  display: inline-flex;
+  gap: 5px;
+  align-items: center;
+}
+
+.chartArea {
+  fill: linear-gradient(
+    137.51deg,
+    rgba(54, 181, 75, 0.2) 2.76%,
+    rgba(54, 181, 75, 0.5) 90.78%
+  );
+}
+
+.chartSection h3,
+.actionHeading h3 {
+  font-weight: 500;
+  font-size: 19px;
+  line-height: 19px;
+}
+
+.actionsSection {
+  margin: 20px 0 0 0;
+}
+
+.actionHeading {
+  display: flex;
+  justify-content: space-between;
+  margin: 10px 0;
+}
+
+.tableTemp {
+  display: flex;
+  width: 100%;
+  margin: 10px 0;
+}
+
+.tableTemp h3 {
+  width: 50%;
+  font-weight: 300;
+  font-size: 18px;
+  line-height: 18px;
+}
+
+.tableTemp p {
+  width: 50%;
+  font-weight: 400;
+  font-size: 18px;
+  line-height: 18px;
+}
+
+.overviewContainer {
+  padding: 20px 0;
+}
+
+.overviewBreadCrumb {
+  font-weight: 500;
+  font-size: 21px;
+  line-height: 21px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(47, 57, 48, 0.5);
+}
+
+.overviewBreadCrumb span {
+  color: #2f3930;
+}
+
+.messageRed p {
+  color: #ca0814;
+}
+
+/* .scrollX {
+  display: flex;
+} */
+
+@media screen and (max-width: 800px) {
+  .flexGreetings h3 {
+    font-weight: 500;
+    font-size: 12px;
+    line-height: 12px;
+    color: #7a857c;
+  }
+  .flexGreetings p {
+    font-weight: 300;
+    font-size: 12px;
+    line-height: 12px;
+    color: #2f3930;
+  }
+  .flexTitle h3 {
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 16px;
+  }
+  .scrollX {
+    overflow-x: auto;
+  }
+
+  .statsContainer {
+    width: fit-content;
+  }
+  .statsCard {
+    width: 154px;
+    height: 101px;
+    margin-right: 10px;
+  }
+
+  .statsCard h3 {
+    font-size: 11px;
+  }
+  .chartsFlex {
+    flex-direction: column;
+  }
+  .actionsSection {
+    width: 100%;
+  }
+  .actionsFlex {
+    width: fit-content;
+  }
+  .actionCard {
+    width: 300px;
+    height: 100px;
+    margin-right: 7px;
+  }
+  .chartContainer {
+    width: 100%;
+  }
+}

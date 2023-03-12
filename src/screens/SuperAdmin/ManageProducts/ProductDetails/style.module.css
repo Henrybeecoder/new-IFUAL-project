@@ -1,0 +1,44 @@
+.flex {
+  display: flex;
+  width: 100%;
+  gap: 10px;
+}
+
+.mainSection {
+  width: 50%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 25px;
+}
+
+.inputWT {
+  display: block;
+  width: 100%;
+}
+
+.inputWT p {
+  font-weight: 300;
+  font-size: 14px;
+  line-height: 14px;
+  margin-top: 5px;
+  color: #344437;
+}
+
+.actionSection {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  width: 50%;
+  padding-top: 40px;
+}
+
+@media screen and (max-width: 800px) {
+  .mainSection {
+    width: 100%;
+  }
+  .flex {
+    flex-direction: column;
+  }
+}

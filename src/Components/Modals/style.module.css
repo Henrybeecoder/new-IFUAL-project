@@ -1,0 +1,102 @@
+.overlay {
+  background: #18171775;
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 20;
+}
+
+.outerContainer {
+  background: #ffffff;
+  position: relative;
+  z-index: 30;
+  border-radius: 15px;
+  box-shadow: 0px 1px 10px 2px rgba(52, 68, 55, 0.06);
+}
+
+.modal {
+  margin: auto;
+}
+
+.default {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-align: center;
+  align-items: center;
+  gap: 20px;
+  width: 80%;
+  height: 80%;
+  padding: 60px 0;
+}
+
+.default h3 {
+  font-weight: 400;
+  font-size: 28px;
+  line-height: 30px;
+}
+
+.default p {
+  font-weight: 300;
+  font-size: 21px;
+  line-height: 32px;
+}
+
+.xl {
+  width: 700px;
+}
+
+.lg {
+  width: 600px;
+}
+
+.md {
+  width: 400px;
+}
+
+.sm {
+  width: 300px;
+}
+
+.closeModalX {
+  position: absolute;
+  top: -30px;
+  right: -30px;
+  border-top-left-radius: 20px;
+  border-top-right-radius: 20px;
+  border-bottom-right-radius: 15px;
+  padding: 13px;
+  display: inline-flex;
+  align-items: center;
+  border: 0.2px solid #344437;
+  background-color: white;
+  width: fit-content;
+}
+
+@media screen and (max-width: 800px) {
+  .overlay {
+    height: 100vh;
+    width: 100%;
+  }
+  .outerContainer {
+    width: 85% !important;
+  }
+  .modal {
+    width: 80% !important;
+    text-align: center;
+  }
+  .default h3 {
+    font-weight: 400;
+    font-size: 21px;
+    line-height: 32px;
+  }
+  .default p {
+    font-weight: 300;
+    font-size: 16px;
+    line-height: 24px;
+  }
+}

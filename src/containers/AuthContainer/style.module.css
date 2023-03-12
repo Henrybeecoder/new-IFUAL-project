@@ -1,0 +1,85 @@
+.flexContainer {
+  display: flex;
+  margin: 40px 0 0 0;
+}
+
+.flexContainer h1 {
+  color: #344437;
+  margin: 10px 0;
+  font-size: 7rem;
+  line-height: 100px;
+}
+
+.textContainer {
+  margin: 70px 50px 0 0;
+}
+
+.subText {
+  color: #344437;
+  letter-spacing: 0.02em;
+  font-size: 1.2rem;
+  font-weight: 300;
+  width: 80%;
+  margin: 20px 0 0 5px;
+}
+
+.login {
+  color: #344437;
+  letter-spacing: 0.02em;
+  margin: 0 0 10px 10px;
+}
+
+.holder {
+  position: relative;
+}
+
+.formContainer {
+  background: #2f3930;
+  border-radius: 10px;
+  width: 500px;
+  padding: 40px 40px;
+}
+
+.emoji {
+  position: relative;
+  bottom: 17%;
+  right: 10%;
+}
+
+@media screen and (max-width: 800px) {
+  .emoji {
+    display: none;
+  }
+  .flexContainer {
+    flex-direction: column;
+    margin: 0;
+  }
+
+  .subText {
+    display: none;
+  }
+
+  .textContainer h1 {
+    display: none;
+  }
+
+  .textContainer {
+    margin: 0;
+    text-align: center;
+    font-size: 1.4rem;
+  }
+  .login {
+    margin: 10px 0;
+  }
+
+  .formContainer {
+    width: 100%;
+    background: transparent;
+    padding: 20px 0;
+    margin-bottom: 40px;
+  }
+
+  .formContainer label {
+    color: #344437;
+  }
+}
