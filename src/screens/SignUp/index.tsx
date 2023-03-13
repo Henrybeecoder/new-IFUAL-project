@@ -108,7 +108,7 @@ export default function SignUp() {
   const newDataOTP = otp?.toString();
 
   const verifyOtp = () => {
-    if (newDataOTP == dataOTP) {
+    if (newDataOTP === dataOTP) {
       toast.success("successful");
       setAccountSaved(true);
       setEnterOTPModal(false);

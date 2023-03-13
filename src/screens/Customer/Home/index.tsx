@@ -11,7 +11,7 @@ import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import companyLogo from "../../../assets/image/companyLogo.png";
 import { useNavigate, useSearchParams } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { Reducer, useCallback, useEffect, useReducer, useState } from "react";
 import Button from "../../../Components/Button";
 import Modal from "../../../Components/Modals";
 import PageHeader, {
@@ -27,58 +27,112 @@ import { SelectTemp } from "../../../Components/InputTemp";
 import { ToastContainer, toast } from "react-toastify";
 import axios from "axios";
 import EmptyStates from "../../../containers/EmptyStates";
+import { priceRangeData, productTypeData, supplyTimeData } from "./data";
+
+const initialData: InitialData = {
+  data: { products: [], states: [], lgas: [] },
+  values: {
+    productType: {},
+    state: { value: undefined },
+    lga: {},
+    priceRange: {},
+    supplyTime: {},
+  },
+};
+
+interface InitialData {
+  data: { products: any[]; states: any[]; lgas: any[] };
+  values: {
+    productType: { value?: any };
+    state: { value?: any };
+    lga: { value?: any };
+    priceRange: { value?: any };
+    supplyTime: { value?: any };
+  };
+}
+
+type Actions =
+  | {
+      type: "setData";
+      payload: { products: any[]; states: any[]; lgas: any[] };
+    }
+  | {
+      type:
+        | "setProductTypeV"
+        | "setStateV"
+        | "setLgaV"
+        | "setPriceRangeV"
+        | "setSupplyTimeV";
+      payload: {};
+    };
+
+const reducer: Reducer<InitialData, Actions> = (state, actions) => {
+  switch (actions.type) {
+    case "setData":
+      return { ...state, data: actions.payload };
+    case "setLgaV":
+      return { ...state, values: { ...state.values, lga: actions.payload } };
+    case "setProductTypeV":
+      return {
+        ...state,
+        values: { ...state.values, productType: actions.payload },
+      };
+    case "setStateV":
+      return { ...state, values: { ...state.values, state: actions.payload } };
+    case "setPriceRangeV":
+      return {
+        ...state,
+        values: { ...state.values, priceRange: actions.payload },
+      };
+    case "setSupplyTimeV":
+      return {
+        ...state,
+        values: { ...state.values, supplyTime: actions.payload },
+      };
+    default:
+      return state;
+  }
+};
+
 const Home = () => {
   const navigate = useNavigate();
-
   const matches = useMediaQuery("(min-width: 800px)");
+  const str = localStorage.getItem("user");
+  const user = str && JSON.parse(str);
+  const [searchParams] = useSearchParams();
+  const orderStatus = searchParams.get("order");
+  const [loading, setLoading] = useState(false);
 
   const [confmDelivery, setConfmDelivery] = useState(false);
   const [reviewModal, setReviewModal] = useState(false);
-  const [stateValue, setStateValue] = useState<any>({});
 
-  const [searchParams] = useSearchParams();
-  const [allStateData, setAllStateData] = useState([]);
-  const [lgaStateData, setLgaStateData] = useState([]);
-  const [lgaValue, setLgaValue] = useState({});
+  const [{ data, values }, dispatch] = useReducer(reducer, initialData);
+
   const handleLgaGlobalChange = (event: any) => {
-    if (stateValue?.value?.length > 1) {
-      setLgaValue(event);
+    if (values.state?.value?.length > 1) {
+      dispatch({ type: "setLgaV", payload: event });
     } else {
       toast.error("Please Select a State First");
     }
   };
+  // const handleGlobalChange = (actions: Actions) => {
+  //   dispatch(actions);
+  // };
+
   const handleStateGlobalChange = (event: any) => {
-    setStateValue(event);
-  };
-  const orderStatus = searchParams.get("order");
-
-  const getAllState = () => {
-    setLoading(true);
-    axios
-      .get(`${customerBaseUrl}Account/GetState`)
-      .then((response) => {
-        setAllStateData(response.data.data);
-
-        setLoading(false);
-      })
-      .catch((err) => {
-        console.log(err);
-        setLoading(false);
-      });
+    dispatch({ type: "setStateV", payload: event });
   };
 
-  const getAllGAUnderState = () => {
-    setLoading(true);
-    axios
-      .get(`${customerBaseUrl}Account/GetLocalGovt/${stateValue.value}`)
-      .then((response) => {
-        setLgaStateData(response.data.data);
-        setLoading(false);
-      })
-      .catch((err) => {
-        console.log(err);
-        setLoading(false);
-      });
+  const handleProductTypeGlobalChange = (event: any) => {
+    dispatch({ type: "setProductTypeV", payload: event });
+  };
+
+  const handlePriceRangeGlobalChange = (event: any) => {
+    dispatch({ type: "setPriceRangeV", payload: event });
+  };
+
+  const handleSupplyTimeGlobalChange = (event: any) => {
+    dispatch({ type: "setSupplyTimeV", payload: event });
   };
 
   useEffect(() => {
@@ -88,9 +142,11 @@ const Home = () => {
   }, [orderStatus]);
 
   const [page, setPage] = useState("home");
-  const [filterSet, setFilterSet] = useState(false);
 
   const [selected, setSelected] = useState<string | null>(null);
+  const selectedProduct = data.products.find(
+    (product) => product.id === selected
+  );
 
   const confirmDelivery = () => {
     setConfmDelivery(false);
@@ -102,10 +158,6 @@ const Home = () => {
     setPage("order-page");
   };
 
-  const toggleFilter = () => {
-    setFilterSet((state) => !state);
-  };
-
   const backHome = () => {
     setPage("home");
   };
@@ -114,143 +166,30 @@ const Home = () => {
     setReviewModal(false);
   };
 
-  const [loading, setLoading] = useState(false);
-  const [data, setData] = useState([]);
-
-  const selectedProduct = data.find((product) => product.id === selected);
-
-  const str = localStorage.getItem("user");
-  const user = str && JSON.parse(str);
-
   useEffect(() => {
-    setLoading(true);
-    axios
-      .get(`${customerBaseUrl}Product/Product`, {
-        headers: { Authorization: `${user?.token}` },
-      })
-      .then((response) => {
-        console.log(response, "the products");
-        setData(response.data.data);
+    (async () => {
+      setLoading(true);
+      try {
+        const { data: products } = await axios.get(
+          `${customerBaseUrl}Product/Product`,
+          {
+            headers: { Authorization: `${user?.token}` },
+          }
+        );
+        const { data: states } = await axios.get(
+          `${customerBaseUrl}Account/GetState`
+        );
+        const { data: lgas } = await axios.get(
+          `${customerBaseUrl}Account/GetLocalGovt/${values.state.value}`
+        );
+        dispatch({ type: "setData", payload: { products, lgas, states } });
         setLoading(false);
-      })
-      .catch((err) => {
+      } catch (err) {
         console.log(err);
         setLoading(false);
-      });
-
-    axios
-      .get(`${customerBaseUrl}Account/GetState`)
-      .then((response) => {
-        setAllStateData(response.data.data);
-
-        setLoading(false);
-      })
-      .catch((err) => {
-        console.log(err);
-        setLoading(false);
-      });
-
-    axios
-      .get(`${customerBaseUrl}Account/GetLocalGovt/${stateValue.value}`)
-      .then((response) => {
-        setLgaStateData(response.data.data);
-        setLoading(false);
-      })
-      .catch((err) => {
-        console.log(err);
-        setLoading(false);
-      });
-  }, [user?.token, stateValue?.value]);
-
-  const productTypeData = [
-    {
-      key: "1",
-      name: "Diesel",
-      value: "Diesel",
-    },
-    {
-      key: "2",
-      name: "Fuel",
-      value: "Fuel",
-    },
-    {
-      key: "3",
-      name: "Oil",
-      value: "Oil",
-    },
-    {
-      key: "4",
-      name: "AGO",
-      value: "AGO",
-    },
-    {
-      key: "5",
-      name: "Fissile",
-      value: "Fissile",
-    },
-  ];
-
-  const priceRangeData = [
-    {
-      key: "1",
-      name: "0 - 100",
-      value: "0 - 100",
-    },
-    {
-      key: "2",
-      name: "100 - 200",
-      value: "100 - 200",
-    },
-    {
-      key: "3",
-      name: "200 - 300",
-      value: "200 - 300",
-    },
-    {
-      key: "4",
-      name: "300 - 400",
-      value: "300 - 400",
-    },
-  ];
-
-  const supplyTimeData = [
-    {
-      key: "1",
-      name: "1",
-      value: "1",
-    },
-    {
-      key: "2",
-      name: "2",
-      value: "2",
-    },
-    {
-      key: "3",
-      name: "3",
-      value: "3",
-    },
-    {
-      key: "4",
-      name: "4",
-      value: "4",
-    },
-  ];
-
-  const [productTypeValue, setProductTypeValue] = useState({});
-  const [priceRangeValue, setPriceRangeValue] = useState({});
-  const [supplyTimeValue, setsupplyTimeValue] = useState({});
-
-  const handleProductTypeGlobalChange = (event: any) => {
-    setProductTypeValue(event);
-  };
-
-  const handlePriceRangeGlobalChange = (event: any) => {
-    setPriceRangeValue(event);
-  };
-
-  const handleSupplyTimeGlobalChange = (event: any) => {
-    setsupplyTimeValue(event);
-  };
+      }
+    })();
+  }, [user?.token, values.state?.value]);
 
   const [state, setState] = useState<string>("Active");
   const [count, setCount] = useState<number>(0);
@@ -273,16 +212,16 @@ const Home = () => {
     onActive,
     onAction,
     // Change to 10
-    timeout: 40_000,
+    // timeout: 40_000,
     throttle: 500,
   });
 
-  const logout = () => {
+  const logout = useCallback(() => {
     localStorage.removeItem("user");
     navigate("/login");
     //@ts-ignore
     window.location.reload(false);
-  };
+  }, [navigate]);
 
   useEffect(() => {
     if (state === "Idle") {
@@ -297,7 +236,21 @@ const Home = () => {
         clearInterval(interval);
       };
     }
-  });
+  }, [getRemainingTime, user, logout, state]);
+
+  const [tags, setTags] = useState([{ value: "Surulere" }]);
+
+  const addTag = (value: string) =>
+    setTags((state) => [
+      ...state.filter((tag) => tag.value !== value),
+      { value },
+    ]);
+  const removeTag = (value: string) =>
+    setTags((state) => state.filter((tag) => tag.value !== value));
+
+  const applyFilter = () => {
+    addTag(values.priceRange.value);
+  };
 
   return (
     <>
@@ -309,7 +262,7 @@ const Home = () => {
       <p>{remaining} seconds remaining</p> */}
       {loading && <Loading />}
       <ToastContainer
-        position="bottom-right"
+        position='bottom-right'
         autoClose={5000}
         hideProgressBar={false}
         newestOnTop={false}
@@ -318,13 +271,12 @@ const Home = () => {
         pauseOnFocusLoss
         draggable
         pauseOnHover
-        theme="light"
+        theme='light'
       />
       <Layout>
         <Modal
           openModal={confmDelivery}
-          closeModal={() => setConfmDelivery(false)}
-        >
+          closeModal={() => setConfmDelivery(false)}>
           <h3>Confirm Delivery</h3>
           <p>
             Sunny Jay has delivered{" "}
@@ -336,21 +288,20 @@ const Home = () => {
             <span className={styles.spanGreen}>code 0234</span>
           </p>
           <div className={"flex-btwn"}>
-            <Button text="Cancel" width={"180px"} onClick={confirmDelivery} />
+            <Button text='Cancel' width={"180px"} onClick={confirmDelivery} />
             <Button
-              variant="primary"
-              text="Confirm"
+              variant='primary'
+              text='Confirm'
               width={"260px"}
               onClick={confirmDelivery}
             />
           </div>
         </Modal>
         <Modal
-          variant="unstyled"
+          variant='unstyled'
           style={{ top: "50px" }}
           openModal={reviewModal}
-          closeModal={() => setReviewModal(false)}
-        >
+          closeModal={() => setReviewModal(false)}>
           <div className={styles.reviewOrder}>
             <h2>Rate Sunny Jay & Co’s service</h2>
             <div>
@@ -358,12 +309,12 @@ const Home = () => {
             </div>
             <div className={styles.divider} />
             <p>Please share your opinion about their service</p>
-            <textarea placeholder="Write review" rows={5} />
+            <textarea placeholder='Write review' rows={5} />
             <div className={styles.btnCfm}>
-              <Button text="Cancel" width={"40%"} onClick={review} />
+              <Button text='Cancel' width={"40%"} onClick={review} />
               <Button
-                variant="primary"
-                text="Submit"
+                variant='primary'
+                text='Submit'
                 width={"55%"}
                 onClick={review}
               />
@@ -371,85 +322,102 @@ const Home = () => {
           </div>
         </Modal>
         <>
-          <PageHeader pageTitle="Available Products">
+          <PageHeader pageTitle='Available Products'>
             {matches && <PaginationOf current={[1, 20]} total={45} />}
-            <FilterModal
-              table
-              tableComponent={
-                <div>
-                  <div>
-                    <div className={styles.singleFilter}>
-                      <p>State:</p>
-                      <SelectTemp
-                        mode="dark"
-                        options={allStateData.map((state) => ({
-                          label: state.text,
-                          value: state.value,
-                        }))}
-                        value={stateValue}
-                        onValueChange={handleStateGlobalChange}
-                        className={styles.singleFilterSelect}
-                      />
-                    </div>
-                    <div className={styles.singleFilter}>
-                      <p>LGA:</p>
-                      <SelectTemp
-                        mode="dark"
-                        options={lgaStateData.map((state) => ({
-                          label: state.text,
-                          value: state.value,
-                        }))}
-                        value={lgaValue}
-                        onValueChange={handleLgaGlobalChange}
-                        className={styles.singleFilterSelect}
-                      />
-                    </div>
-                    <div className={styles.singleProductFilter}>
-                      <p>Product Type:</p>
-                      <SelectTemp
-                        mode="dark"
-                        options={productTypeData.map((state) => ({
-                          label: state.name,
-                          value: state.value,
-                        }))}
-                        value={productTypeValue}
-                        onValueChange={handleProductTypeGlobalChange}
-                        className={styles.singleProductFilterSelect}
-                      />
-                    </div>
-                    <div className={styles.singleProductFilter}>
-                      <p>Price range:</p>
-                      <SelectTemp
-                        mode="dark"
-                        options={priceRangeData.map((state) => ({
-                          label: state.name,
-                          value: state.value,
-                        }))}
-                        value={priceRangeValue}
-                        onValueChange={handlePriceRangeGlobalChange}
-                        className={styles.singleProductFilterSelect}
-                      />
-                    </div>
-                    <div className={styles.singleProductFilter}>
-                      <p>Supply Time:</p>
-                      <SelectTemp
-                        mode="dark"
-                        options={supplyTimeData.map((state) => ({
-                          label: state.name,
-                          value: state.value,
-                        }))}
-                        value={supplyTimeValue}
-                        onValueChange={handleSupplyTimeGlobalChange}
-                        className={styles.singleProductFilterSelect}
-                      />
-                    </div>
-                  </div>
+            <FilterModal table>
+              <>
+                <div className={styles.singleFilter}>
+                  <p>State:</p>
+                  <SelectTemp
+                    mode='dark'
+                    options={data.states.map((state) => ({
+                      label: state.text,
+                      value: state.value,
+                    }))}
+                    value={values.state.value}
+                    onValueChange={handleStateGlobalChange}
+                    className={styles.singleFilterSelect}
+                  />
                 </div>
-              }
-            />
+                <div className={styles.singleFilter}>
+                  <p>LGA:</p>
+                  <SelectTemp
+                    mode='dark'
+                    options={data.lgas.map((state) => ({
+                      label: state.text,
+                      value: state.value,
+                    }))}
+                    value={values.lga}
+                    onValueChange={handleLgaGlobalChange}
+                    className={styles.singleFilterSelect}
+                  />
+                </div>
+                <div className={styles.singleProductFilter}>
+                  <p>Product Type:</p>
+                  <SelectTemp
+                    mode='dark'
+                    options={productTypeData.map((state) => ({
+                      label: state.name,
+                      value: state.value,
+                    }))}
+                    value={values.productType}
+                    onValueChange={handleProductTypeGlobalChange}
+                    className={styles.singleProductFilterSelect}
+                  />
+                </div>
+                <div className={styles.singleProductFilter}>
+                  <p>Price range:</p>
+                  <SelectTemp
+                    mode='dark'
+                    options={priceRangeData.map((state) => ({
+                      label: state.name,
+                      value: state.value,
+                    }))}
+                    value={values.priceRange}
+                    onValueChange={handlePriceRangeGlobalChange}
+                    className={styles.singleProductFilterSelect}
+                  />
+                </div>
+                <div className={styles.singleProductFilter}>
+                  <p>Supply Time:</p>
+                  <SelectTemp
+                    mode='dark'
+                    options={supplyTimeData.map((state) => ({
+                      label: state.name,
+                      value: state.value,
+                    }))}
+                    value={values.supplyTime}
+                    onValueChange={handleSupplyTimeGlobalChange}
+                    className={styles.singleProductFilterSelect}
+                  />
+                </div>
+                <div
+                  className='divider'
+                  style={{ width: "100%", margin: "15px 0" }}
+                />
+                <div className={"flex-btwn"}>
+                  <Button variant='outline' text='Cancel' width='40%' />
+                  <Button
+                    variant='primary'
+                    text='Search'
+                    width='55%'
+                    onClick={applyFilter}
+                  />
+                </div>
+              </>
+            </FilterModal>
           </PageHeader>
 
-          {data.length < 1 ? (
+          <div className={styles.filterTags}>
+            {tags.map((tag) => (
+              <div key={tag.value} className={styles.filterTag}>
+                <p>{tag.value}</p>
+                <button>x</button>
+              </div>
+            ))}
+          </div>
+
+          {data.products.length < 1 ? (
             <>
               <EmptyStates table />
             </>
@@ -460,73 +428,74 @@ const Home = () => {
                 borderRadius: "17px",
                 borderTop: "0.5px solid rgba(52, 68, 55, 0.3)",
               }}
-              component={Paper}
-            >
+              component={Paper}>
               {matches ? (
-                <Table sx={{ minWidth: 700 }} aria-label="customized table">
+                <Table sx={{ minWidth: 700 }} aria-label='customized table'>
                   <TableBody>
                     <StyledTableRow>
                       <StyledTableCell>
                         <h2 className={styles.title}>Company</h2>
                       </StyledTableCell>
-                      <StyledTableCell align="center">
+                      <StyledTableCell align='center'>
                         <h2 className={styles.title}>Location</h2>
                       </StyledTableCell>
-                      <StyledTableCell align="center">
+                      <StyledTableCell align='center'>
                         <h2 className={styles.title}>Category</h2>
                       </StyledTableCell>
-                      <StyledTableCell align="center">
+                      <StyledTableCell align='center'>
                         <h2 className={styles.title}>Supply Time</h2>
                       </StyledTableCell>
-                      <StyledTableCell align="center">
+                      <StyledTableCell align='center'>
                         <h2 className={styles.title}>Price/Ltr</h2>
                       </StyledTableCell>
-                      <StyledTableCell align="right"></StyledTableCell>
+                      <StyledTableCell align='right'></StyledTableCell>
                     </StyledTableRow>
 
                     <>
-                      {data.map((row, index) => (
+                      {data.products.map((row, index) => (
                         <StyledTableRow key={row.id}>
-                          <StyledTableCell component="th" scope="row">
+                          <StyledTableCell component='th' scope='row'>
                             <div className={styles.companyLogo}>
-                              <img alt="company-logo" src={companyLogo} />
+                              <img alt='company-logo' src={companyLogo} />
                               <h3 className={styles.subText}>
                                 {row.productName}
                               </h3>
                             </div>
                           </StyledTableCell>
-                          <StyledTableCell align="center">
+                          <StyledTableCell align='center'>
                             <h3 className={styles.subText}>{row.state}</h3>
                           </StyledTableCell>
-                          <StyledTableCell align="center">
+                          <StyledTableCell align='center'>
                             <h3
                               className={
                                 row.category === "Diesel"
                                   ? `${styles.subTextGreen}`
                                   : `${styles.subTextRed}`
-                              }
-                            >
+                              }>
                               {row.category}
                             </h3>
                           </StyledTableCell>
-                          <StyledTableCell align="center">
+                          <StyledTableCell align='center'>
                             <h3
-                              className={styles.subText}
-                            >{`${row.intervalOf} hours`}</h3>
+                              className={
+                                styles.subText
+                              }>{`${row.intervalOf} hours`}</h3>
                           </StyledTableCell>
-                          <StyledTableCell align="center">
+                          <StyledTableCell align='center'>
                             <h3
-                              className={styles.subText}
-                            >{`N${row.unitPrice}.00`}</h3>
+                              className={
+                                styles.subText
+                              }>{`N${row.unitPrice}.00`}</h3>
                             <p
-                              className={styles.discountedPrice}
-                            >{`-${row.discountPrice}%`}</p>
+                              className={
+                                styles.discountedPrice
+                              }>{`-${row.discountPrice}%`}</p>
                           </StyledTableCell>
-                          <StyledTableCell align="right">
+                          <StyledTableCell align='right'>
                             <Button
-                              text="Buy"
-                              width="70px"
-                              height="40px"
+                              text='Buy'
+                              width='70px'
+                              height='40px'
                               onClick={() => navigate(row.productId)}
                             />
                           </StyledTableCell>
@@ -536,42 +505,40 @@ const Home = () => {
                   </TableBody>
                 </Table>
               ) : (
-                <Table sx={{ width: "100%" }} aria-label="customized table">
+                <Table sx={{ width: "100%" }} aria-label='customized table'>
                   <TableBody>
                     <StyledTableRow>
                       <StyledTableCell>
                         <h2 className={styles.title}>Company</h2>
                       </StyledTableCell>
-                      <StyledTableCell align="center">
+                      <StyledTableCell align='center'>
                         <h2 className={styles.title}>Cat.</h2>
                       </StyledTableCell>
-                      <StyledTableCell align="center">
+                      <StyledTableCell align='center'>
                         <h2 className={styles.title}>N/Ltr</h2>
                       </StyledTableCell>
-                      <StyledTableCell align="right"></StyledTableCell>
+                      <StyledTableCell align='right'></StyledTableCell>
                     </StyledTableRow>
-                    {data.map((row, index) => (
+                    {data.products.map((row, index) => (
                       <StyledTableRow key={row.id}>
                         <StyledTableCell
-                          align="center"
-                          style={{ padding: "15x 3px" }}
-                        >
+                          align='center'
+                          style={{ padding: "15x 3px" }}>
                           <h3 className={styles.subText}>
                             {limitText(row.productName, 9)}
                           </h3>
                         </StyledTableCell>
-                        <StyledTableCell align="center">
+                        <StyledTableCell align='center'>
                           <h3 className={styles.subText}>
                             {limitText(row.category, 3)}
                           </h3>
                         </StyledTableCell>
-                        <StyledTableCell align="center">
+                        <StyledTableCell align='center'>
                           <h3 className={styles.subText}>{row.unitPrice}</h3>
                         </StyledTableCell>
                         <StyledTableCell
-                          align="left"
-                          style={{ padding: "10px 3px" }}
-                        >
+                          align='left'
+                          style={{ padding: "10px 3px" }}>
                           <ArrowRight
                             style={{ cursor: "pointer" }}
                             onClick={() => {

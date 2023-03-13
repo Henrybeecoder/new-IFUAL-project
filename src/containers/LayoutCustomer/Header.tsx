@@ -1,6 +1,3 @@
-//@ts-ignore
-//@ts-nocheck
-import React from "react";
 import styles from "./style.module.css";
 import logo from "../../assets/logo.svg";
 import { NavLink, useNavigate } from "react-router-dom";
@@ -12,8 +9,11 @@ import { ReactComponent as CartSvg } from "../../assets/navbericon/cart-outline.
 import { ReactComponent as HamburgerSvg } from "../../assets/navbericon/cart-outline.svg";
 import { ReactComponent as SvgSearchIcon } from "../../assets/navbericon/mobileSearch.svg";
 import { ReactComponent as SearchIconWBorder } from "../../assets/navbericon/cart-outline.svg";
+import { User } from "../../../src/types/shared";
+import { getInitials, limitText } from "../../../src/Custom hooks/helpers";
+import useMediaQuery from "../../../src/Custom hooks/useMediaQuery";
 
-const Header = ({ user }: any) => {
+const Header = ({ user }: { user: User }) => {
   const navigate = useNavigate();
 
   const [open, setOpen] = useState(false);
@@ -29,15 +29,15 @@ const Header = ({ user }: any) => {
   return (
     <div className={styles.headerContainer}>
       <div className={styles.flexHeader}>
-        <img src={logo} />
+        <img alt='' src={logo} />
         {!user && (
           <div className={styles.linksContainer}>
-            <NavLink to="/" style={{ textDecoration: "none" }}>
+            <NavLink to='/' style={{ textDecoration: "none" }}>
               {({ isActive }) => (
                 <span className={`${isActive && styles.active}`}>Home</span>
               )}
             </NavLink>
-            <NavLink to="/support" style={{ textDecoration: "none" }}>
+            <NavLink to='/support' style={{ textDecoration: "none" }}>
               {({ isActive }) => (
                 <span className={`${isActive && styles.active}`}>Support</span>
               )}
@@ -63,20 +63,24 @@ const Header = ({ user }: any) => {
               <button onClick={toCart} className={styles.btnCart}>
                 <CartSvg width={48} />
               </button>
-              <img src={profile} onClick={() => setOpen((state) => !state)} />
+              <img
+                alt=''
+                src={profile}
+                onClick={() => setOpen((state) => !state)}
+              />
             </>
           )}
         </div>
         <div className={styles.lg}>
           <div className={`${styles.searchBar}`}>
-            <input placeholder="Enter Keyword" />
+            <input placeholder='Enter Keyword' />
             <SvgSearchIcon className={styles.searchIcon} />
           </div>
           {!user ? (
             <Button
-              variant="primary"
-              text="login"
-              width="150px"
+              variant='primary'
+              text='login'
+              width='150px'
               onClick={toLogin}
             />
           ) : (
@@ -91,10 +95,8 @@ const Header = ({ user }: any) => {
               <div
                 className={styles.imageHolder}
                 style={{ cursor: "pointer" }}
-                onClick={() => setOpen((state) => !state)}
-              >
-                <p>{Array.from(user.firstName)[0]}</p>
-                <p>{Array.from(user.lastName)[0]}</p>
+                onClick={() => setOpen((state) => !state)}>
+                {getInitials(user)}
               </div>
             </>
           )}
@@ -105,8 +107,9 @@ const Header = ({ user }: any) => {
   );
 };
 
-const ProfileModal = ({ user, open }: { user: any; open: boolean }) => {
+const ProfileModal = ({ user, open }: { user: User; open: boolean }) => {
   const navigate = useNavigate();
+  const matches = useMediaQuery("(min-width: 800px)");
 
   const logout = () => {
     localStorage.removeItem("user");
@@ -114,25 +117,26 @@ const ProfileModal = ({ user, open }: { user: any; open: boolean }) => {
     //@ts-ignore
     window.location.reload(false);
   };
-  console.log(user, "This is the user");
+  // console.log(user, "This is the user");
   return (
     <>
       {open && (
         <div className={styles.modalContainer}>
           <div className={styles.profileContainer}>
-            <div className={styles.imageHolder}>
-              {/* @ts-ignore */}
-              <p>{Array.from(user.firstName)[0]}</p>
-              <p>{Array.from(user.lastName)[0]}</p>
-            </div>
+            <div className={styles.imageHolder}>{getInitials(user)}</div>
             {/* <img src={user.profileImage} alt="" /> */}
 
             <div className={styles.profileText}>
               <h3>{user.name}</h3>
-              <p>{user.email}</p>
+              <p>
+                {matches
+                  ? limitText(user.email, 35)
+                  : limitText(user.email, 17)}
+              </p>
             </div>
           </div>
-          <div className="divider" />
+
+          <div className='divider' />
           <div className={styles.profileLinksContainer}>
             <button onClick={() => navigate("/customer/profile")}>
               View Profile
@@ -141,7 +145,7 @@ const ProfileModal = ({ user, open }: { user: any; open: boolean }) => {
             <button>Track Order</button>
             <button>Support</button>
           </div>
-          <div className="divider" />
+          <div className='divider' />
           <div className={styles.logoutContainer}>
             <button onClick={logout}>logout</button>
           </div>

@@ -69,8 +69,7 @@ export const InputTemp = ({
       } ${
         marginRightSm ? styles.marginRightSm : marginRight && styles.marginRight
       }`}
-      style={{ width, ...style }}
-    >
+      style={{ width, ...style }}>
       <label className={mode === "light" ? "text-light" : "text-dark"}>
         {label}
       </label>
@@ -103,7 +102,7 @@ interface SelectTempProps {
   //   newValue: MultiValue<string> | SingleValue<string>,
   //   actionMeta: ActionMeta<string>
   // ) => void;
-  onValueChange: any;
+  onValueChange?: any;
   children?: ReactNode;
   visibilityPadding?: string;
   marginRight?: boolean;
@@ -113,7 +112,7 @@ interface SelectTempProps {
   options?: any[];
   isMulti?: boolean;
   defaultValue?: any;
-  closeMenuOnSelect?:boolean;
+  closeMenuOnSelect?: boolean;
   width?: string | number;
   className?: string;
   style?: CSSProperties;
@@ -151,8 +150,7 @@ export const SelectTemp = ({
       } ${
         marginRightSm ? styles.marginRightSm : marginRight && styles.marginRight
       } ${className}`}
-      style={{ width, ...style }}
-    >
+      style={{ width, ...style }}>
       <label className={mode === "light" ? "text-light" : "text-dark"}>
         {label}
       </label>
@@ -256,8 +254,7 @@ export const TextareaTemp = ({
         marginLeftSm ? styles.marginLeftSm : marginLeft && styles.marginLeft
       } ${
         marginRightSm ? styles.marginRightSm : marginRight && styles.marginRight
-      }`}
-    >
+      }`}>
       <label className={mode === "light" ? "text-light" : "text-dark"}>
         {label}
       </label>

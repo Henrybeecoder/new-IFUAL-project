@@ -88,6 +88,7 @@
   display: flex;
   padding: 20px;
   align-items: center;
+  gap: 10px;
 }
 
 .profileContainer img {
@@ -99,13 +100,13 @@
 .profileText h3 {
   font-weight: 500;
   font-size: 18px;
-  line-height: 18px;
+  line-height: 10px;
 }
 
 .profileText p {
   font-weight: 300;
   font-size: 16px;
-  line-height: 16px;
+  line-height: 10px;
 }
 
 .modalContainer button {

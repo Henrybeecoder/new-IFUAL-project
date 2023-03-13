@@ -7,3 +7,11 @@ export type RenderPageProps = {
 export interface SharedAdminComponentProps {
   baseUrl: "admin" | "super-admin";
 }
+
+export interface User {
+  firstName: string;
+  lastName: string;
+  name: string;
+  email: string;
+  profileImage: string;
+}

@@ -22,7 +22,6 @@ interface FilterModalProps {
   onSelect?: ({ value, code }: { value: string; code?: number }) => void;
   selected?: string;
   table?: boolean;
-  tableComponent?: any;
 }
 
 export const FilterModal = ({
@@ -30,19 +29,15 @@ export const FilterModal = ({
   selected,
   onSelect = () => {},
   table,
-  tableComponent,
+  children,
 }: FilterModalProps) => {
   const active = (id: string) => !!(selected === id);
   return (
     <div>
       <Root>
-        <Trigger asChild>
-          <button
-            style={{ display: "flex", gap: "10px", alignItems: "center" }}
-          >
-            <h3>Filter</h3>
-            <FilterSvg />
-          </button>
+        <Trigger className={"flex-btwn gap-10"}>
+          <h3>Filter</h3>
+          <FilterSvg />
         </Trigger>
         <Portal>
           <Content
@@ -50,13 +45,12 @@ export const FilterModal = ({
               table
                 ? `${styles.bigFilterContainer}`
                 : `${styles.filterContainer} `
-            }
-          >
+            }>
             <h3>Filter;</h3>
-            <div className="divider" />
+            <div className='divider' />
             <div className={styles.optionsContainer}>
               {table ? (
-                tableComponent
+                <>{children}</>
               ) : (
                 <>
                   {options.map((option) => (
@@ -65,8 +59,7 @@ export const FilterModal = ({
                       className={`${active(option.value) ? "text-green" : ""}`}
                       onClick={() =>
                         onSelect({ code: option.code, value: option.value })
-                      }
-                    >
+                      }>
                       {`${option.value
                         .charAt(0)
                         .toUpperCase()}${option.value.slice(1)}`}
@@ -95,8 +88,7 @@ const PageHeader = ({
       {backBtn ? (
         <button
           className={styles.backBtn}
-          onClick={!onClickBackBtn ? () => navigate(-1) : onClickBackBtn}
-        >
+          onClick={!onClickBackBtn ? () => navigate(-1) : onClickBackBtn}>
           <ArrowBackSvg />
           <p>Back</p>
         </button>
@@ -121,8 +113,7 @@ export const EditBtn = ({ onClick, active }: EDBtnProps) => {
   return (
     <button
       className={`${styles.editBtn} ${!active ? styles.edit : ""}`}
-      onClick={onClick}
-    >
+      onClick={onClick}>
       <h3 style={{ fontSize: "23px" }}>Edit</h3>
       <EditSvg />
     </button>
@@ -133,8 +124,7 @@ export const DeleteBtn = ({ onClick, active }: EDBtnProps) => {
   return (
     <button
       className={`${styles.editBtn} ${!active ? styles.delete : ""}`}
-      onClick={onClick}
-    >
+      onClick={onClick}>
       <h3 style={{ fontSize: "23px" }}>Delete</h3>
       <EditSvg />
     </button>
@@ -184,9 +174,10 @@ export const PaginationOf = ({
 }: PaginationOfProps) => {
   return (
     <div className={styles.pagnOf}>
-      <div>
-        <p>{current[0]}</p> - <p>{current[1]}</p> of <p>{total}</p>
-      </div>
+      <p>
+        <span>{current[0]}</span> - <span>{current[1]}</span> of{" "}
+        <span>{total}</span>
+      </p>
       <button onClick={onLeftArrowClick}>
         <LeftSvg />
       </button>

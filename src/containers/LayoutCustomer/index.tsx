@@ -1,10 +1,12 @@
 import { ReactNode } from "react";
+import { User } from "src/types/shared";
 import Header from "./Header";
 import styles from "./style.module.css";
 
 const LayoutCustomer = ({ children }: { children: ReactNode }) => {
   const str = localStorage.getItem("user");
-  const user = str && JSON.parse(str);
+  const user: User = str && JSON.parse(str);
+
   return (
     <div className={styles.fixed}>
       <div className={styles.relative}>

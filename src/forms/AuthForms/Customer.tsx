@@ -16,12 +16,12 @@ import errorAlert from "../../assets/svg/errorAlert.svg";
 import Error from "../../assets/svg/Error.svg";
 import newX from "../../assets/svg/newX.svg";
 
-import { setLocalStorageItem } from "../../utils/localStorage";
-import Modal from "../../Components/Modals";
+// import { setLocalStorageItem } from "../../utils/localStorage";
+// import Modal from "../../Components/Modals";
 
-interface SignUpDetails {
-  email: string;
-}
+// interface SignUpDetails {
+//   email: string;
+// }
 
 export default function LoginForm() {
   const navigate = useNavigate();
@@ -118,10 +118,10 @@ export default function LoginForm() {
     // }, 3000);
   };
 
-  const submitSignup = () => {
-    setLoading(true);
-    setTimeout(() => navigate("/sign-up-message"), 5000);
-  };
+  // const submitSignup = () => {
+  //   setLoading(true);
+  //   setTimeout(() => navigate("/sign-up-message"), 5000);
+  // };
 
   console.log(email);
 
@@ -130,11 +130,11 @@ export default function LoginForm() {
       {loading && <Loading />}
       {loginError && (
         <div className={styles.loginErrorContainer}>
-          <img src={Error} alt="" />
+          <img src={Error} alt='' />
           <p>Error: Email or Password incorrect</p>
           <img
             src={newX}
-            alt=""
+            alt=''
             onClick={() => setLoginError(false)}
             style={{ cursor: "pointer" }}
           />
@@ -142,20 +142,19 @@ export default function LoginForm() {
       )}
 
       <InputTemp
-        label="EMAIL ADDRESS"
-        placeholder="email@host.co.."
-        inputType="email"
+        label='EMAIL ADDRESS'
+        placeholder='email@host.co..'
+        inputType='email'
         value={email}
         onChange={(e) => setEmail(e.target.value)}
       />
       <InputTemp
         visibilityPadding
-        label="PASSWORD"
-        placeholder="Enter Password"
+        label='PASSWORD'
+        placeholder='Enter Password'
         value={password}
         onChange={(e) => setPassword(e.target.value)}
-        inputType={passwordVisible ? "text" : "password"}
-      >
+        inputType={passwordVisible ? "text" : "password"}>
         <i className={styles.btnVisibility} onClick={togglePasswordVisiblity}>
           {passwordVisible ? <Visibility /> : <VisibilityOff />}
         </i>
@@ -173,7 +172,7 @@ export default function LoginForm() {
       <div className={styles.footer}>
         <Button
           text={"Log in"}
-          variant="primary"
+          variant='primary'
           invalid={email?.length > 0 && password?.length > 0 ? false : true}
           onClick={() => login()}
         />
@@ -285,95 +284,91 @@ export const SignUpForm = ({
           <form>
             <div className={styles.flexForm}>
               <InputTemp
-                label="FIRST NAME"
-                placeholder="Name"
-                inputType="text"
-                name="firstName"
-                mode="light"
+                label='FIRST NAME'
+                placeholder='Name'
+                inputType='text'
+                name='firstName'
+                mode='light'
                 marginRight
                 value={firstName}
                 onChange={(e) => setFirstName(e.target.value)}
               />
               <InputTemp
-                label="SURNAME"
-                placeholder="Last name"
-                inputType="text"
-                mode="light"
+                label='SURNAME'
+                placeholder='Last name'
+                inputType='text'
+                mode='light'
                 marginLeft
-                name="lastName"
+                name='lastName'
                 value={lastName}
                 onChange={(e) => setLastName(e.target.value)}
               />
             </div>
             <div className={styles.flexForm}>
               <InputTemp
-                label="PHONE NUMBER"
+                label='PHONE NUMBER'
                 marginRight
-                placeholder="+234  708 ..."
-                inputType="tel"
-                mode="light"
-                name="phoneNo"
+                placeholder='+234  708 ...'
+                inputType='tel'
+                mode='light'
+                name='phoneNo'
                 value={phoneNumber}
                 onChange={(e) => setPhoneNumber(e.target.value)}
               />
               <InputTemp
-                label="EMAIL ADDRESS"
+                label='EMAIL ADDRESS'
                 marginLeft
-                placeholder="email@host.co.. "
-                inputType="email"
-                mode="light"
-                name="email"
+                placeholder='email@host.co.. '
+                inputType='email'
+                mode='light'
+                name='email'
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
               />
             </div>
 
             <InputTemp
-              label="HOUSE ADDRESS"
-              placeholder="Enter address"
+              label='HOUSE ADDRESS'
+              placeholder='Enter address'
               value={houseAddress}
               onChange={(e) => setHouseAddress(e.target.value)}
             />
             <SelectTemp
-              mode="light"
+              mode='light'
               options={allStateData.map((state) => ({
                 label: state.text,
                 value: state.value,
               }))}
-              label="SELECT STATE"
+              label='SELECT STATE'
               value={stateValue}
               onValueChange={handleStateGlobalChange}
             />
             <InputTemp
               visibilityPadding
-              label="PASSWORD"
-              placeholder="Enter Preferred Password"
+              label='PASSWORD'
+              placeholder='Enter Preferred Password'
               inputType={passwordVisible ? "text" : "password"}
-              mode="light"
+              mode='light'
               value={password}
-              onChange={(e) => setPassword(e.target.value)}
-            >
+              onChange={(e) => setPassword(e.target.value)}>
               <i
                 className={styles.btnVisibility}
-                onClick={togglePasswordVisiblity}
-              >
+                onClick={togglePasswordVisiblity}>
                 {passwordVisible ? <Visibility /> : <VisibilityOff />}
               </i>
             </InputTemp>
 
             <InputTemp
               visibilityPadding
-              label="RECONFIRM PASSWORD"
+              label='RECONFIRM PASSWORD'
               inputType={confirmPasswordVisible ? "text" : "password"}
-              placeholder="Enter Preferred Password"
-              mode="light"
+              placeholder='Enter Preferred Password'
+              mode='light'
               value={confirmPassword}
-              onChange={(e) => setConfirmPassword(e.target.value)}
-            >
+              onChange={(e) => setConfirmPassword(e.target.value)}>
               <i
                 onClick={toggleConfirmPasswordVisiblity}
-                className={styles.btnVisibility}
-              >
+                className={styles.btnVisibility}>
                 {confirmPasswordVisible ? <Visibility /> : <VisibilityOff />}
               </i>
             </InputTemp>
@@ -392,7 +387,7 @@ export const SignUpForm = ({
           <div className={styles.footer}>
             <Button
               text={"Register"}
-              variant="primary"
+              variant='primary'
               invalid={
                 false
                 // firstName.length < 1 ||
@@ -422,43 +417,43 @@ export const SignUpForm = ({
           <>
             <div className={styles.flexMobileForm}>
               <InputTemp
-                label="FIRST NAME"
-                placeholder="Name"
-                inputType="text"
-                name="firstName"
+                label='FIRST NAME'
+                placeholder='Name'
+                inputType='text'
+                name='firstName'
                 value={firstName}
                 onChange={(e) => setFirstName(e.target.value)}
               />
               <InputTemp
-                label="SURNAME"
-                placeholder="Last name"
-                inputType="text"
-                name="lastName"
+                label='SURNAME'
+                placeholder='Last name'
+                inputType='text'
+                name='lastName'
                 value={lastName}
                 onChange={(e) => setLastName(e.target.value)}
               />
             </div>
             <InputTemp
-              label="PHONE NUMBER"
-              placeholder="+234  708 ..."
-              inputType="tel"
-              name="phoneNo"
+              label='PHONE NUMBER'
+              placeholder='+234  708 ...'
+              inputType='tel'
+              name='phoneNo'
               value={phoneNumber}
               onChange={(e) => setPhoneNumber(e.target.value)}
             />
             <InputTemp
-              label="EMAIL ADDRESS"
-              placeholder="email@host.co.. "
-              inputType="email"
-              name="email"
+              label='EMAIL ADDRESS'
+              placeholder='email@host.co.. '
+              inputType='email'
+              name='email'
               value={email}
               onChange={(e) => setEmail(e.target.value)}
             />
             <div className={styles.buttonContainer}>
               <Button
-                text="Next"
+                text='Next'
                 onClick={() => switchPhase("second")}
-                variant="primary"
+                variant='primary'
                 invalid={
                   firstName?.length < 1 ||
                   lastName?.length < 1 ||
@@ -473,51 +468,47 @@ export const SignUpForm = ({
         {phase === "second" && !matches ? (
           <>
             <InputTemp
-              label="HOUSE ADDRESS"
-              placeholder="Enter address"
-              inputType="text"
-              name="address"
+              label='HOUSE ADDRESS'
+              placeholder='Enter address'
+              inputType='text'
+              name='address'
               value={houseAddress}
               onChange={(e) => setHouseAddress(e.target.value)}
             />
             <SelectTemp
-              mode="dark"
+              mode='dark'
               options={allStateData.map((state) => ({
                 label: state.text,
                 value: state.value,
               }))}
-              label="SELECT STATE"
+              label='SELECT STATE'
               value={stateValue}
               onValueChange={handleStateGlobalChange}
             />
             <InputTemp
               visibilityPadding
-              label="PASSWORD"
-              placeholder="Enter Preferred Password"
+              label='PASSWORD'
+              placeholder='Enter Preferred Password'
               inputType={passwordVisible ? "text" : "password"}
               value={password}
-              onChange={(e) => setPassword(e.target.value)}
-            >
+              onChange={(e) => setPassword(e.target.value)}>
               <i
                 className={styles.btnVisibility}
-                onClick={togglePasswordVisiblity}
-              >
+                onClick={togglePasswordVisiblity}>
                 {passwordVisible ? <Visibility /> : <VisibilityOff />}
               </i>
             </InputTemp>
 
             <InputTemp
               visibilityPadding
-              label="RECONFIRM PASSWORD"
+              label='RECONFIRM PASSWORD'
               inputType={confirmPasswordVisible ? "text" : "password"}
-              placeholder="Enter Preferred Password"
+              placeholder='Enter Preferred Password'
               value={confirmPassword}
-              onChange={(e) => setConfirmPassword(e.target.value)}
-            >
+              onChange={(e) => setConfirmPassword(e.target.value)}>
               <i
                 onClick={toggleConfirmPasswordVisiblity}
-                className={styles.btnVisibility}
-              >
+                className={styles.btnVisibility}>
                 {confirmPasswordVisible ? <Visibility /> : <VisibilityOff />}
               </i>
             </InputTemp>
@@ -533,7 +524,7 @@ export const SignUpForm = ({
               </p>
             </div>
             <div className={styles.footer}>
-              <Button text="Register" onClick={onRegisterClick} />
+              <Button text='Register' onClick={onRegisterClick} />
               <p>
                 <div className={styles.signUp}>
                   Already have an account?{" "}
@@ -551,7 +542,7 @@ export const SignUpForm = ({
 const PassWordMisMatch = () => {
   return (
     <div className={styles.passwordMisMatch}>
-      <img src={errorAlert} alt="" />
+      <img src={errorAlert} alt='' />
       <p>Both passwords don’t match</p>
     </div>
   );

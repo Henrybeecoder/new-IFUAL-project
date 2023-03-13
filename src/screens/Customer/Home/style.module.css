@@ -62,7 +62,7 @@
 }
 
 .discountedPrice {
-  color: #36B44A;
+  color: #36b44a;
   margin-left: 40px;
 }
 
@@ -70,30 +70,30 @@
   font-weight: 300;
   font-size: 18px;
   line-height: 18px;
-  color: #36B44A;
-  background: #F3FFF3;
+  color: #36b44a;
+  background: #f3fff3;
   border-radius: 20px;
   width: 100px;
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 10px 0 ;
+  padding: 10px 0;
   margin-left: 60px;
 }
 
 .subTextRed {
-   font-weight: 300;
+  font-weight: 300;
   font-size: 18px;
   line-height: 18px;
-  color: #CD2B65;
-  background: #F3FFF3;
-  background: #FCDEE4;
-border-radius: 20px;
-width: 100px;
+  color: #cd2b65;
+  background: #f3fff3;
+  background: #fcdee4;
+  border-radius: 20px;
+  width: 100px;
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 10px 0 ;
+  padding: 10px 0;
   margin-left: 60px;
 }
 
@@ -237,24 +237,59 @@ width: 100px;
 
 .spanGreen {
   color: #36b44a;
-} 
+}
 
-.singleFilter, .singleProductFilter {
+.singleFilter,
+.singleProductFilter {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  width: 100%;
 }
 
-.singleFilterSelect {
-  margin-left: 20px;
-}
-
-.singleProductFilterSelect {
-  margin-left: 1px;
-}
-
+.singleFilter p,
 .singleProductFilter p {
+  width: 40%;
+}
+
+/* .singleFilterSelect {
+  width: 70%;
+} */
+
+/* .singleProductFilterSelect {
+  margin-left: 1px;
+} */
+
+/* .singleProductFilter p {
   width: 200px;
+} */
+
+.filterTags {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.filterTag {
+  display: flex;
+  gap: 4px;
+  align-items: center;
+  background-color: #36b44b5d;
+  width: fit-content;
+  border-radius: 15px;
+  color: #344437;
+  padding: 4px 12px;
+  gap: 7px;
+}
+
+.filterTag p {
+  margin: auto;
+}
+
+.filterTag button {
+  padding: 0;
+  margin: auto;
+  position: static;
 }
 
 @media screen and (max-width: 800px) {

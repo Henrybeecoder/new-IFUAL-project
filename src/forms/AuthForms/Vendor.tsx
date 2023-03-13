@@ -86,8 +86,7 @@ export const LoginForm = () => {
     <Formik
       initialValues={initialValues}
       validationSchema={authSchema.login}
-      onSubmit={handleLogin}
-    >
+      onSubmit={handleLogin}>
       {({
         dirty,
         handleSubmit,
@@ -101,12 +100,12 @@ export const LoginForm = () => {
         <Form onSubmit={handleSubmit}>
           {loading && <Loading />}
           <InputTemp
-            mode="light"
-            label="EMAIL ADDRESS"
+            mode='light'
+            label='EMAIL ADDRESS'
             inputType={"email"}
-            placeholder="email@host.co.."
+            placeholder='email@host.co..'
             {...getFieldProps("emailAddress")}
-            name="emailAddress"
+            name='emailAddress'
             // onBlur={handleBlur}
             // onChange={(e) => {
             //   handleChange(e);
@@ -115,25 +114,23 @@ export const LoginForm = () => {
           />
           <ErrorMessage
             name={"emailAddress"}
-            render={(error) => <Label basic color="red" content={error} />}
+            render={(error) => <Label basic color='red' content={error} />}
           />
           <InputTemp
             visibilityPadding
-            label="PASSWORD"
-            placeholder="Enter Password"
+            label='PASSWORD'
+            placeholder='Enter Password'
             inputType={showPwd ? "text" : "password"}
-            {...getFieldProps("password")}
-          >
+            {...getFieldProps("password")}>
             <i
               className={styles.btnVisibility}
-              onClick={() => setShowPwd((state) => !state)}
-            >
+              onClick={() => setShowPwd((state) => !state)}>
               {showPwd ? <ShowPwd /> : <HidePwd />}
             </i>
           </InputTemp>
           <ErrorMessage
             name={"password"}
-            render={(error) => <Label basic color="red" content={error} />}
+            render={(error) => <Label basic color='red' content={error} />}
           />
           <div className={styles.forgotPassword}>
             <span onClick={navigateToForgotPassword} className={styles.forgot}>
@@ -155,12 +152,11 @@ export const LoginForm = () => {
               type="submit"
             /> */}
             <ButtonX
-              className="ui green fluid"
+              className='ui green fluid'
               style={{ height: "48px" }}
               disabled={loading || !dirty || !isValid}
               loading={loading}
-              type="submit"
-            >
+              type='submit'>
               Register
             </ButtonX>
             <div className={styles.signUp}>
@@ -314,8 +310,7 @@ export const SignUpForm = () => {
     <Formik
       initialValues={initialValues}
       validationSchema={authSchema.register}
-      onSubmit={handleRegister}
-    >
+      onSubmit={handleRegister}>
       {({
         dirty,
         handleSubmit,
@@ -333,44 +328,44 @@ export const SignUpForm = () => {
           {matches && (
             <>
               <InputTemp
-                mode="light"
-                label="COMPANY NAME"
-                placeholder="Enter name"
-                inputType="text"
-                name="CompanyName"
+                mode='light'
+                label='COMPANY NAME'
+                placeholder='Enter name'
+                inputType='text'
+                name='CompanyName'
                 {...getFieldProps("CompanyName")}
               />
               <ErrorMessage
                 name={"CompanyName"}
-                render={(error) => <Label basic color="red" content={error} />}
+                render={(error) => <Label basic color='red' content={error} />}
               />
 
               <div className={styles.flexForm}>
                 <div>
                   <InputTemp
-                    mode="light"
-                    label="PHONE NUMBER"
+                    mode='light'
+                    label='PHONE NUMBER'
                     marginRight
-                    placeholder="+234  708 ..."
-                    inputType="tel"
-                    name="PhoneNumber"
+                    placeholder='+234  708 ...'
+                    inputType='tel'
+                    name='PhoneNumber'
                     {...getFieldProps("PhoneNumber")}
                   />
                   <ErrorMessage
                     name={"PhoneNumber"}
                     render={(error) => (
-                      <Label basic color="red" content={error} />
+                      <Label basic color='red' content={error} />
                     )}
                   />
                 </div>
                 <div>
                   <InputTemp
-                    mode="light"
-                    label="EMAIL ADDRESS"
+                    mode='light'
+                    label='EMAIL ADDRESS'
                     // marginLeft
-                    placeholder="email@host.co.. "
-                    inputType="email"
-                    name="EmailAddress"
+                    placeholder='email@host.co.. '
+                    inputType='email'
+                    name='EmailAddress'
                     // {...getFieldProps("EmailAddress")}
                     onChange={(e) => {
                       clearError();
@@ -380,46 +375,45 @@ export const SignUpForm = () => {
                   <ErrorMessage
                     name={"EmailAddress"}
                     render={(error) => (
-                      <Label basic color="red" content={error} />
+                      <Label basic color='red' content={error} />
                     )}
                   />
                 </div>
               </div>
 
               <InputTemp
-                mode="light"
-                label="COMPANY ADDRESS"
-                placeholder="Enter address"
-                name="CompanyAddress"
+                mode='light'
+                label='COMPANY ADDRESS'
+                placeholder='Enter address'
+                name='CompanyAddress'
                 {...getFieldProps("CompanyAddress")}
               />
               <ErrorMessage
                 name={"CompanyAddress"}
-                render={(error) => <Label basic color="red" content={error} />}
+                render={(error) => <Label basic color='red' content={error} />}
               />
 
               {stateIsLoading ? (
                 <div
-                  className="ui active centered inline loader"
-                  style={{ marginTop: "20px" }}
-                ></div>
+                  className='ui active centered inline loader'
+                  style={{ marginTop: "20px" }}></div>
               ) : (
                 <SelectTemp
-                  mode="light"
+                  mode='light'
                   options={states
                     .sort(function (x, y) {
                       let a = x.text.toUpperCase(),
                         b = y.text.toUpperCase();
                       return a === b ? 0 : a > b ? 1 : -1;
                     })
-                    .map((state,index) => ({
-                      key:index,
+                    .map((state, index) => ({
+                      key: index,
                       label: state.text,
                       value: state.value,
                     }))}
-                  label="SELECT STATE"
+                  label='SELECT STATE'
                   value={selectedState}
-                  name="StateId"
+                  name='StateId'
                   onValueChange={(e) => {
                     setFieldValue("StateId", e);
                     setSelectedState(e);
@@ -429,49 +423,45 @@ export const SignUpForm = () => {
               )}
               <ErrorMessage
                 name={"StateId"}
-                render={(error) => <Label basic color="red" content={error} />}
+                render={(error) => <Label basic color='red' content={error} />}
               />
 
               <InputTemp
-                mode="light"
+                mode='light'
                 visibilityPadding
-                label="PASSWORD"
-                placeholder="Enter Preferred Password"
+                label='PASSWORD'
+                placeholder='Enter Preferred Password'
                 inputType={pV ? "text" : "password"}
-                name="Password"
-                {...getFieldProps("Password")}
-              >
+                name='Password'
+                {...getFieldProps("Password")}>
                 <i
                   className={styles.btnVisibility}
-                  onClick={() => setPV((state) => !state)}
-                >
+                  onClick={() => setPV((state) => !state)}>
                   {pV ? <ShowPwd /> : <HidePwd />}
                 </i>
               </InputTemp>
               <ErrorMessage
                 name={"Password"}
-                render={(error) => <Label basic color="red" content={error} />}
+                render={(error) => <Label basic color='red' content={error} />}
               />
 
               <InputTemp
-                mode="light"
+                mode='light'
                 visibilityPadding
-                label="RECONFIRM PASSWORD"
+                label='RECONFIRM PASSWORD'
                 inputType={cPV ? "text" : "password"}
-                placeholder="Enter Preferred Password"
-                name="ConfirmPassword"
-                {...getFieldProps("ConfirmPassword")}
-              >
+                placeholder='Enter Preferred Password'
+                name='ConfirmPassword'
+                {...getFieldProps("ConfirmPassword")}>
                 <i
                   onClick={() => setCPV((state) => !state)}
-                  className={styles.btnVisibility}
-                >
+                  className={styles.btnVisibility}>
                   {cPV ? <ShowPwd /> : <HidePwd />}
                 </i>
               </InputTemp>
               <ErrorMessage
                 name={"ConfirmPassword"}
-                render={(error) => <Label basic color="red" content={error} />}
+                render={(error) => <Label basic color='red' content={error} />}
               />
               <div className={styles.rememberMe}>
                 <Checkbox
@@ -504,14 +494,13 @@ export const SignUpForm = () => {
                 )}
 
                 <ButtonX
-                  className="ui green fluid"
-                  type="submit"
+                  className='ui green fluid'
+                  type='submit'
                   style={{ height: "48px" }}
                   disabled={
                     isSubmitting || !dirty || !isValid || !values.acceptTAC
                   }
-                  loading={isLoading}
-                >
+                  loading={isLoading}>
                   Register
                 </ButtonX>
                 <p style={{ marginTop: "10px" }}>
@@ -531,18 +520,18 @@ export const SignUpForm = () => {
                 // className={styles.flexForm}
                 >
                   <InputTemp
-                    mode="light"
-                    label="COMPANY NAME"
-                    placeholder="Company Name"
-                    inputType="text"
-                    name="CompanyName"
+                    mode='light'
+                    label='COMPANY NAME'
+                    placeholder='Company Name'
+                    inputType='text'
+                    name='CompanyName'
                     marginRightSm
                     {...getFieldProps("CompanyName")}
                   />
                   <ErrorMessage
                     name={"CompanyName"}
                     render={(error) => (
-                      <Label basic color="red" content={error} />
+                      <Label basic color='red' content={error} />
                     )}
                   />
                   {/* <InputTemp
@@ -555,19 +544,19 @@ export const SignUpForm = () => {
                   /> */}
                 </div>
                 <InputTemp
-                  mode="light"
-                  label="PHONE NUMBER"
-                  placeholder="+234  708 ..."
-                  inputType="tel"
-                  name="PhoneNumber"
+                  mode='light'
+                  label='PHONE NUMBER'
+                  placeholder='+234  708 ...'
+                  inputType='tel'
+                  name='PhoneNumber'
                   {...getFieldProps("PhoneNumber")}
                 />
                 <InputTemp
-                  mode="light"
-                  label="EMAIL ADDRESS"
-                  placeholder="email@host.co.. "
-                  inputType="email"
-                  name="EmailAddress"
+                  mode='light'
+                  label='EMAIL ADDRESS'
+                  placeholder='email@host.co.. '
+                  inputType='email'
+                  name='EmailAddress'
                   // {...getFieldProps("EmailAddress")}
                   onChange={(e) => {
                     clearError();
@@ -582,7 +571,7 @@ export const SignUpForm = () => {
                     onClick={() => setPhase("second")}
                   /> */}
                   <ButtonX
-                    className="ui green fluid"
+                    className='ui green fluid'
                     style={{ height: "48px" }}
                     disabled={
                       values.CompanyName.length < 2 ||
@@ -594,8 +583,7 @@ export const SignUpForm = () => {
                       )
                     }
                     loading={isLoading}
-                    onClick={() => setPhase("second")}
-                  >
+                    onClick={() => setPhase("second")}>
                     Next
                   </ButtonX>
                 </div>
@@ -610,11 +598,11 @@ export const SignUpForm = () => {
                   )}
                 </div>
                 <InputTemp
-                  mode="light"
-                  label="COMPANY ADDRESS"
-                  placeholder="Enter address"
-                  inputType="text"
-                  name="CompanyAddress"
+                  mode='light'
+                  label='COMPANY ADDRESS'
+                  placeholder='Enter address'
+                  inputType='text'
+                  name='CompanyAddress'
                   {...getFieldProps("CompanyAddress")}
                 />
                 {/* <div className={styles.formHolder}>
@@ -632,12 +620,11 @@ export const SignUpForm = () => {
                 </div> */}
                 {stateIsLoading ? (
                   <div
-                    className="ui active centered inline loader"
-                    style={{ marginTop: "20px" }}
-                  ></div>
+                    className='ui active centered inline loader'
+                    style={{ marginTop: "20px" }}></div>
                 ) : (
                   <SelectTemp
-                    mode="light"
+                    mode='light'
                     options={states
                       .sort(function (x, y) {
                         let a = x.text.toUpperCase(),
@@ -648,9 +635,9 @@ export const SignUpForm = () => {
                         label: state.text,
                         value: state.value,
                       }))}
-                    label="SELECT STATE"
+                    label='SELECT STATE'
                     value={selectedState}
-                    name="StateId"
+                    name='StateId'
                     onValueChange={(e) => {
                       setFieldValue("StateId", e);
                       setSelectedState(e);
@@ -660,39 +647,35 @@ export const SignUpForm = () => {
                 <ErrorMessage
                   name={"StateId"}
                   render={(error) => (
-                    <Label basic color="red" content={error} />
+                    <Label basic color='red' content={error} />
                   )}
                 />
                 <InputTemp
-                  mode="light"
+                  mode='light'
                   visibilityPadding
-                  label="PASSWORD"
-                  placeholder="Enter Preferred Password"
+                  label='PASSWORD'
+                  placeholder='Enter Preferred Password'
                   inputType={pV ? "text" : "password"}
                   name={"Password"}
-                  {...getFieldProps("Password")}
-                >
+                  {...getFieldProps("Password")}>
                   <i
                     className={styles.btnVisibility}
-                    onClick={() => setPV((state) => !state)}
-                  >
+                    onClick={() => setPV((state) => !state)}>
                     {pV ? <ShowPwd /> : <HidePwd />}
                   </i>
                 </InputTemp>
 
                 <InputTemp
-                  mode="light"
+                  mode='light'
                   visibilityPadding
-                  label="RECONFIRM PASSWORD"
+                  label='RECONFIRM PASSWORD'
                   inputType={cPV ? "text" : "password"}
-                  placeholder="Enter Preferred Password"
+                  placeholder='Enter Preferred Password'
                   name={"ConfirmPassword"}
-                  {...getFieldProps("ConfirmPassword")}
-                >
+                  {...getFieldProps("ConfirmPassword")}>
                   <i
                     onClick={() => setCPV((state) => !state)}
-                    className={styles.btnVisibility}
-                  >
+                    className={styles.btnVisibility}>
                     {pV ? <ShowPwd /> : <HidePwd />}
                   </i>
                 </InputTemp>
@@ -717,11 +700,10 @@ export const SignUpForm = () => {
                     </Message>
                   )}
                   <ButtonX
-                    className="ui green fluid"
+                    className='ui green fluid'
                     style={{ height: "48px" }}
                     disabled={isLoading || !dirty || !isValid}
-                    loading={isLoading}
-                  >
+                    loading={isLoading}>
                     Register
                   </ButtonX>
                   <p>

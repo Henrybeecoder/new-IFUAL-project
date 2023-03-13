@@ -10,9 +10,14 @@
   background: #ff34423b;
   border-radius: 8px;
   display: flex;
+  align-items: center;
   justify-content: space-around;
-  color:#FF3441;
+  color: #ff3441;
   padding: 20px 0;
+}
+
+.loginErrorContainer p {
+  margin: 0;
 }
 
 .forgotPassword button {
@@ -23,11 +28,11 @@
   width: fit-content;
 }
 
-.forgot{
-  cursor: pointer; 
+.forgot {
+  cursor: pointer;
 }
 
-.forgot:hover{
+.forgot:hover {
   color: #36b44a;
   text-decoration: underline;
 }
@@ -89,7 +94,7 @@
 }
 
 .passwordMisMatch {
-  color: #FF3441;
+  color: #ff3441;
   display: flex;
   margin-top: 10px;
 }

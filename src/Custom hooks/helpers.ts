@@ -1,3 +1,4 @@
+import { User } from "src/types/shared";
 import { states } from "../utils/state";
 
 export const limitText = (text: string, limit: number) =>
@@ -32,3 +33,8 @@ export const localeDate = (value: string | number | Date) => {
   const date = new Date(value);
   return date.toLocaleDateString();
 };
+
+export const getInitials = (user: User) =>
+  `${
+    user.firstName.split("").find((char, index) => index === 0) || ""
+  } ${user.lastName.split("").find((char, index) => index === 0)}`;
