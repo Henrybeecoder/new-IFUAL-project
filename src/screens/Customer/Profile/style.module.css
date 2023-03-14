@@ -37,9 +37,9 @@
 .flexEdit h2 {
   color: #36b44a;
   font-weight: 500;
-  font-size: 28px;
-  line-height: 28px;
-  margin-right: 5px;
+  font-size: 24px;
+  line-height: 20px;
+  margin-right: 7px;
 }
 
 .flexEditActive h2 {
@@ -47,7 +47,6 @@
 }
 .flexEdit svg {
   stroke: #36b44a;
-  margin-top: 5px;
 }
 
 .flexEditActive svg {

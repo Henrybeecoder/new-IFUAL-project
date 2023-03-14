@@ -35,6 +35,6 @@ export const localeDate = (value: string | number | Date) => {
 };
 
 export const getInitials = (user: User) =>
-  `${
-    user.firstName.split("").find((char, index) => index === 0) || ""
-  } ${user.lastName.split("").find((char, index) => index === 0)}`;
+  `${user.firstName.split("").find((char, index) => index === 0) || ""} ${
+    user.lastName.split("").find((char, index) => index === 0) || ""
+  }`;

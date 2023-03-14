@@ -47,8 +47,9 @@
 .flexHeader {
   display: flex;
   justify-content: space-between;
-  width: 100%;
+  max-width: 100%;
   position: relative;
+  gap: 15px;
 }
 
 .flexIcons {
@@ -201,6 +202,7 @@
   .mobile {
     display: flex;
     justify-content: center;
+    gap: 10px;
   }
   .mobile img {
     width: 48px;

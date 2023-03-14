@@ -1,5 +1,5 @@
-import React, { useState, useCallback } from "react";
-import { InputTemp, TextareaTemp } from "../../InputTemp";
+import { useReducer } from "react";
+import { InputTemp } from "../../InputTemp";
 import Button from "../../Button";
 import styles from "./style.module.css";
 import Modal from "../../../Components/Modals";
@@ -7,70 +7,71 @@ import Visibility from "@material-ui/icons/Visibility";
 import VisibilityOff from "@material-ui/icons/VisibilityOff";
 import errorAlert from "../../../assets/svg/errorAlert.svg";
 import checkSuccess from "../../../assets/svg/modalCheck.svg";
-import { ToastContainer, toast } from "react-toastify";
+import { toast } from "react-toastify";
 import AuthCode from "react-auth-code-input";
 import { customerBaseUrl } from "../../../utils/baseUrl";
 import axios from "axios";
+import { initialState, reducer } from "./states";
 
-export default function ChangeAccount({ newUser, setLoading, backToProfile }) {
-  const [accountNumber, setAccountNumber] = useState("");
-  const [openPasswordModal, setOpenPasswordModal] = useState(false);
-  const [currentPassword, setCurrentPassword] = useState("");
+interface Props {
+  edit?: boolean;
+  newUser: any;
+  setLoading: (state: boolean) => void;
+  backToProfile: () => void;
+}
 
-  const [currentPasswordError, setCurrentPasswordError] = useState(false);
-  const [passwordVisible, setPasswordVisibility] = useState(false);
-  const [filledCurrentPassword, setFilledCurrentPassword] = useState(false);
-  const [successModal, setSuccessModal] = useState(false);
-  const [otp, setOtp] = useState("");
-  const togglePasswordVisiblity = () => {
-    setPasswordVisibility((state) => !state);
-  };
-
-  const accountNumberSubmitted = () => {
-    setOpenPasswordModal(true);
-  };
+export default function ChangeAccount({
+  newUser,
+  setLoading,
+  backToProfile,
+  edit = true,
+}: Props) {
+  const [{ values, modals, errors, visibility, filled }, dispatch] = useReducer(
+    reducer,
+    initialState
+  );
 
   const validateCurrentPassword = () => {
-    if (newUser?.password !== currentPassword) {
-      setCurrentPasswordError(true);
+    if (newUser?.password !== values.currentPassword) {
+      dispatch({ type: "currentPasswordError", payload: true });
     } else {
-      setFilledCurrentPassword(true);
-      setOpenPasswordModal(false);
+      dispatch({ type: "filledCurrentPassword", payload: true });
+      dispatch({ type: "passwordModal", payload: false });
       getOTP();
     }
   };
-  const handleOnChange = (res: string) => {
-    setOtp(res);
-  };
-  const [dataOTP, setDataOTP] = useState("");
-  const newDataOTP = otp?.toString();
 
-  const verifyOtp = () => {
-    if (newDataOTP === dataOTP) {
-      setSuccessModal(true);
-      setTimeout(() => backToProfile(), 3000);
-    } else {
+  const verifyOtp = async () => {
+    if (values.otp?.toString() !== values.serverOtp) {
       toast.error("Wrong OTP, Please Try Again");
+    } else {
+      try {
+        await axios.get(
+          `${customerBaseUrl}Account/ChangeAccountNumber/${values.accountNo}`
+        );
+        dispatch({ type: "successModal", payload: true });
+        setTimeout(() => backToProfile(), 3000);
+      } catch (err) {}
     }
   };
-  const getOTP = useCallback(() => {
+
+  const getOTP = async () => {
     setLoading(true);
-    axios
-      .get(
+    try {
+      const { data } = await axios.get(
         `${customerBaseUrl}Account/OtpEmail/${newUser?.email}/${newUser?.firstName}`
-      )
-      .then((response) => {
-        setDataOTP(response.data.data.otp);
-        setLoading(false);
-      })
-      .catch((err) => {
-        console.log(err);
-        setLoading(false);
-      });
-  }, [newUser?.email, newUser?.firstName, setLoading]);
+      );
+      dispatch({ type: "serverOtp", payload: data.data.otp });
+      setLoading(true);
+    } catch (err) {
+      console.log(err);
+      setLoading(false);
+    }
+  };
+
   return (
     <>
-      {filledCurrentPassword ? (
+      {filled.currentPassword ? (
         <div className={styles.filledContainer}>
           <div className={styles.changeAccountModule}>
             <h1>Change Account</h1>
@@ -79,9 +80,9 @@ export default function ChangeAccount({ newUser, setLoading, backToProfile }) {
               account
             </p>
             <InputTemp
-              label="ACCOUNT NUMBER"
-              placeholder="Enter account number"
-              value={accountNumber}
+              label='ACCOUNT NUMBER'
+              placeholder='Enter account number'
+              value={values.accountNo}
             />
           </div>
           <div className={styles.otpModule}>
@@ -90,36 +91,37 @@ export default function ChangeAccount({ newUser, setLoading, backToProfile }) {
               Enter the OTP sent to your email or Phone Number
             </p>
             <AuthCode
-              allowedCharacters="numeric"
-              onChange={handleOnChange}
+              allowedCharacters='numeric'
+              onChange={(e) => dispatch({ type: "otp", payload: e })}
               length={6}
               inputClassName={styles.otp}
             />
             <div className={styles.buttonFlex}>
               <Button
-                text="Back"
-                variant="outlinePrimary"
-                width="30%"
+                text='Back'
+                variant='outlinePrimary'
+                width='30%'
                 className={styles.cancelButton}
               />
               <Button
-                text="Verify"
-                variant="primary"
-                width="70%"
-                invalid={accountNumber.length < 10}
+                text='Verify'
+                variant='primary'
+                width='70%'
+                invalid={values.accountNo.length < 10}
                 onClick={verifyOtp}
               />
             </div>
           </div>
           <Modal
-            variant="default"
-            openModal={successModal}
-            closeModal={() => setSuccessModal(false)}
-            style={{ position: "fixed" }}
-          >
+            variant='default'
+            openModal={modals.success}
+            closeModal={() =>
+              dispatch({ type: "successModal", payload: false })
+            }
+            style={{ position: "fixed" }}>
             <div className={styles.accountUpdateModal}>
               <h2>Account Changed Successful</h2>
-              <img src={checkSuccess} alt="" />
+              <img src={checkSuccess} alt='' />
               <p>Redirecting to Profile Page ...</p>
             </div>
           </Modal>
@@ -133,34 +135,41 @@ export default function ChangeAccount({ newUser, setLoading, backToProfile }) {
               account
             </p>
             <InputTemp
-              label="ACCOUNT NUMBER"
-              placeholder="Enter account number"
-              value={accountNumber}
-              onChange={(e) => setAccountNumber(e.target.value)}
+              label='ACCOUNT NUMBER'
+              placeholder='Enter account number'
+              value={values.accountNo}
+              inputType='number'
+              disabled={!edit}
+              onChange={(e) =>
+                dispatch({ type: "accountNo", payload: e.target.value })
+              }
             />
             <div className={styles.buttonFlex}>
               <Button
-                text="Back"
-                variant="outlinePrimary"
-                width="30%"
+                text='Back'
+                variant='outlinePrimary'
+                width='30%'
                 className={styles.cancelButton}
                 onClick={() => backToProfile()}
               />
               <Button
-                text="Change"
-                variant="primary"
-                width="70%"
-                invalid={accountNumber.length < 10}
-                onClick={accountNumberSubmitted}
+                text='Change'
+                variant='primary'
+                width='70%'
+                invalid={values.accountNo.length < 10}
+                onClick={() =>
+                  dispatch({ type: "passwordModal", payload: true })
+                }
               />
             </div>
           </div>
           <Modal
-            variant="default"
-            openModal={openPasswordModal}
-            closeModal={() => setOpenPasswordModal(false)}
-            style={{ position: "fixed" }}
-          >
+            variant='default'
+            openModal={modals.password}
+            closeModal={() =>
+              dispatch({ type: "passwordModal", payload: false })
+            }
+            style={{ position: "fixed" }}>
             <div className={styles.accountUpdateModal}>
               <h2>Enter Password</h2>
               <p>
@@ -168,37 +177,40 @@ export default function ChangeAccount({ newUser, setLoading, backToProfile }) {
               </p>
               <InputTemp
                 visibilityPadding
-                placeholder="Enter current Password"
-                inputType={passwordVisible ? "text" : "password"}
-                value={currentPassword}
-                onChange={(e) => setCurrentPassword(e.target.value)}
-              >
+                placeholder='Enter current Password'
+                inputType={visibility.password ? "text" : "password"}
+                value={values.currentPassword}
+                onChange={(e) =>
+                  dispatch({ type: "currentPassword", payload: e.target.value })
+                }>
                 <i
                   className={styles.btnVisibility}
-                  onClick={togglePasswordVisiblity}
-                >
-                  {passwordVisible ? <Visibility /> : <VisibilityOff />}
+                  onClick={() => dispatch({ type: "passwordVisible" })}>
+                  {visibility.password ? <Visibility /> : <VisibilityOff />}
                 </i>
               </InputTemp>
-              {currentPasswordError && (
+              {errors.currentPassword && (
                 <div className={styles.passwordMisMatch}>
-                  <img src={errorAlert} alt="" />
+                  <img src={errorAlert} alt='' />
                   <p>Password is not correct</p>
                 </div>
               )}
               {/* <img src={checkSuccess} alt="" /> */}
               <div className={styles.buttonFlex}>
                 <Button
-                  text="Back"
-                  variant="outlinePrimary"
-                  width="50%"
+                  text='Back'
+                  variant='outlinePrimary'
+                  width='50%'
                   className={styles.cancelButton}
+                  onClick={() =>
+                    dispatch({ type: "passwordModal", payload: false })
+                  }
                 />
                 <Button
-                  text="Submit"
-                  variant="primary"
-                  width="50%"
-                  invalid={currentPassword.length < 1}
+                  text='Submit'
+                  variant='primary'
+                  width='50%'
+                  invalid={values.currentPassword.length < 1}
                   onClick={validateCurrentPassword}
                 />
               </div>

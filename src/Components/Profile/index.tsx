@@ -25,6 +25,7 @@ interface CustomerProfileProps {
   changePassword?: any;
   setChangePassword?: any;
   backHome?: any;
+  edit?: boolean;
 }
 
 interface VendorProfileProps {
@@ -41,6 +42,7 @@ export const CustomerProfile = ({
   changePassword,
   setChangePassword,
   backHome,
+  edit = true,
 }: CustomerProfileProps) => {
   const matches = useMediaQuery("(min-width: 800px)");
 
@@ -102,8 +104,6 @@ export const CustomerProfile = ({
   const handleStateGlobalChange = (event: any) => {
     setStateValue(event);
   };
-
-  console.log(stateValue);
 
   useEffect(() => {
     getAllState();
@@ -173,13 +173,11 @@ export const CustomerProfile = ({
     setChangeMainAccount(false);
   };
 
-  console.log(newUser.password);
-
   return (
     <>
       {loading && <Loading />}
       <ToastContainer
-        position="bottom-right"
+        position='bottom-right'
         autoClose={5000}
         hideProgressBar={false}
         newestOnTop={false}
@@ -188,14 +186,13 @@ export const CustomerProfile = ({
         pauseOnFocusLoss
         draggable
         pauseOnHover
-        theme="light"
+        theme='light'
       />
       <div className={styles.container}>
         <div
           className={styles.metaSection}
-          style={{ opacity: page === "edit" ? 0.5 : 1 }}
-        >
-          <UploadImageTemp src={profileImage} btnText="Change Image" />
+          style={{ opacity: page === "edit" ? 0.5 : 1 }}>
+          <UploadImageTemp src={profileImage} btnText='Change Image' />
           <div>
             <h3>Account Details</h3>
             <p>{newUser?.bankAccountNumber}</p>
@@ -207,24 +204,21 @@ export const CustomerProfile = ({
                 onClick={changeAccountOnClick}
                 className={
                   changeAccount ? `${styles.click}` : `${styles.normal} `
-                }
-              >
+                }>
                 Change account
               </button>
               <button
                 onClick={changePaymentCardOnClick}
                 className={
                   changePaymentCard ? `${styles.click}` : `${styles.normal} `
-                }
-              >
+                }>
                 Add Payment Card
               </button>
               <button
                 onClick={changePasswordOnCick}
                 className={
                   changePassword ? `${styles.click}` : `${styles.normal} `
-                }
-              >
+                }>
                 Change Password
               </button>
             </div>
@@ -244,14 +238,14 @@ export const CustomerProfile = ({
                 <InputTemp
                   marginRightSm
                   label={"FIRST NAME"}
-                  placeholder="Enter first name"
+                  placeholder='Enter first name'
                   value={firstName}
                   onChange={(e) => setFirstName(e.target.value)}
                 />
                 <InputTemp
                   marginLeftSm
-                  label="SURNAME"
-                  placeholder="Enter last name"
+                  label='SURNAME'
+                  placeholder='Enter last name'
                   value={lastName}
                   onChange={(e) => setLastName(e.target.value)}
                 />
@@ -259,35 +253,35 @@ export const CustomerProfile = ({
               <div className={styles.inputFlex}>
                 <InputTemp
                   marginRightSm
-                  label="PHONE NUMBER"
-                  placeholder="Enter phone number"
+                  label='PHONE NUMBER'
+                  placeholder='Enter phone number'
                   value={phoneNumber}
                   onChange={(e) => setPhoneNumber(e.target.value)}
                 />
                 <InputTemp
                   marginLeftSm
-                  label="EMAIL ADDRESS"
-                  placeholder="Enter email address"
+                  label='EMAIL ADDRESS'
+                  placeholder='Enter email address'
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                 />
               </div>
               <InputTemp
-                label="HOUSE ADDRESS"
-                placeholder="Enter house address"
+                label='HOUSE ADDRESS'
+                placeholder='Enter house address'
                 value={homeAddress}
                 onChange={(e) => setHouseAddress(e.target.value)}
               />
               <InputTemp
-                label="COMPANY ADDRESS"
-                placeholder="Enter Company Address"
+                label='COMPANY ADDRESS'
+                placeholder='Enter Company Address'
                 value={companyAddress}
                 onChange={(e) => setCompanyAddress(e.target.value)}
               />
               <div className={styles.inputFlex}>
                 <SelectTemp
                   marginRightSm
-                  mode="dark"
+                  mode='dark'
                   options={allStateData.map((state) => ({
                     label: state.text,
                     value: state.value,
@@ -299,7 +293,7 @@ export const CustomerProfile = ({
 
                 <SelectTemp
                   marginRightSm
-                  mode="dark"
+                  mode='dark'
                   options={lgaStateData.map((state) => ({
                     label: state.text,
                     value: state.value,
@@ -312,28 +306,31 @@ export const CustomerProfile = ({
               {page !== "edit" && (
                 <div className={styles.buttonFlex}>
                   <Button
-                    text="Cancel"
-                    variant="outlinePrimary"
-                    width="20%"
+                    text='Cancel'
+                    variant='outlinePrimary'
+                    width='20%'
                     className={styles.cancelButton}
                   />
                   <Button
-                    text="Save"
-                    variant="primary"
-                    width="20%"
+                    text='Save'
+                    variant='primary'
+                    width='20%'
                     onClick={EditAccount}
                   />
                 </div>
               )}
             </>
           )}
+
           {changeAccount && (
             <ChangeAccount
               newUser={newUser}
               setLoading={setLoading}
               backToProfile={changeMainAccountOnClick}
+              edit={edit}
             />
           )}
+
           {changePaymentCard && <ChangePaymentCard />}
         </div>
       </div>
@@ -367,26 +364,24 @@ export const VendorProfile = ({
       <div className={styles.container}>
         <div
           className={styles.metaSection}
-          style={{ opacity: page === "edit" ? 0.5 : 1 }}
-        >
+          style={{ opacity: page === "edit" ? 0.5 : 1 }}>
           <div style={{ position: "relative", width: "fit-content" }}>
             {page === "edit" && (
               <div className={styles.changeImage}>
                 <input
                   hidden
                   ref={imageRef}
-                  type="file"
-                  accept="image/*"
+                  type='file'
+                  accept='image/*'
                   onChange={handleImage}
                 />
                 <button
-                  onClick={() => imageRef.current && imageRef.current.click()}
-                >
+                  onClick={() => imageRef.current && imageRef.current.click()}>
                   Change Image
                 </button>
               </div>
             )}
-            <img src={profileImage} />
+            <img src={profileImage} alt='' />
           </div>
           <div>
             <h3>Account Details</h3>
@@ -406,15 +401,15 @@ export const VendorProfile = ({
                   <p>
                     Orders Completed: <span>20</span>
                   </p>
-                  <div className="divider" />
+                  <div className='divider' />
                   <p>
                     Orders Rejacted: <span>5</span>
                   </p>
-                  <div className="divider" />
+                  <div className='divider' />
                   <p>
                     Total Revenue: <span>N2,000,000.00</span>
                   </p>
-                  <div className="divider" />
+                  <div className='divider' />
                   <p>
                     Rating:{" "}
                     <span>
@@ -423,7 +418,7 @@ export const VendorProfile = ({
                   </p>
                 </div>
               </div>
-              <div className="divider" />
+              <div className='divider' />
             </>
           ) : null}
           <div className={styles.inputSection}>
@@ -432,39 +427,39 @@ export const VendorProfile = ({
               <InputTemp
                 marginRightSm
                 label={"COMPANY NAME"}
-                placeholder="Aristocrat Plc"
+                placeholder='Aristocrat Plc'
               />
               <InputTemp
                 marginLeftSm
-                label="REPRESENTATIVE NAME"
-                placeholder="Aliu Jinadu"
+                label='REPRESENTATIVE NAME'
+                placeholder='Aliu Jinadu'
               />
             </div>
             <div className={styles.inputFlex}>
               <InputTemp
                 marginRightSm
-                label="DATE OF REGISTRATION"
-                placeholder="23/12/2012"
+                label='DATE OF REGISTRATION'
+                placeholder='23/12/2012'
               />
               <InputTemp
                 marginLeftSm
-                label="REGISTRATION NUMBER"
-                placeholder="37198jdhs83892"
+                label='REGISTRATION NUMBER'
+                placeholder='37198jdhs83892'
               />
             </div>
             <TextareaTemp
-              label="OPERATION LOCATIONS"
-              placeholder="Kosafe, Lagos"
+              label='OPERATION LOCATIONS'
+              placeholder='Kosafe, Lagos'
               rows={3}
             />
             {data?.status === "pending" ? (
               <div className={styles.btnFooter}>
                 <Button
-                  text="Decline"
-                  width="40%"
+                  text='Decline'
+                  width='40%'
                   onClick={() => setActiveModal("decline")}
                 />
-                <Button text="Approve" variant="dark" width="57%" />
+                <Button text='Approve' variant='dark' width='57%' />
               </div>
             ) : null}
           </div>
@@ -477,7 +472,7 @@ export const VendorProfile = ({
 const PassWordMisMatch = () => {
   return (
     <div className={styles.passwordMisMatch}>
-      <img src={errorAlert} alt="" />
+      <img src={errorAlert} alt='' />
       <p>Both passwords don’t match</p>
     </div>
   );

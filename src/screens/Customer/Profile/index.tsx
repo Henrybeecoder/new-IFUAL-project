@@ -6,7 +6,6 @@ import Button from "../../../Components/Button";
 import LayoutCustomer from "../../../containers/LayoutCustomer";
 import useMediaQuery from "../../../Custom hooks/useMediaQuery";
 import profile from "../../../assets/image/profile2Lg.png";
-
 import { useRef, useState } from "react";
 import { CustomerProfile } from "../../../Components/Profile";
 
@@ -37,8 +36,7 @@ const Profile = () => {
             }`}
             onClick={() =>
               setPage((state) => (state !== "edit" ? "edit" : "home"))
-            }
-          >
+            }>
             <h2>Edit</h2>
             <SvgEdit />
           </button>
@@ -50,6 +48,7 @@ const Profile = () => {
         changePassword={changePassword}
         setChangePassword={setChangePassword}
         backHome={backHome}
+        edit={page === "edit"}
       />
     </LayoutCustomer>
   );
