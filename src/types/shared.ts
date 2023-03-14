@@ -14,4 +14,12 @@ export interface User {
   name: string;
   email: string;
   profileImage: string;
+  homeAddress: string;
+  companyAddress: string | null;
+  phoneNumber: string;
+  state: string;
+  lga: string;
+  bankAccountNumber: string;
 }
+
+export type State = { value: string; text: string };

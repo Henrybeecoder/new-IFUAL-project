@@ -1,12 +1,9 @@
 import styles from "./style.module.css";
 import { useNavigate } from "react-router-dom";
-import { SvgArrowback, SvgEdit, SvgRating } from "../../../assets/Svgs";
-import companyLogo from "../../../assets/image/companyLogo2.png";
-import Button from "../../../Components/Button";
+import { SvgArrowback, SvgEdit } from "../../../assets/Svgs";
 import LayoutCustomer from "../../../containers/LayoutCustomer";
-import useMediaQuery from "../../../Custom hooks/useMediaQuery";
 import profile from "../../../assets/image/profile2Lg.png";
-import { useRef, useState } from "react";
+import { useState } from "react";
 import { CustomerProfile } from "../../../Components/Profile";
 
 const Profile = () => {

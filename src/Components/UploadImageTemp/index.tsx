@@ -1,24 +1,27 @@
-import { useRef } from "react";
+import { ChangeEventHandler, useRef } from "react";
+import { getInitials } from "../../../src/Custom hooks/helpers";
 import styles from "./style.module.css";
 
-const UploadImageTemp = ({
-  edit,
-  src,
-  onChange,
-  btnText,
-}: {
+interface Props {
   edit?: boolean;
   src?: string;
-  onChange?: (e) => void;
+  onChange?: ChangeEventHandler<HTMLInputElement>;
   btnText: string;
-}) => {
+  fallback?: string;
+}
+
+const UploadImageTemp = ({ edit, src, onChange, btnText, fallback }: Props) => {
   const imageRef = useRef<HTMLInputElement>(null);
   return (
     <div className={styles.container}>
       <div className={styles.imageContainer}>
         {!src ? (
           <div className={styles.placeholder}>
-            <p>Upload image</p>
+            {!fallback ? (
+              <p>Upload image</p>
+            ) : (
+              <h1>{getInitials({ name: fallback })}</h1>
+            )}
           </div>
         ) : (
           <img src={src} alt={""} />
@@ -33,7 +36,9 @@ const UploadImageTemp = ({
             accept='image/*'
             onChange={onChange}
           />
-          <button type="button" onClick={() => imageRef.current && imageRef.current.click()}>
+          <button
+            type='button'
+            onClick={() => imageRef.current && imageRef.current.click()}>
             {btnText}
           </button>
         </>

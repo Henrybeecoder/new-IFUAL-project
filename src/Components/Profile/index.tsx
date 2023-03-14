@@ -1,10 +1,15 @@
 import styles from "./style.module.css";
 import { InputTemp, TextareaTemp } from "../InputTemp";
-import { ChangeEvent, ReactNode, useRef, useState, useEffect } from "react";
-import useMediaQuery from "../../Custom hooks/useMediaQuery";
+import {
+  ChangeEvent,
+  ReactNode,
+  useRef,
+  useState,
+  useEffect,
+  ChangeEventHandler,
+  useMemo,
+} from "react";
 import Button from "../Button";
-import { useNavigate, useSearchParams } from "react-router-dom";
-import { customer_data } from "../../screens/SharedAdmin/ManageUsers/data";
 import { ReactComponent as StarSvg } from "../../assets/svg/star.svg";
 import UploadImageTemp from "../UploadImageTemp";
 import { customerBaseUrl } from "../../utils/baseUrl";
@@ -16,6 +21,8 @@ import axios from "axios";
 import ChangePassword from "./ChangePassword";
 import ChangePaymentCard from "./ChangePaymentCard";
 import ChangeAccount from "./ChangeAccount";
+import { State, User } from "../../../src/types/shared";
+import { Form, Formik } from "formik";
 
 interface CustomerProfileProps {
   profileImg: string;
@@ -35,6 +42,8 @@ interface VendorProfileProps {
   setActiveModal?: (string: string | null) => void;
 }
 
+type SelectEvent = { label: string; value?: string };
+
 export const CustomerProfile = ({
   profileImg,
   children,
@@ -44,109 +53,100 @@ export const CustomerProfile = ({
   backHome,
   edit = true,
 }: CustomerProfileProps) => {
-  const matches = useMediaQuery("(min-width: 800px)");
-
-  const [profileImage, setProfileImage] = useState(profileImg);
-
-  const handleImage = (e: any) => {
-    const file = e.target?.files?.[0];
-    setProfileImage(URL.createObjectURL(file));
+  const str = localStorage.getItem("user");
+  const newUser: User = useMemo(() => str && JSON.parse(str), [str]);
+  const formValues: Omit<
+    User,
+    "profileImage" | "bankAccountNumber" | "state" | "lga"
+  > & { state: SelectEvent; lga: SelectEvent } = {
+    companyAddress: newUser.companyAddress || "",
+    email: newUser.email || "",
+    firstName: newUser.firstName || "",
+    lastName: newUser.lastName || "",
+    homeAddress: newUser.homeAddress || "",
+    lga: { label: newUser.lga } || { label: "SELECT LGA" },
+    name: newUser.name || "",
+    phoneNumber: newUser.phoneNumber || "",
+    state: { label: newUser.state, value: newUser.state } || {
+      label: "SELECT STATE",
+    },
   };
 
-  const [searchparams] = useSearchParams();
+  const [data, setData] = useState<{ lgas: any[]; states: any[] }>({
+    lgas: [],
+    states: [],
+  });
 
-  const customerId = searchparams.get("customer");
-  const str = localStorage.getItem("user");
-  const newUser = str && JSON.parse(str);
-
-  const [firstName, setFirstName] = useState(newUser?.firstName);
-  const [lastName, setLastName] = useState(newUser?.lastName);
-  const [phoneNumber, setPhoneNumber] = useState(newUser?.phoneNumber);
-  const [email, setEmail] = useState(newUser?.email);
-  const [homeAddress, setHouseAddress] = useState(newUser?.homeAddress);
-  const [companyAddress, setCompanyAddress] = useState(newUser?.companyAddress);
-  const [state, setState] = useState(newUser?.state);
-  const [lga, setLga] = useState(newUser?.lga);
   const [loading, setLoading] = useState(false);
-
-  const [stateValue, setStateValue] = useState<any>({ label: "SELECT STATE" });
-  console.log(stateValue);
-  const [lgaValue, setLgaValue] = useState({ label: "SELECT LGA" });
-  const [allStateData, setAllStateData] = useState([]);
-  const [lgaStateData, setLgaStateData] = useState([]);
 
   const [changeAccount, setChangeAccount] = useState(false);
   const [changeMainAccount, setChangeMainAccount] = useState(true);
   const [changePaymentCard, setChangePaymentCard] = useState(false);
 
-  const getAllState = () => {
+  const getLGAS = async (state: string) => {
     setLoading(true);
-    axios
-      .get(`${customerBaseUrl}Account/GetState`)
-      .then((response) => {
-        setAllStateData(response.data.data);
-
-        setLoading(false);
-      })
-      .catch((err) => {
-        console.log(err);
-        setLoading(false);
-      });
-  };
-
-  const handleLgaGlobalChange = (event: any) => {
-    if (stateValue?.value?.length > 1) {
-      setLgaValue(event);
-    } else {
-      toast.error("Please Select a State First");
+    try {
+      const { data } = await axios.get(
+        `${customerBaseUrl}Account/GetLocalGovt/${state}`
+      );
+      setData((prevState) => ({ ...prevState, lgas: data.data }));
+      setLoading(false);
+    } catch (err) {
+      setLoading(false);
     }
-  };
-  const handleStateGlobalChange = (event: any) => {
-    setStateValue(event);
   };
 
   useEffect(() => {
-    getAllState();
-    setLoading(true);
-    axios
-      .get(`${customerBaseUrl}Account/GetLocalGovt/${stateValue.value}`)
-      .then((response) => {
-        setLgaStateData(response.data.data);
+    (async () => {
+      setLoading(true);
+      try {
+        const { data } = await axios.get<{ data: State[] }>(
+          `${customerBaseUrl}Account/GetState`
+        );
+        const str = localStorage.getItem("user");
+        const user: User = str && JSON.parse(str);
+        const userStateId = data.data.find(
+          (state) => state.text === user.state
+        );
+        const { data: lgasData } = await axios.get<{ data: State[] }>(
+          `${customerBaseUrl}Account/GetLocalGovt/${userStateId.value}`
+        );
+        setData({ lgas: lgasData.data, states: data.data });
         setLoading(false);
-      })
-      .catch((err) => {
-        console.log(err);
+      } catch (err) {
         setLoading(false);
-      });
-  }, [stateValue.value]);
-  const EditAccount = () => {
+      }
+    })();
+  }, []);
+
+  const editAccount = async (values: typeof formValues) => {
     setLoading(true);
-    let editAccountPayload = {
-      firstName: firstName,
-      lastName: lastName,
-      mobileNumber: phoneNumber,
-      emailAddress: email,
-      houseAddress: homeAddress,
-      companyAddress: companyAddress,
-      stateId: stateValue.value,
-      lga: lgaValue.value,
+    let payload = {
+      firstName: values.firstName,
+      lastName: values.lastName,
+      mobileNumber: values.phoneNumber,
+      emailAddress: values.email,
+      houseAddress: values.homeAddress,
+      companyAddress: values.companyAddress,
+      stateId: values.state.value,
+      lga: values.lga.value,
     };
-    axios
-      .post(`${customerBaseUrl}Account/EditCustomer`, editAccountPayload)
-      .then((response) => {
+    try {
+      const { data: response } = await axios.post(
+        `${customerBaseUrl}Account/EditCustomer`,
+        payload
+      );
+      if (response) {
         console.log(response);
-        if (response) {
-          console.log(response);
-          backHome();
-          toast.success("Profile Edited Successfully");
-          setLoading(false);
-        }
-      })
-      .catch((err) => {
-        console.log(err);
+        backHome();
+        toast.success("Profile Edited Successfully");
         setLoading(false);
-      });
+      }
+    } catch (err) {
+      setLoading(false);
+    }
   };
+
   const changePasswordOnCick = () => {
     setChangePassword(true);
     setChangeAccount(false);
@@ -173,6 +173,20 @@ export const CustomerProfile = ({
     setChangeMainAccount(false);
   };
 
+  //replace with user profile image (currently not an image string)
+  const [profileImagePreview, setProfileImagePreview] = useState<
+    string | undefined
+  >();
+  const handleImage: ChangeEventHandler<HTMLInputElement> = (e) => {
+    const file = e.target?.files?.[0];
+    if (!file) return;
+    //if previous preview was a blob url revoke to save memory
+    if (profileImagePreview && profileImagePreview.slice(0, 5) === "blob:") {
+      URL.revokeObjectURL(profileImagePreview);
+    }
+    setProfileImagePreview(URL.createObjectURL(file));
+  };
+
   return (
     <>
       {loading && <Loading />}
@@ -192,7 +206,12 @@ export const CustomerProfile = ({
         <div
           className={styles.metaSection}
           style={{ opacity: page === "edit" ? 0.5 : 1 }}>
-          <UploadImageTemp src={profileImage} btnText='Change Image' />
+          <UploadImageTemp
+            fallback={newUser.name}
+            btnText='Change Image'
+            onChange={handleImage}
+            src={profileImagePreview}
+          />
           <div>
             <h3>Account Details</h3>
             <p>{newUser?.bankAccountNumber}</p>
@@ -233,93 +252,109 @@ export const CustomerProfile = ({
             />
           )}
           {changeMainAccount && (
-            <>
-              <div className={styles.inputFlex}>
-                <InputTemp
-                  marginRightSm
-                  label={"FIRST NAME"}
-                  placeholder='Enter first name'
-                  value={firstName}
-                  onChange={(e) => setFirstName(e.target.value)}
-                />
-                <InputTemp
-                  marginLeftSm
-                  label='SURNAME'
-                  placeholder='Enter last name'
-                  value={lastName}
-                  onChange={(e) => setLastName(e.target.value)}
-                />
-              </div>
-              <div className={styles.inputFlex}>
-                <InputTemp
-                  marginRightSm
-                  label='PHONE NUMBER'
-                  placeholder='Enter phone number'
-                  value={phoneNumber}
-                  onChange={(e) => setPhoneNumber(e.target.value)}
-                />
-                <InputTemp
-                  marginLeftSm
-                  label='EMAIL ADDRESS'
-                  placeholder='Enter email address'
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                />
-              </div>
-              <InputTemp
-                label='HOUSE ADDRESS'
-                placeholder='Enter house address'
-                value={homeAddress}
-                onChange={(e) => setHouseAddress(e.target.value)}
-              />
-              <InputTemp
-                label='COMPANY ADDRESS'
-                placeholder='Enter Company Address'
-                value={companyAddress}
-                onChange={(e) => setCompanyAddress(e.target.value)}
-              />
-              <div className={styles.inputFlex}>
-                <SelectTemp
-                  marginRightSm
-                  mode='dark'
-                  options={allStateData.map((state) => ({
-                    label: state.text,
-                    value: state.value,
-                  }))}
-                  value={stateValue}
-                  onValueChange={handleStateGlobalChange}
-                  className={styles.singleFilterSelect}
-                />
+            <Formik initialValues={formValues} onSubmit={editAccount}>
+              {({
+                dirty,
+                errors,
+                getFieldProps,
+                touched,
+                setFieldValue,
+                values,
+              }) => (
+                <Form>
+                  <div className={styles.inputFlex}>
+                    <InputTemp
+                      marginRightSm
+                      label={"FIRST NAME"}
+                      placeholder='Enter first name'
+                      {...getFieldProps("firstName")}
+                    />
+                    <InputTemp
+                      marginLeftSm
+                      label='SURNAME'
+                      placeholder='Enter last name'
+                      {...getFieldProps("lastName")}
+                    />
+                  </div>
+                  <div className={styles.inputFlex}>
+                    <InputTemp
+                      marginRightSm
+                      label='PHONE NUMBER'
+                      placeholder='Enter phone number'
+                      {...getFieldProps("phoneNumber")}
+                    />
+                    <InputTemp
+                      marginLeftSm
+                      label='EMAIL ADDRESS'
+                      placeholder='Enter email address'
+                      {...getFieldProps("email")}
+                    />
+                  </div>
+                  <InputTemp
+                    label='HOUSE ADDRESS'
+                    placeholder='Enter house address'
+                    {...getFieldProps("homeAddress")}
+                  />
+                  <InputTemp
+                    label='COMPANY ADDRESS'
+                    placeholder='Enter Company Address'
+                    {...getFieldProps("companyAddress")}
+                  />
+                  <div className={styles.inputFlex}>
+                    <SelectTemp
+                      marginRightSm
+                      mode='dark'
+                      options={data.states.map((state) => ({
+                        label: state.text,
+                        value: state.value,
+                      }))}
+                      value={values.state}
+                      onValueChange={(e: any) => {
+                        getLGAS(e.value);
+                        setFieldValue("state", e);
+                      }}
+                      className={styles.singleFilterSelect}
+                    />
 
-                <SelectTemp
-                  marginRightSm
-                  mode='dark'
-                  options={lgaStateData.map((state) => ({
-                    label: state.text,
-                    value: state.value,
-                  }))}
-                  value={lgaValue}
-                  onValueChange={handleLgaGlobalChange}
-                  className={styles.singleFilterSelect}
-                />
-              </div>
-              {page !== "edit" && (
-                <div className={styles.buttonFlex}>
-                  <Button
-                    text='Cancel'
-                    variant='outlinePrimary'
-                    width='20%'
-                    className={styles.cancelButton}
-                  />
-                  <Button
-                    text='Save'
-                    variant='primary'
-                    width='20%'
-                    onClick={EditAccount}
-                  />
-                </div>
+                    <SelectTemp
+                      marginRightSm
+                      mode='dark'
+                      options={data.lgas.map((state) => ({
+                        label: state.text,
+                        value: state.value,
+                      }))}
+                      value={values.lga}
+                      onValueChange={(e: any) => {
+                        if (values.state?.value?.length > 1) {
+                          setFieldValue("lga", e);
+                        } else {
+                          toast.error("Please Select a State First");
+                        }
+                      }}
+                      className={styles.singleFilterSelect}
+                    />
+                  </div>
+                  {page !== "edit" && (
+                    <div className={styles.buttonFlex}>
+                      <Button
+                        text='Cancel'
+                        variant='outlinePrimary'
+                        width='20%'
+                        className={styles.cancelButton}
+                        type='button'
+                      />
+                      <Button
+                        text='Save'
+                        variant='primary'
+                        width='20%'
+                        type='submit'
+                        invalid={!dirty}
+                      />
+                    </div>
+                  )}
+                </Form>
               )}
-            </>
+            </Formik>
           )}
 
           {changeAccount && (
@@ -346,7 +381,6 @@ export const VendorProfile = ({
 }: VendorProfileProps) => {
   const page = undefined;
 
-  const navigate = useNavigate();
   const imageRef = useRef<HTMLInputElement>(null);
 
   const [profileImage, setProfileImage] = useState(profileImg);

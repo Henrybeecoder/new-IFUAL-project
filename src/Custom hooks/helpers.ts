@@ -34,7 +34,14 @@ export const localeDate = (value: string | number | Date) => {
   return date.toLocaleDateString();
 };
 
-export const getInitials = (user: User) =>
-  `${user.firstName.split("").find((char, index) => index === 0) || ""} ${
-    user.lastName.split("").find((char, index) => index === 0) || ""
-  }`;
+export const getInitials = (user: Partial<User>) => {
+  if (!user.name)
+    return `${
+      user.firstName.split("").find((char, index) => index === 0) || ""
+    } ${user.lastName.split("").find((char, index) => index === 0) || ""}`;
+  else
+    return user.name
+      .split(" ")
+      .map((name) => name.charAt(0).toUpperCase())
+      .join(" ");
+};
