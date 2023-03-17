@@ -15,6 +15,7 @@ import Home from "./screens/Customer/Home";
 import Checkout from "./screens/Checkout";
 import Cart from "./screens/Customer/Cart";
 import Profile from "./screens/Customer/Profile";
+import Orders from "./screens/Customer/Orders";
 //vendor
 import LoginVendor from "./screens/vendor/Login";
 import ProductInfo from "./screens/vendor/ProductList/ProductInfo";
@@ -75,6 +76,7 @@ function App() {
         <Route path='/start-page' element={<LoginPage />} />
         <Route path='/checkout/:id' element={<Checkout />} />
         <Route path='/cart' element={<Cart />} />
+        <Route path='/orders' element={<Orders />} />
         <Route path='/login' element={<Login />} />
         <Route path='/signup' element={<SignUp />} />
         <Route path='/support' element={<Support />} />

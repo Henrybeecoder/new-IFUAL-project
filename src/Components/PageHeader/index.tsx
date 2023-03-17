@@ -22,6 +22,7 @@ interface FilterModalProps {
   onSelect?: ({ value, code }: { value: string; code?: number }) => void;
   selected?: string;
   table?: boolean;
+  currentLabel?: string;
 }
 
 export const FilterModal = ({
@@ -30,13 +31,14 @@ export const FilterModal = ({
   onSelect = () => {},
   table,
   children,
+  currentLabel = "Filter",
 }: FilterModalProps) => {
   const active = (id: string) => !!(selected === id);
   return (
     <div>
       <Root>
         <Trigger className={"flex-btwn gap-10"}>
-          <h3>Filter</h3>
+          <h3>{currentLabel}</h3>
           <FilterSvg />
         </Trigger>
         <Portal>
