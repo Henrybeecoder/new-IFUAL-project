@@ -7,7 +7,7 @@ import Layout from "../../../../src/containers/LayoutCustomer";
 import styles from "./style.module.css";
 import { SelectTemp } from "../../../../src/Components/InputTemp";
 import Button from "../../../../src/Components/Button";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import EmptyStates from "../../../../src/containers/EmptyStates";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
@@ -17,6 +17,9 @@ import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import { styled } from "@mui/material/styles";
 import { limitText } from "../../../../src/Custom hooks/helpers";
+import axios from "axios";
+import { customerBaseUrl } from "../../../../src/utils/baseUrl";
+import Loading from "../../../../src/Components/Loading";
 
 const StyledTableRow = styled(TableRow)(({ theme }) => ({
   "&:nth-of-type(odd)": {
@@ -41,94 +44,41 @@ const StyledTableCell = styled(TableCell)(({ theme }) => ({
 const Orders = () => {
   const matches = useMediaQuery("(min-width: 800px)");
 
+  const [loading, setLoading] = useState(false);
+
   const [data, setData] = useState({ orders: [] });
+
+  useEffect(() => {
+    (async () => {
+      setLoading(true);
+      try {
+        const { data } = await axios.get(
+          `${customerBaseUrl}Order/OrderbyCustomer`
+        );
+        setData((state) => ({ ...state, orders: data.data }));
+        setLoading(false);
+      } catch (err) {
+        setLoading(false);
+      }
+    })();
+  }, []);
 
   return (
     <Layout>
+      {loading && <Loading />}
       <PageHeader pageTitle='My Orders'>
         {matches && <PaginationOf current={[1, 20]} total={20} />}
-        <FilterModal table currentLabel='Newest to oldest'>
-          <>
-            <div className={styles.singleFilter}>
-              <p>State:</p>
-              <SelectTemp
-                mode='dark'
-                // options={data.states.map((state) => ({
-                //   label: state.text,
-                //   value: state.value,
-                // }))}
-                // value={values.state.value}
-                // onValueChange={handleStateGlobalChange}
-                className={styles.singleFilterSelect}
-              />
-            </div>
-            <div className={styles.singleFilter}>
-              <p>LGA:</p>
-              <SelectTemp
-                mode='dark'
-                // options={data.lgas.map((state) => ({
-                //   label: state.text,
-                //   value: state.value,
-                // }))}
-                // value={values.lga}
-                // onValueChange={handleLgaGlobalChange}
-                className={styles.singleFilterSelect}
-              />
-            </div>
-            <div className={styles.singleProductFilter}>
-              <p>Product Type:</p>
-              <SelectTemp
-                mode='dark'
-                // options={productTypeData.map((state) => ({
-                //   label: state.name,
-                //   value: state.value,
-                // }))}
-                // value={values.productType}
-                // onValueChange={handleProductTypeGlobalChange}
-                className={styles.singleProductFilterSelect}
-              />
-            </div>
-            <div className={styles.singleProductFilter}>
-              <p>Price range:</p>
-              <SelectTemp
-                mode='dark'
-                // options={priceRangeData.map((state) => ({
-                //   label: state.name,
-                //   value: state.value,
-                // }))}
-                // value={values.priceRange}
-                // onValueChange={handlePriceRangeGlobalChange}
-                className={styles.singleProductFilterSelect}
-              />
-            </div>
-            <div className={styles.singleProductFilter}>
-              <p>Supply Time:</p>
-              <SelectTemp
-                mode='dark'
-                // options={supplyTimeData.map((state) => ({
-                //   label: state.name,
-                //   value: state.value,
-                // }))}
-                // value={values.supplyTime}
-                // onValueChange={handleSupplyTimeGlobalChange}
-                className={styles.singleProductFilterSelect}
-              />
-            </div>
-            <div
-              className='divider'
-              style={{ width: "100%", margin: "15px 0" }}
-            />
-            <div className={"flex-btwn"}>
-              <Button variant='outline' text='Cancel' width='40%' />
-              <Button
-                variant='primary'
-                text='Search'
-                width='55%'
-                // onClick={applyFilter}
-              />
-            </div>
-          </>
-        </FilterModal>
+        <FilterModal
+          currentLabel='Newest to oldest'
+          options={[
+            { value: "Newest to oldest", code: 1 },
+            { value: "Oldest to Newest", code: 1 },
+            { value: "Oldest to Newest", code: 1 },
+            { value: "Completed", code: 1 },
+            { value: "In Progress", code: 1 },
+            { value: "Cancelled", code: 1 },
+          ]}
+        />
       </PageHeader>
 
       {data.orders.length < 1 ? (

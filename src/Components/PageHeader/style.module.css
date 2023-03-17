@@ -37,6 +37,9 @@
   width: 170px;
   height: auto;
   margin-right: 60px;
+  /* gap: 10px;
+  display: flex;
+  flex-direction: column; */
 }
 
 .bigFilterContainer {
@@ -61,6 +64,8 @@
   padding: 0px 20px 20px 20px;
   display: flex;
   flex-direction: column;
+  gap: 7px;
+  margin-top: 10px;
 }
 
 .optionsContainer button {
