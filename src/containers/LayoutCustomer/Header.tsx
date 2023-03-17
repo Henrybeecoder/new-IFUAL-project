@@ -94,7 +94,7 @@ const ProfileModal = ({
   user,
   children,
 }: {
-  user: User;
+  user?: Partial<User>;
   children: ReactNode;
 }) => {
   const navigate = useNavigate();
@@ -111,35 +111,37 @@ const ProfileModal = ({
     <>
       <Root>
         <Trigger>{children}</Trigger>
-        <Content className={styles.modalContainer}>
-          <div className={styles.profileContainer}>
-            <div className={styles.imageHolder}>{getInitials(user)}</div>
-            {/* <img src={user.profileImage} alt="" /> */}
+        {user && (
+          <Content className={styles.modalContainer}>
+            <div className={styles.profileContainer}>
+              <div className={styles.imageHolder}>{getInitials(user)}</div>
+              {/* <img src={user.profileImage} alt="" /> */}
 
-            <div className={styles.profileText}>
-              <h3>{user.name}</h3>
-              <p>
-                {matches
-                  ? limitText(user.email, 35)
-                  : limitText(user.email, 17)}
-              </p>
+              <div className={styles.profileText}>
+                <h3>{user?.name}</h3>
+                <p>
+                  {matches
+                    ? limitText(user.email, 35)
+                    : limitText(user.email, 17)}
+                </p>
+              </div>
             </div>
-          </div>
 
-          <div className='divider' />
-          <div className={styles.profileLinksContainer}>
-            <button onClick={() => navigate("/customer/profile")}>
-              View Profile
-            </button>
-            <button>View Orders</button>
-            <button>Track Order</button>
-            <button>Support</button>
-          </div>
-          <div className='divider' />
-          <div className={styles.logoutContainer}>
-            <button onClick={logout}>logout</button>
-          </div>
-        </Content>
+            <div className='divider' />
+            <div className={styles.profileLinksContainer}>
+              <button onClick={() => navigate("/customer/profile")}>
+                View Profile
+              </button>
+              <button>View Orders</button>
+              <button>Track Order</button>
+              <button>Support</button>
+            </div>
+            <div className='divider' />
+            <div className={styles.logoutContainer}>
+              <button onClick={logout}>logout</button>
+            </div>
+          </Content>
+        )}
       </Root>
     </>
   );

@@ -47,7 +47,7 @@
 .flexHeader {
   display: flex;
   justify-content: space-between;
-  max-width: 100%;
+  width: 100%;
   position: relative;
   gap: 15px;
 }

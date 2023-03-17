@@ -252,6 +252,14 @@ const Home = () => {
     addTag(values.priceRange.value);
   };
 
+  const buyNow = (productId?: string) => {
+    if (user) {
+      navigate(productId);
+    } else {
+      navigate("/login");
+    }
+  };
+
   return (
     <>
       {/* <h1>React Idle Timer</h1>
@@ -452,7 +460,7 @@ const Home = () => {
                     </StyledTableRow>
 
                     <>
-                      {data.products.map((row, index) => (
+                      {data.products.map((row) => (
                         <StyledTableRow key={row.id}>
                           <StyledTableCell component='th' scope='row'>
                             <div className={styles.companyLogo}>
@@ -496,7 +504,7 @@ const Home = () => {
                               text='Buy'
                               width='70px'
                               height='40px'
-                              onClick={() => navigate(row.productId)}
+                              onClick={() => buyNow(row.productId)}
                             />
                           </StyledTableCell>
                         </StyledTableRow>
