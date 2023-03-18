@@ -30,7 +30,7 @@ export default function Modal({
             }`}>
             {closeModal && (
               <button className={styles.closeModalX} onClick={closeModal}>
-                <img src={X} />
+                <img alt='closemodal' src={X} />
               </button>
             )}
 

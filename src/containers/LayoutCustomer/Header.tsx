@@ -2,8 +2,8 @@ import styles from "./style.module.css";
 import logo from "../../assets/logo.svg";
 import { NavLink, useNavigate } from "react-router-dom";
 import Button from "../../Components/Button";
-import profile from "../../assets/image/profile2.png";
-import { ReactNode, useState } from "react";
+import notificationLogo from "../../assets/svg/Ellipse.svg";
+import { Fragment, ReactNode, useState } from "react";
 import { ReactComponent as NotificationSvg } from "../../assets/navbericon/notification-outline.svg";
 import { ReactComponent as CartSvg } from "../../assets/navbericon/cart-outline.svg";
 import { ReactComponent as HamburgerSvg } from "../../assets/navbericon/hamburger.svg";
@@ -13,6 +13,7 @@ import { User } from "../../../src/types/shared";
 import { getInitials, limitText } from "../../../src/Custom hooks/helpers";
 import useMediaQuery from "../../../src/Custom hooks/useMediaQuery";
 import { Content, Root, Trigger } from "@radix-ui/react-dialog";
+import X from "../../assets/svg/x.svg";
 
 const Header = ({ user }: { user: User }) => {
   const navigate = useNavigate();
@@ -45,7 +46,7 @@ const Header = ({ user }: { user: User }) => {
         )}
       </div>
 
-      <div className={`${styles.flexHeader}`}>
+      <div className={`${styles.flexHeaderRight}`}>
         <div className={styles.lg}>
           <div className={`${styles.searchBar}`}>
             <input placeholder='Enter Keyword' />
@@ -61,9 +62,14 @@ const Header = ({ user }: { user: User }) => {
             />
           ) : (
             <>
-              <button>
-                <NotificationSvg width={52} />
-              </button>
+              <Root>
+                <Trigger>
+                  <NotificationSvg width={52} />
+                </Trigger>
+                <Content className={styles.nModal}>
+                  <NotificationModal />
+                </Content>
+              </Root>
               <button onClick={toCart} className={styles.btnCart}>
                 <CartSvg width={52} />
               </button>
@@ -80,13 +86,118 @@ const Header = ({ user }: { user: User }) => {
           </button>
         </div>
 
-        <ProfileModal user={user}>
-          <button className={styles.imageHolder} style={{ cursor: "pointer" }}>
-            {getInitials(user)}
-          </button>
-        </ProfileModal>
+        <ProfileModal user={user}>{getInitials(user)}</ProfileModal>
       </div>
     </div>
+  );
+};
+
+const notData = [
+  {
+    id: "1",
+    title: "Bently Ltd confirmed your order.",
+    time: "14 hours ago",
+    status: "sealed",
+  },
+  {
+    id: "2",
+    title: "Bently Ltd confirmed your order.",
+    time: "14 hours ago",
+    status: "sealed",
+  },
+  {
+    id: "3",
+    title: "Bently Ltd confirmed your order.",
+    time: "14 hours ago",
+    status: "opened",
+  },
+  {
+    id: "4",
+    title: "Bently Ltd confirmed your order.",
+    time: "14 hours ago",
+    status: "opened",
+  },
+  {
+    id: "5",
+    title: "Bently Ltd confirmed your order.",
+    time: "14 hours ago",
+    status: "opened",
+  },
+  {
+    id: "6",
+    title: "Bently Ltd confirmed your order.",
+    time: "14 hours ago",
+    status: "opened",
+  },
+  {
+    id: "7",
+    title: "Bently Ltd confirmed your order.",
+    time: "14 hours ago",
+    status: "opened",
+  },
+];
+
+const NotificationModal = () => {
+  const navigate = useNavigate();
+  const matches = useMediaQuery("(min-width: 800px)");
+
+  const [active, setActive] = useState<string | undefined>();
+  const activeNData = notData.find((not) => active === not.id);
+
+  //TODO fetch data
+
+  return (
+    <>
+      {activeNData && (
+        <div className={styles.activeNOuter}>
+          <div className={styles.activeN}>
+            <button
+              className={styles.closeModalX}
+              onClick={() => setActive(undefined)}>
+              <img alt='closemodal' src={X} />
+            </button>
+
+            <div className={styles.activeNFlex}>
+              <img alt='nLogo' src={notificationLogo} />
+
+              <h3>{activeNData.title.slice(0, 11)}</h3>
+
+              <p>{activeNData.time}</p>
+            </div>
+
+            <p>
+              Bently is on the way for delivery of 200 litres of diesel to No.
+              25, Bello Street, Ikotun.
+            </p>
+          </div>
+        </div>
+      )}
+      {notData.slice(0, 6).map((not) => (
+        <Fragment key={not.id}>
+          <div className='divider' />
+          <div
+            className={styles.notificationContainer}
+            onClick={() => setActive(not.id)}>
+            <div
+              style={{
+                backgroundColor:
+                  not.status === "opened" ? "#3444374a" : "#36B44A",
+              }}
+              className={`${
+                not.status === "opened"
+                  ? styles.nStatusOpened
+                  : styles.nStatusClosed
+              } ${styles.nIndicator}`}
+            />
+            <img alt='nLogo' src={notificationLogo} />
+            <div className={styles.nTextArea}>
+              <h3>{not.title}</h3>
+              <p>{not.time}</p>
+            </div>
+          </div>
+        </Fragment>
+      ))}
+    </>
   );
 };
 
@@ -110,7 +221,7 @@ const ProfileModal = ({
   return (
     <>
       <Root>
-        <Trigger>{children}</Trigger>
+        <Trigger className={styles.imageHolder}>{children}</Trigger>
         {user && (
           <Content className={styles.modalContainer}>
             <div className={styles.profileContainer}>
