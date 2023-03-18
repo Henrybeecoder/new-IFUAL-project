@@ -10,7 +10,7 @@ import PageHeader, { FilterModal } from "../../../Components/PageHeader";
 import Button from "../../../Components/Button";
 import { useNavigate } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
-import { ReportType } from "../../../types/vendor";
+import { ReportType } from "../../../t/vendor";
 import TimeAgo from "react-timeago";
 
 const reportList: ReportType[] = [

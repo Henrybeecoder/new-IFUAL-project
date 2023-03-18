@@ -104,7 +104,7 @@ td {
 }
 
 .gap-10 {
-  gap: 1 0px;
+  gap: 10px;
 }
 
 .gap-20 {
@@ -124,6 +124,18 @@ td {
   inset: 0;
   z-index: 40;
   background-color: rgba(0, 0, 0, 0.35);
+}
+
+.Tabletitle {
+  font-weight: 500;
+  font-size: 21px;
+  line-height: 21px;
+}
+
+.TablesubText {
+  font-weight: 300;
+  font-size: 18px;
+  line-height: 18px;
 }
 
 @media screen and (max-width: 800px) {

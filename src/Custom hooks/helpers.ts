@@ -1,4 +1,4 @@
-import { User } from "src/types/shared";
+import { User } from "src/t/shared";
 import { states } from "../utils/state";
 
 export const limitText = (text: string, limit: number) =>
@@ -9,16 +9,16 @@ export const statesOptions = states.map((state) => ({
   label: state.name,
 }));
 
-export const dateLocale = (date: Date) => {
+export const dateLocale = (date: Date | string) => {
   const conv = new Date(date);
   return conv.toLocaleDateString("en", {
-    month: "short",
     day: "2-digit",
+    month: "numeric",
     year: "numeric",
   });
 };
 
-export const dateTimeLocale = (date: Date) => {
+export const dateTimeLocale = (date: Date | string) => {
   const conv = new Date(date);
   return conv.toLocaleString("en", {
     month: "short",

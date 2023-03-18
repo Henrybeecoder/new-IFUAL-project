@@ -9,7 +9,7 @@ import { ReactComponent as CartSvg } from "../../assets/navbericon/cart-outline.
 import { ReactComponent as HamburgerSvg } from "../../assets/navbericon/hamburger.svg";
 import { ReactComponent as SvgSearchIcon } from "../../assets/navbericon/mobileSearch.svg";
 import { ReactComponent as SearchIconWBorder } from "../../assets/navbericon/searchIcon.svg";
-import { User } from "../../../src/types/shared";
+import { User } from "../../t/shared";
 import { getInitials, limitText } from "../../../src/Custom hooks/helpers";
 import useMediaQuery from "../../../src/Custom hooks/useMediaQuery";
 import { Content, Root, Trigger } from "@radix-ui/react-dialog";

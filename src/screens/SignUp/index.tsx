@@ -5,7 +5,7 @@ import AuthContainer from "../../containers/AuthContainer";
 import StartPage from "../../screens/StartPage";
 import { SignUpForm as Vendor } from "../../forms/AuthForms/Vendor";
 import { SignUpForm as Customer } from "../../forms/AuthForms/Customer";
-import { RenderPageProps } from "../../types/shared";
+import { RenderPageProps } from "../../t/shared";
 import Button from "../../Components/Button";
 import Modal from "../../Components/Modals";
 import { InputTemp } from "../../Components/InputTemp";
@@ -219,7 +219,7 @@ export default function SignUp() {
     <div>
       {loading && <Loading />}
       <ToastContainer
-        position="bottom-right"
+        position='bottom-right'
         autoClose={5000}
         hideProgressBar={false}
         newestOnTop={false}
@@ -228,34 +228,32 @@ export default function SignUp() {
         pauseOnFocusLoss
         draggable
         pauseOnHover
-        theme="light"
+        theme='light'
       />
       <Modal
-        variant="default"
+        variant='default'
         openModal={openAccountUpdateModal}
         closeModal={() => setOpenAccountUpdateModal(false)}
-        style={{ position: "fixed" }}
-      >
+        style={{ position: "fixed" }}>
         <div className={styles.accountUpdateModal}>
           <h2>Account Update</h2>
           <p className={styles.paragraph}>
             This is the account number saved on the app for easy payment.
           </p>
           <Button
-            variant="primary"
-            text="Enter Personal Account Number"
+            variant='primary'
+            text='Enter Personal Account Number'
             onClick={() => enterPersonalAccountClick()}
           />
-          <Button variant="outlinePrimary" text="Create a new Account" />
-          <Button variant="outlinePrimary" text="Skip for now, add later" />
+          <Button variant='outlinePrimary' text='Create a new Account' />
+          <Button variant='outlinePrimary' text='Skip for now, add later' />
         </div>
       </Modal>
       <Modal
-        variant="default"
+        variant='default'
         openModal={enterPersonalAccountModal}
         closeModal={() => setEnterPersonalAccountNumberModal(false)}
-        style={{ position: "fixed" }}
-      >
+        style={{ position: "fixed" }}>
         <div className={styles.accountUpdateModal}>
           <h2>Enter account details</h2>
           <p className={styles.paragraph}>
@@ -263,30 +261,30 @@ export default function SignUp() {
             account.
           </p>
           <InputTemp
-            label="ACCOUNT NUMBER"
-            placeholder="Enter account number"
-            inputType="text"
-            name="accountNumber"
+            label='ACCOUNT NUMBER'
+            placeholder='Enter account number'
+            inputType='text'
+            name='accountNumber'
             value={accountNumber}
             onChange={onChangeAccountNumber}
           />
           {accountNumberLoading ? (
             <InputLoader />
           ) : (
-            <InputTemp label="ACCOUNT NAME" value={fullAccountName} />
+            <InputTemp label='ACCOUNT NAME' value={fullAccountName} />
           )}
           <div className={styles.buttonFlex}>
             <Button
-              variant="outlinePrimary"
-              text="Back"
+              variant='outlinePrimary'
+              text='Back'
               onClick={() => {
                 goBackToOpenAccountUpdateModal();
               }}
               width={"47%"}
             />
             <Button
-              variant="primary"
-              text="Submit"
+              variant='primary'
+              text='Submit'
               invalid={fullAccountName?.length < 1}
               width={"47%"}
               onClick={() => {
@@ -297,25 +295,24 @@ export default function SignUp() {
         </div>
       </Modal>
       <Modal
-        variant="default"
+        variant='default'
         openModal={enterOTPModal}
         closeModal={() => setEnterOTPModal(false)}
-        style={{ position: "fixed" }}
-      >
+        style={{ position: "fixed" }}>
         <div className={styles.accountUpdateModal}>
           <h2>Verify account details</h2>
           <p className={styles.paragraph}>
             Enter the OTP sent to your email or Phone Number
           </p>
           <AuthCode
-            allowedCharacters="numeric"
+            allowedCharacters='numeric'
             onChange={handleOnChange}
             length={6}
             inputClassName={styles.otp}
           />
           <Button
-            variant="primary"
-            text="Submit"
+            variant='primary'
+            text='Submit'
             invalid={otp?.length < 6}
             onClick={() => {
               verifyOtp();
@@ -327,8 +324,7 @@ export default function SignUp() {
             <span
               onClick={() => {
                 getCustomOTP();
-              }}
-            >
+              }}>
               {" "}
               click here{" "}
             </span>
@@ -336,41 +332,39 @@ export default function SignUp() {
         </div>
       </Modal>
       <Modal
-        variant="default"
+        variant='default'
         openModal={accountSaved}
         closeModal={() => setAccountSaved(false)}
-        style={{ position: "fixed" }}
-      >
+        style={{ position: "fixed" }}>
         <div className={styles.accountUpdateModal}>
           <h2>Account Saved Successfully</h2>
-          <img src={checkSuccess} alt="" />
+          <img src={checkSuccess} alt='' />
           <p className={styles.paragraph}>Redirecting to Log in ...</p>
         </div>
       </Modal>
       <Modal
-        variant="default"
+        variant='default'
         openModal={accountFaliure}
         closeModal={() => setAccountFailure(false)}
-        style={{ position: "fixed" }}
-      >
+        style={{ position: "fixed" }}>
         <div className={styles.accountUpdateModal}>
           <h2>Customer Account Creation Failed</h2>
-          <img src={failure} alt="" />
+          <img src={failure} alt='' />
           <p className={styles.paragraph}>
             This activity could not be completed, due to some reasons.
           </p>
           <div className={styles.buttonFlex}>
             <Button
-              variant="outlinePrimary"
-              text="Cancel"
+              variant='outlinePrimary'
+              text='Cancel'
               onClick={() => {
                 navigateToSignUp();
               }}
               width={"47%"}
             />
             <Button
-              variant="primary"
-              text="Retry"
+              variant='primary'
+              text='Retry'
               invalid={fullAccountName?.length < 1}
               width={"47%"}
               onClick={() => {
@@ -380,7 +374,7 @@ export default function SignUp() {
           </div>
         </div>
       </Modal>
-      <AuthContainer page="register">{renderPage[signupType]}</AuthContainer>
+      <AuthContainer page='register'>{renderPage[signupType]}</AuthContainer>
     </div>
   );
 }

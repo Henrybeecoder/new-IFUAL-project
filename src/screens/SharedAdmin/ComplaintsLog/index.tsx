@@ -3,7 +3,7 @@ import { SvgFilterIcon, SvgOptions } from "../../../assets/Svgs";
 import Button from "../../../Components/Button";
 import { ReactComponent as FilterSvg } from "../../../assets/navbericon/filter-outline.svg";
 import OptionsModal from "../../../Components/OptionsModal";
-import { SharedAdminComponentProps } from "../../../types/shared";
+import { SharedAdminComponentProps } from "../../../t/shared";
 import { Link } from "react-router-dom";
 import Header from "../../../Components/PageHeader/Admin";
 import { FilterModal } from "../../../Components/PageHeader";

@@ -1,6 +1,6 @@
 import styles from "./style.module.css";
 import { customer_data, vendor_data, admin_data } from "./data";
-import { RenderPageProps } from "../../../types/shared";
+import { RenderPageProps } from "../../../t/shared";
 import {
   Link,
   NavLink,

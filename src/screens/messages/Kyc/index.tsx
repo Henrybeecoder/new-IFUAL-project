@@ -17,11 +17,7 @@ import PinInput from "react-pin-input";
 import Select from "react-select";
 import { useMutation } from "@tanstack/react-query";
 import axios from "src/lib/axios";
-import {
-  AccountData,
-  AccountDetails,
-  AddKycPayload,
-} from "../../../types/vendor";
+import { AccountData, AccountDetails, AddKycPayload } from "../../../t/vendor";
 // import { InputActionMeta } from "react-select";
 import { Button as ButtonX, Label, Message } from "semantic-ui-react";
 import responseCodes from "../../../lib/vendorApi/helper";
@@ -455,7 +451,7 @@ const Kyc = () => {
         <Loading />
       )}
       <div className={styles.header}>
-        <img src={logo} alt="logo" onClick={() => navigate("/")} />
+        <img src={logo} alt='logo' onClick={() => navigate("/")} />
       </div>
       <div className={styles.container}>
         <BackBtn />
@@ -463,8 +459,7 @@ const Kyc = () => {
         <Formik
           initialValues={initialValues}
           validationSchema={authSchema.kyc}
-          onSubmit={handleAccountVerification}
-        >
+          onSubmit={handleAccountVerification}>
           {({
             dirty,
             handleSubmit,
@@ -477,14 +472,13 @@ const Kyc = () => {
             values,
           }) => (
             <Form onSubmit={handleSubmit}>
-              <div className="flex-lg w-full gap-50">
+              <div className='flex-lg w-full gap-50'>
                 {activeModal === "otp" && (
                   <Modal
-                    variant="unstyled"
+                    variant='unstyled'
                     style={{ position: "fixed", zIndex: "2" }}
                     openModal={true}
-                    closeModal={() => setActiveModal("")}
-                  >
+                    closeModal={() => setActiveModal("")}>
                     <div className={styles.requestOtp}>
                       <h2>Verify your BVN</h2>
                       {/* <h3>0123456789 - Beatrice Bimpe</h3> */}
@@ -492,23 +486,22 @@ const Kyc = () => {
                       <PinInput
                         autoSelect={true}
                         length={6}
-                        initialValue=""
+                        initialValue=''
                         onChange={(x) => setOtp(x)}
                       />
                       {resInfo.status && (
                         <Message
                           negative
-                          style={{ maxWidth: "300px", marginBottom: "0px" }}
-                        >
+                          style={{ maxWidth: "300px", marginBottom: "0px" }}>
                           <Message.Header></Message.Header>
                           <p style={{ fontSize: "14px" }}>{resInfo.message}</p>
                         </Message>
                       )}
                       <div className={styles.btnOtpModal}>
                         <Button
-                          variant="primary"
-                          text="Submit"
-                          type="button"
+                          variant='primary'
+                          text='Submit'
+                          type='button'
                           onClick={() => {
                             handleRegOtpVerification(values);
                             // setActiveModal("");
@@ -520,7 +513,7 @@ const Kyc = () => {
                         You have not received an OTP?,{" "}
                         {isResendOtpRegVerifyLoading ? (
                           <div
-                            className="ui active centered inline loader"
+                            className='ui active centered inline loader'
                             // style={{ marginTop: "20px" }}
                           ></div>
                         ) : (
@@ -534,11 +527,10 @@ const Kyc = () => {
                 )}
                 {activeModal === "wrongAccount" && (
                   <Modal
-                    variant="unstyled"
+                    variant='unstyled'
                     style={{ position: "fixed" }}
                     openModal={true}
-                    closeModal={() => setActiveModal("")}
-                  >
+                    closeModal={() => setActiveModal("")}>
                     <div className={styles.requestOtp}>
                       <h2>Wrong account type</h2>
                       <p>
@@ -548,16 +540,16 @@ const Kyc = () => {
                       <p>Click to create a SAF account now</p>
                       <div className={styles.btns}>
                         <Button
-                          type="button"
-                          text="Back"
-                          width="39%"
+                          type='button'
+                          text='Back'
+                          width='39%'
                           onClick={() => setActiveModal("")}
                         />
                         <Button
-                          variant="primary"
-                          text="Create SAF account"
-                          type="button"
-                          width="55%"
+                          variant='primary'
+                          text='Create SAF account'
+                          type='button'
+                          width='55%'
                           onClick={() => window.open(safAccountUrl)}
                         />
                       </div>
@@ -592,7 +584,7 @@ const Kyc = () => {
                       : ""
                   }
                   onChange={(e) => imageHandler(e)}
-                  btnText="Add Company Logo"
+                  btnText='Add Company Logo'
                 />
                 {imageUpload === "none" && (
                   <Message negative>
@@ -601,50 +593,49 @@ const Kyc = () => {
                   </Message>
                 )}
                 <div className={styles.inputSection}>
-                  <div className="input-flex-btwn">
+                  <div className='input-flex-btwn'>
                     <InputTemp
                       marginRight
-                      label="REPRESENTATIVE -1 NAME"
-                      placeholder="Enter Representative 1 Name"
-                      name="representativeName1"
+                      label='REPRESENTATIVE -1 NAME'
+                      placeholder='Enter Representative 1 Name'
+                      name='representativeName1'
                       {...getFieldProps("representativeName1")}
                     />
                     <InputTemp
                       marginLeft
-                      label="REPRESENTATIVE -2 NAME"
-                      placeholder="Enter Representative 2 Name"
-                      name="representativeName2"
+                      label='REPRESENTATIVE -2 NAME'
+                      placeholder='Enter Representative 2 Name'
+                      name='representativeName2'
                       {...getFieldProps("representativeName2")}
                     />
                   </div>
-                  <div className="input-flex-btwn">
+                  <div className='input-flex-btwn'>
                     <InputTemp
                       inputType={"date"}
                       marginRight
-                      label="DATE OF REGISTRATION"
-                      placeholder="23/02/1997"
-                      name="dateofRegistration"
+                      label='DATE OF REGISTRATION'
+                      placeholder='23/02/1997'
+                      name='dateofRegistration'
                       {...getFieldProps("dateofRegistration")}
                     />
                     <InputTemp
                       marginLeft
-                      label="CAC REGISTRATION NUMBER"
-                      placeholder="Enter CAC Registration Number"
-                      name="cacRegistrationNumber"
+                      label='CAC REGISTRATION NUMBER'
+                      placeholder='Enter CAC Registration Number'
+                      name='cacRegistrationNumber'
                       {...getFieldProps("cacRegistrationNumber")}
                     />
                   </div>
                   {isLGLoading ? (
                     <div
-                      className="ui active centered inline loader"
-                      style={{ marginTop: "20px" }}
-                    ></div>
+                      className='ui active centered inline loader'
+                      style={{ marginTop: "20px" }}></div>
                   ) : (
                     <SelectTemp
-                      label="OPERATION LOCATIONS"
-                      placeholder="Select Locations..."
+                      label='OPERATION LOCATIONS'
+                      placeholder='Select Locations...'
                       value={values.operationLocation}
-                      name="operationLocation"
+                      name='operationLocation'
                       options={location
                         .sort(function (x, y) {
                           let a = x.text.toUpperCase(),
@@ -665,19 +656,19 @@ const Kyc = () => {
                       // {...getFieldProps("operationLocation")}
                     />
                   )}
-                  <div className="input-flex-btwn">
+                  <div className='input-flex-btwn'>
                     <InputTemp
                       marginRight
-                      label="ACCOUNT NUMBER"
-                      placeholder="Enter Account Number"
-                      name="accountNumber"
+                      label='ACCOUNT NUMBER'
+                      placeholder='Enter Account Number'
+                      name='accountNumber'
                       {...getFieldProps("accountNumber")}
                     />
                     <InputTemp
                       marginLeft
-                      label="ACCOUNT NAME"
-                      placeholder="Enter Account Name"
-                      name="accountName"
+                      label='ACCOUNT NAME'
+                      placeholder='Enter Account Name'
+                      name='accountName'
                       {...getFieldProps("accountName")}
                     />
                   </div>
@@ -686,29 +677,28 @@ const Kyc = () => {
                     have one?{" "}
                     <span
                       className={styles.textlink}
-                      onClick={() => window.open(safAccountUrl)}
-                    >
+                      onClick={() => window.open(safAccountUrl)}>
                       Click here
                     </span>
                   </p>
                   <InputTemp
-                    label="BVN"
-                    placeholder="Enter bvn"
-                    name="bvn"
+                    label='BVN'
+                    placeholder='Enter bvn'
+                    name='bvn'
                     {...getFieldProps("bvn")}
                   />
                   <div className={styles.btns}>
                     <Button
-                      type="button"
+                      type='button'
                       invalid={isKycLoading}
-                      text="Cancel"
-                      width="39%"
+                      text='Cancel'
+                      width='39%'
                     />
                     <Button
-                      text="Sign up"
-                      type="submit"
-                      variant="primary"
-                      width="57%"
+                      text='Sign up'
+                      type='submit'
+                      variant='primary'
+                      width='57%'
                       invalid={
                         !dirty ||
                         !isValid ||

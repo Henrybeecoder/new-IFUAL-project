@@ -3,13 +3,11 @@ import { InputTemp, SelectTemp } from "../../../Components/InputTemp";
 import PageHeader, { DeleteBtn, EditBtn } from "../../../Components/PageHeader";
 import { useState } from "react";
 import styles from "./style.module.css";
-import { rows } from "./index";
 import { useNavigate, useParams } from "react-router-dom";
 import { statesOptions } from "../../../Custom hooks/helpers";
 import Button from "../../../Components/Button";
 import { Form, Formik } from "formik";
 import { useQuery } from "@tanstack/react-query";
-import { Product } from "../../../types/product";
 import Modal from "../../../Components/Modals";
 
 const ProductInfo = () => {

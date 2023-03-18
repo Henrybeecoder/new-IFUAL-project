@@ -1,5 +1,5 @@
 import { ReactNode } from "react";
-import { User } from "src/types/shared";
+import { User } from "src/t/shared";
 import Header from "./Header";
 import styles from "./style.module.css";
 

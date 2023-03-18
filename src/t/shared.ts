@@ -20,6 +20,7 @@ export interface User {
   state: string;
   lga: string;
   bankAccountNumber: string;
+  token: string;
 }
 
 export type State = { value: string; text: string };

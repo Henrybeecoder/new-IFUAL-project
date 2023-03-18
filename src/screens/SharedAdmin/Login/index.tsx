@@ -4,7 +4,7 @@ import { InputTemp } from "../../../Components/InputTemp";
 import { useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import useMediaQuery from "../../../Custom hooks/useMediaQuery";
-import { RenderPageProps } from "../../../types/shared";
+import { RenderPageProps } from "../../../t/shared";
 import { Form, Formik } from "formik";
 import { authSchema } from "../../../lib/validation/sharedAdmin";
 

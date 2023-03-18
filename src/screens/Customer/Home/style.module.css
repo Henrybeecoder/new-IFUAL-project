@@ -49,18 +49,6 @@
   margin: 0 10px;
 }
 
-.title {
-  font-weight: 500;
-  font-size: 21px;
-  line-height: 21px;
-}
-
-.subText {
-  font-weight: 300;
-  font-size: 18px;
-  line-height: 18px;
-}
-
 .discountedPrice {
   color: #36b44a;
   margin-left: 40px;

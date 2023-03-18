@@ -3,7 +3,7 @@ import PrimaryContainer from "../PrimaryContainer";
 import styles from "./style.module.css";
 import CustomerAuthForm from "../../forms/AuthForms/Customer";
 import { useSearchParams } from "react-router-dom";
-import { RenderPageProps } from "../../types/shared";
+import { RenderPageProps } from "../../t/shared";
 import emoji from "../../assets/svg/emoji.svg";
 
 interface AuthContainerProps {
@@ -31,7 +31,7 @@ export default function AuthContainer({ page, children }: AuthContainerProps) {
         </div>
         <div className={styles.holder}>
           <div className={styles.formContainer}>{children}</div>
-          <img src={emoji} alt="" className={styles.emoji} />
+          <img src={emoji} alt='' className={styles.emoji} />
         </div>
       </div>
     </PrimaryContainer>

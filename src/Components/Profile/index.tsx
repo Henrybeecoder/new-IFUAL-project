@@ -21,7 +21,7 @@ import axios from "axios";
 import ChangePassword from "./ChangePassword";
 import ChangePaymentCard from "./ChangePaymentCard";
 import ChangeAccount from "./ChangeAccount";
-import { State, User } from "../../../src/types/shared";
+import { State, User } from "../../t/shared";
 import { Form, Formik } from "formik";
 
 interface CustomerProfileProps {

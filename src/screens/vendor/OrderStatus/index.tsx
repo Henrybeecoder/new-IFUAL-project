@@ -21,7 +21,7 @@ import PageHeader, {
   PaginationOf,
 } from "../../../Components/PageHeader";
 import { useQuery } from "@tanstack/react-query";
-import { OrderStatusType } from "../../../types/vendor";
+import { OrderStatusType } from "../../../t/vendor";
 import { AxiosError } from "axios";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({

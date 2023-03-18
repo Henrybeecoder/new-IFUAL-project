@@ -8,7 +8,7 @@ import Button, { LinkButton } from "../../../../Components/Button";
 import orderedProfile from "../../../../assets/image/orderedProfile.png";
 import deliveredProfile from "../../../../assets/image/deliveredProfile.png";
 import { InputTemp, SelectTemp } from "../../../../Components/InputTemp";
-import { RenderPageProps } from "../../../../types/shared";
+import { RenderPageProps } from "../../../../t/shared";
 import Modal from "../../../../Components/Modals";
 import { Root, Trigger, Portal, Content } from "@radix-ui/react-popover";
 import Header from "../../../../Components/PageHeader/Admin";

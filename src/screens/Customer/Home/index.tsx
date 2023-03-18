@@ -442,19 +442,19 @@ const Home = () => {
                   <TableBody>
                     <StyledTableRow>
                       <StyledTableCell>
-                        <h2 className={styles.title}>Company</h2>
+                        <h2 className={"Tabletitle"}>Company</h2>
                       </StyledTableCell>
                       <StyledTableCell align='center'>
-                        <h2 className={styles.title}>Location</h2>
+                        <h2 className={"Tabletitle"}>Location</h2>
                       </StyledTableCell>
                       <StyledTableCell align='center'>
-                        <h2 className={styles.title}>Category</h2>
+                        <h2 className={"Tabletitle"}>Category</h2>
                       </StyledTableCell>
                       <StyledTableCell align='center'>
-                        <h2 className={styles.title}>Supply Time</h2>
+                        <h2 className={"Tabletitle"}>Supply Time</h2>
                       </StyledTableCell>
                       <StyledTableCell align='center'>
-                        <h2 className={styles.title}>Price/Ltr</h2>
+                        <h2 className={"Tabletitle"}>Price/Ltr</h2>
                       </StyledTableCell>
                       <StyledTableCell align='right'></StyledTableCell>
                     </StyledTableRow>
@@ -465,13 +465,13 @@ const Home = () => {
                           <StyledTableCell component='th' scope='row'>
                             <div className={styles.companyLogo}>
                               <img alt='company-logo' src={companyLogo} />
-                              <h3 className={styles.subText}>
+                              <h3 className={"TablesubText"}>
                                 {row.productName}
                               </h3>
                             </div>
                           </StyledTableCell>
                           <StyledTableCell align='center'>
-                            <h3 className={styles.subText}>{row.state}</h3>
+                            <h3 className={"TablesubText"}>{row.state}</h3>
                           </StyledTableCell>
                           <StyledTableCell align='center'>
                             <h3
@@ -486,13 +486,13 @@ const Home = () => {
                           <StyledTableCell align='center'>
                             <h3
                               className={
-                                styles.subText
+                                "TablesubText"
                               }>{`${row.intervalOf} hours`}</h3>
                           </StyledTableCell>
                           <StyledTableCell align='center'>
                             <h3
                               className={
-                                styles.subText
+                                "TablesubText"
                               }>{`N${row.unitPrice}.00`}</h3>
                             <p
                               className={
@@ -517,13 +517,13 @@ const Home = () => {
                   <TableBody>
                     <StyledTableRow>
                       <StyledTableCell>
-                        <h2 className={styles.title}>Company</h2>
+                        <h2 className={"Tabletitle"}>Company</h2>
                       </StyledTableCell>
                       <StyledTableCell align='center'>
-                        <h2 className={styles.title}>Cat.</h2>
+                        <h2 className={"Tabletitle"}>Cat.</h2>
                       </StyledTableCell>
                       <StyledTableCell align='center'>
-                        <h2 className={styles.title}>N/Ltr</h2>
+                        <h2 className={"Tabletitle"}>N/Ltr</h2>
                       </StyledTableCell>
                       <StyledTableCell align='right'></StyledTableCell>
                     </StyledTableRow>
@@ -532,17 +532,17 @@ const Home = () => {
                         <StyledTableCell
                           align='center'
                           style={{ padding: "15x 3px" }}>
-                          <h3 className={styles.subText}>
+                          <h3 className={"TablesubText"}>
                             {limitText(row.productName, 9)}
                           </h3>
                         </StyledTableCell>
                         <StyledTableCell align='center'>
-                          <h3 className={styles.subText}>
+                          <h3 className={"TablesubText"}>
                             {limitText(row.category, 3)}
                           </h3>
                         </StyledTableCell>
                         <StyledTableCell align='center'>
-                          <h3 className={styles.subText}>{row.unitPrice}</h3>
+                          <h3 className={"TablesubText"}>{row.unitPrice}</h3>
                         </StyledTableCell>
                         <StyledTableCell
                           align='left'
