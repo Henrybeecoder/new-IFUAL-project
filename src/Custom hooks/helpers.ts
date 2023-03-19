@@ -1,3 +1,4 @@
+import { CSSProperties } from "react";
 import { User } from "src/t/shared";
 import { states } from "../utils/state";
 
@@ -46,3 +47,13 @@ export const getInitials = (user?: Partial<User>) => {
       .join(" ");
   }
 };
+
+export type StatusCode = 0 | 1 | 2 | 3 | 4 | 5 | number;
+
+export const codeToStatus: (code: StatusCode) => {
+  text: string;
+  style: CSSProperties;
+} = (code) =>
+  code === 0
+    ? { text: "In Progress", style: { backgroundColor: "#3444374e" } }
+    : { text: "", style: {} };

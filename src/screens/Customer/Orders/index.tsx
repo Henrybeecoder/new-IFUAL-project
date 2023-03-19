@@ -18,6 +18,8 @@ import Loading from "../../../../src/Components/Loading";
 import { useData } from "../../../../src/Custom hooks/Hooks";
 import { Order } from "../../../../src/t/payloads";
 import companyLogo from "../../../assets/image/companyLogo.png";
+import { ReactComponent as ArrowRight } from "../../../assets/svg/dark-arrow-right.svg";
+import { codeToStatus } from "../../../../src/Custom hooks/helpers";
 
 const StyledTableRow = styled(TableRow)(({ theme }) => ({
   "&:nth-of-type(odd)": {
@@ -129,7 +131,9 @@ const Orders = () => {
                             }>{`N${row.unitPrice}.00`}</h3>
                         </StyledTableCell>
                         <StyledTableCell align='center'>
-                          <h3 className={"TablesubText"}>{row.orderStatus}</h3>
+                          <h3 className={"TablesubText"}>
+                            {codeToStatus(row.orderStatus).text}
+                          </h3>
                         </StyledTableCell>
                       </StyledTableRow>
                     ))}
@@ -141,13 +145,13 @@ const Orders = () => {
               <TableBody>
                 <StyledTableRow>
                   <StyledTableCell>
-                    <h2 className={"Tabletitle"}>Company</h2>
-                  </StyledTableCell>
-                  <StyledTableCell align='center'>
-                    <h2 className={"Tabletitle"}>Cat.</h2>
+                    <h2 className={"Tabletitle"}>Quantity</h2>
                   </StyledTableCell>
                   <StyledTableCell align='center'>
                     <h2 className={"Tabletitle"}>N/Ltr</h2>
+                  </StyledTableCell>
+                  <StyledTableCell align='center'>
+                    <h2 className={"Tabletitle"}>Status</h2>
                   </StyledTableCell>
                   <StyledTableCell align='right'></StyledTableCell>
                 </StyledTableRow>
@@ -158,26 +162,28 @@ const Orders = () => {
                         align='center'
                         style={{ padding: "15x 3px" }}>
                         <h3 className={"TablesubText"}>
-                          {limitText(row.productName, 9)}
+                          {limitText(row.quantity.toString(), 9)} L
                         </h3>
                       </StyledTableCell>
                       <StyledTableCell align='center'>
                         <h3 className={"TablesubText"}>
-                          {limitText(row.productName, 3)}
+                          {limitText(row.unitPrice.toString(), 10)}
                         </h3>
                       </StyledTableCell>
                       <StyledTableCell align='center'>
-                        <h3 className={"TablesubText"}>{row.unitPrice}</h3>
+                        <h3 className={"TablesubText"}>
+                          {codeToStatus(row.orderStatus).text}
+                        </h3>
                       </StyledTableCell>
                       <StyledTableCell
                         align='left'
                         style={{ padding: "10px 3px" }}>
-                        {/* <ArrowRight
-                        style={{ cursor: "pointer" }}
-                        onClick={() => {
-                          navigate(row.productId);
-                        }}
-                      /> */}
+                        <ArrowRight
+                          style={{ cursor: "pointer" }}
+                          onClick={() => {
+                            // navigate(row.productId);
+                          }}
+                        />
                       </StyledTableCell>
                     </StyledTableRow>
                   ))}
