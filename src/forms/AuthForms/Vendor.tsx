@@ -15,10 +15,10 @@ import { useMutation } from "@tanstack/react-query";
 import axios from "../../lib/axios";
 import { useEffect, useState } from "react";
 import { Button as ButtonX, Label, Message } from "semantic-ui-react";
-import { data } from "src/screens/Customer/Home";
 import { AxiosResponse } from "axios";
 import { useMutations } from "../../../src/lib/vendorApi/vendorAgent";
 import { endpoints } from "../../../src/lib/vendorApi/vendorServiceLinks";
+import Button from "../../../src/Components/Button";
 
 interface LoginValues {
   email: string;
@@ -72,14 +72,6 @@ export const LoginForm = () => {
   const handleLogin = async (values: any) => {
     setLoading(true);
     mutate(values);
-    // localStorage.setItem(
-    //   "user",
-    //   JSON.stringify({ email: values.email, name: "Bistro Badmus" })
-    // );
-    // setTimeout(() => {
-    //   setLoading(false);
-    //   navigate("/vendor/dashboard");
-    // }, 3000);
   };
 
   return (
@@ -106,11 +98,6 @@ export const LoginForm = () => {
             placeholder='email@host.co..'
             {...getFieldProps("emailAddress")}
             name='emailAddress'
-            // onBlur={handleBlur}
-            // onChange={(e) => {
-            //   handleChange(e);
-            //   setEmail(e.target.value);
-            // }}
           />
           <ErrorMessage
             name={"emailAddress"}
@@ -151,14 +138,13 @@ export const LoginForm = () => {
               invalid={!dirty}
               type="submit"
             /> */}
-            <ButtonX
-              className='ui green fluid'
-              style={{ height: "48px" }}
-              disabled={loading || !dirty || !isValid}
-              loading={loading}
-              type='submit'>
-              Register
-            </ButtonX>
+
+            <Button
+              text={"Log in"}
+              variant='primary'
+              invalid={loading || !dirty || !isValid}
+              type='submit'
+            />
             <div className={styles.signUp}>
               Don’t have an account?{" "}
               <span onClick={navigateToSignup}>Sign up</span>

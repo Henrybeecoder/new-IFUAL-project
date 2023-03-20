@@ -107,23 +107,7 @@ export default function LoginForm() {
         console.log(err);
         setLoading(false);
       });
-    // setLoading(true);
-    // localStorage.setItem(
-    //   "user",
-    //   JSON.stringify({ email: "email.com", name: "Bistro Badmus" })
-    // );
-    // setTimeout(() => {
-    //   setLoading(false);
-    //
-    // }, 3000);
   };
-
-  // const submitSignup = () => {
-  //   setLoading(true);
-  //   setTimeout(() => navigate("/sign-up-message"), 5000);
-  // };
-
-  console.log(email);
 
   return (
     <>
