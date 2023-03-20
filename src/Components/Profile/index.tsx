@@ -6,7 +6,6 @@ import {
   useRef,
   useState,
   useEffect,
-  ChangeEventHandler,
   useMemo,
 } from "react";
 import Button from "../Button";
@@ -22,10 +21,9 @@ import ChangePassword from "./ChangePassword";
 import ChangePaymentCard from "./ChangePaymentCard";
 import ChangeAccount from "./ChangeAccount";
 import { State, User } from "../../t/shared";
-import { Form, Formik } from "formik";
+import { Formik } from "formik";
 
 interface CustomerProfileProps {
-  profileImg: string;
   children?: ReactNode;
   data?: any;
   page?: any;
@@ -33,10 +31,10 @@ interface CustomerProfileProps {
   setChangePassword?: any;
   backHome?: any;
   edit?: boolean;
+  setEditFalse: () => void;
 }
 
 interface VendorProfileProps {
-  profileImg: string;
   children?: ReactNode;
   data?: any;
   setActiveModal?: (string: string | null) => void;
@@ -45,19 +43,19 @@ interface VendorProfileProps {
 type SelectEvent = { label: string; value?: string };
 
 export const CustomerProfile = ({
-  profileImg,
   children,
   page,
   changePassword,
   setChangePassword,
   backHome,
   edit = true,
+  setEditFalse,
 }: CustomerProfileProps) => {
   const str = localStorage.getItem("user");
   const newUser: User = useMemo(() => str && JSON.parse(str), [str]);
   const formValues: Omit<
     User,
-    "profileImage" | "bankAccountNumber" | "state" | "lga"
+    "profileImage" | "bankAccountNumber" | "state" | "lga" | "token"
   > & { state: SelectEvent; lga: SelectEvent } = {
     companyAddress: newUser.companyAddress || "",
     email: newUser.email || "",
@@ -174,17 +172,48 @@ export const CustomerProfile = ({
   };
 
   //replace with user profile image (currently not an image string)
-  const [profileImagePreview, setProfileImagePreview] = useState<
-    string | undefined
-  >();
-  const handleImage: ChangeEventHandler<HTMLInputElement> = (e) => {
+  const [profileImagePreview, setProfileImagePreview] = useState<{
+    url: string | undefined;
+    file?: File | null;
+  }>({ url: `data:image/png;base64,${newUser.profileImage}` });
+
+  const handleImage = (e: ChangeEvent<HTMLInputElement>) => {
     const file = e.target?.files?.[0];
     if (!file) return;
     //if previous preview was a blob url revoke to save memory
-    if (profileImagePreview && profileImagePreview.slice(0, 5) === "blob:") {
-      URL.revokeObjectURL(profileImagePreview);
+    if (
+      profileImagePreview?.url &&
+      profileImagePreview?.url.slice(0, 5) === "blob:"
+    ) {
+      URL.revokeObjectURL(profileImagePreview?.url);
     }
-    setProfileImagePreview(URL.createObjectURL(file));
+    setProfileImagePreview({ url: URL.createObjectURL(file), file });
+  };
+
+  const changeImage = async () => {
+    let form = new FormData();
+    form.append("UploadImage", profileImagePreview?.file);
+    setLoading(true);
+    try {
+      const { data } = await axios.post(
+        `${customerBaseUrl}Account/ChangeImage`,
+        form,
+        {
+          headers: { Authorization: `${newUser.token}` },
+        }
+      );
+      localStorage.setItem(
+        "user",
+        JSON.stringify({ ...newUser, profileImage: data?.data })
+      );
+      setProfileImagePreview({
+        url: `data:image/png;base64,${data.data}`,
+      });
+      setLoading(false);
+    } catch (err) {
+      console.log(err as any);
+      setLoading(false);
+    }
   };
 
   return (
@@ -210,7 +239,7 @@ export const CustomerProfile = ({
             fallback={newUser.name}
             btnText='Change Image'
             onChange={handleImage}
-            src={profileImagePreview}
+            src={profileImagePreview?.url}
           />
           <div>
             <h3>Account Details</h3>
@@ -260,8 +289,9 @@ export const CustomerProfile = ({
                 touched,
                 setFieldValue,
                 values,
+                submitForm,
               }) => (
-                <Form>
+                <>
                   <div className={styles.inputFlex}>
                     <InputTemp
                       marginRightSm
@@ -334,25 +364,33 @@ export const CustomerProfile = ({
                       className={styles.singleFilterSelect}
                     />
                   </div>
-                  {page !== "edit" && (
+                  {page === "edit" && (
                     <div className={styles.buttonFlex}>
                       <Button
                         text='Cancel'
-                        variant='outlinePrimary'
-                        width='20%'
+                        variant='outline'
+                        width='35%'
                         className={styles.cancelButton}
                         type='button'
+                        onClick={setEditFalse}
                       />
                       <Button
                         text='Save'
                         variant='primary'
-                        width='20%'
-                        type='submit'
-                        invalid={!dirty}
+                        width='65%'
+                        invalid={!dirty && !profileImagePreview?.file}
+                        onClick={() => {
+                          if (dirty) {
+                            submitForm();
+                          }
+                          if (profileImagePreview?.file) {
+                            changeImage();
+                          }
+                        }}
                       />
                     </div>
                   )}
-                </Form>
+                </>
               )}
             </Formik>
           )}
@@ -374,7 +412,6 @@ export const CustomerProfile = ({
 };
 
 export const VendorProfile = ({
-  profileImg,
   children,
   data,
   setActiveModal = () => {},
@@ -383,7 +420,7 @@ export const VendorProfile = ({
 
   const imageRef = useRef<HTMLInputElement>(null);
 
-  const [profileImage, setProfileImage] = useState(profileImg);
+  const [profileImage, setProfileImage] = useState<string | undefined>();
 
   const handleImage = (e: ChangeEvent<HTMLInputElement>) => {
     const file = e.target?.files?.[0];
@@ -406,9 +443,10 @@ export const VendorProfile = ({
                   hidden
                   ref={imageRef}
                   type='file'
-                  accept='image/*'
+                  accept='image/jpeg'
                   onChange={handleImage}
                 />
+                {/* TODO accept only jpeg file. Should convert or warn? */}
                 <button
                   onClick={() => imageRef.current && imageRef.current.click()}>
                   Change Image

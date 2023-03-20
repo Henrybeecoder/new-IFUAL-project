@@ -81,10 +81,10 @@
 
 .buttonFlex {
   display: flex;
- justify-content: center;
+  justify-content: space-between;
   align-items: center;
-  margin-top: 20px;
-  
+  width: 50%;
+  margin: 20px auto;
 }
 
 .btnVisibility {
@@ -97,12 +97,12 @@
 }
 
 .click {
-  color: #2F3930 !important;
-opacity: 0.3;
+  color: #2f3930 !important;
+  opacity: 0.3;
 }
 
 .passwordMisMatch {
-  color: #FF3441;
+  color: #ff3441;
   display: flex;
   margin-top: 10px;
 }
@@ -121,8 +121,8 @@ opacity: 0.3;
 
 @media screen and (max-width: 800px) {
   .changePassword {
-  width: 100%;
-}
+    width: 100%;
+  }
   .container {
     display: block;
   }
@@ -131,6 +131,9 @@ opacity: 0.3;
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    width: 100%;
+  }
+  .buttonFlex {
     width: 100%;
   }
 }

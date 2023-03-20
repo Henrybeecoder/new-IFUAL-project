@@ -152,3 +152,35 @@
   gap: 8px;
   margin-top: 20px;
 }
+
+@media screen and (max-width: 800px) {
+  .containerFlex {
+    flex-direction: column;
+    gap: 20px;
+    width: 100%;
+  }
+  .mainPage {
+    width: 100%;
+  }
+  .reportBox {
+    width: 100%;
+  }
+  .mobileNav h3 {
+    margin: auto;
+    font-weight: 500;
+    font-size: 21px;
+    line-height: 21px;
+  }
+  .backBtn {
+    display: flex;
+    align-items: center;
+    gap: 13px;
+    margin-bottom: 20px;
+  }
+  .backBtn span {
+    font-weight: 400;
+    font-size: 18px;
+    line-height: 18px;
+    text-decoration-line: underline;
+  }
+}

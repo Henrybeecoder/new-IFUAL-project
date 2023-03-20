@@ -13,18 +13,36 @@ import { ReactComponent as MailIcon } from "../../assets/svg/email.svg";
 import { ReactComponent as PhoneIcon } from "../../assets/svg/phone.svg";
 import { ReactComponent as LocationIcon } from "../../assets/svg/location.svg";
 import { ReactNode } from "react";
+import { ReactComponent as ArrowBackSvg } from "../../assets/svg/backIcon.svg";
+import useMediaQuery from "../../../src/Custom hooks/useMediaQuery";
+import { useNavigate } from "react-router-dom";
 
 const SupportPage = () => {
+  const matches = useMediaQuery("(min-width: 800px)");
+
+  const navigate = useNavigate();
   return (
     <Layout>
       <div className={styles.containerFlex}>
-        <div className={styles.smallMenu}>
-          <button>FAQs</button>
-          <div className='divider' />
-          <button>iFuel Contacts</button>
-          <div className='divider' />
-          <button>Send a Report</button>
-        </div>
+        {matches ? (
+          <div className={styles.smallMenu}>
+            <button>FAQs</button>
+            <div className='divider' />
+            <button>iFuel Contacts</button>
+            <div className='divider' />
+            <button>Send a Report</button>
+          </div>
+        ) : (
+          <div className={styles.mobileNav}>
+            <button className={styles.backBtn} onClick={() => navigate(-1)}>
+              <ArrowBackSvg />
+              <span>Back</span>
+            </button>
+            <h3>Support</h3>
+          </div>
+        )}
+
+        {!matches && <div className='divider' />}
 
         <div className={styles.mainPage}>
           <div className={styles.accordions}>
@@ -32,7 +50,6 @@ const SupportPage = () => {
 
             <Accordion.Root
               type='single'
-              defaultValue='item-1'
               collapsible
               className={styles.accordionsContainer}>
               <AccordionItem value='item-1' triggerQuestion='What is Diesel'>
@@ -80,7 +97,7 @@ const SupportPage = () => {
               <a href='tel: 0803453423'>
                 <PhoneIcon /> <span>080-345-3423</span>
               </a>
-              <a href=''>
+              <a href='/'>
                 <LocationIcon /> <span>20 Marina, Lagos Island, Lagos.</span>
               </a>
             </div>
@@ -96,7 +113,9 @@ const SupportPage = () => {
                 <textarea placeholder='Report' rows={7} />
                 <Button text='Submit Report' variant='primary' />
               </div>
-              <img alt='vector' src={image} className={styles.image} />
+              {matches && (
+                <img alt='vector' src={image} className={styles.image} />
+              )}
             </div>
           </div>
         </div>

@@ -32,7 +32,7 @@ const Header = ({ user }: { user: User }) => {
         <img alt='' src={logo} />
         {!user && (
           <div className={styles.linksContainer}>
-            <NavLink to='/' style={{ textDecoration: "none" }}>
+            <NavLink to='/' end style={{ textDecoration: "none" }}>
               {({ isActive }) => (
                 <span className={`${isActive && styles.active}`}>Home</span>
               )}
@@ -220,9 +220,9 @@ const ProfileModal = ({
   // console.log(user, "This is the user");
   return (
     <>
-      <Root>
-        <Trigger className={styles.imageHolder}>{children}</Trigger>
-        {user && (
+      {user && (
+        <Root>
+          <Trigger className={styles.imageHolder}>{children}</Trigger>
           <Content className={styles.modalContainer}>
             <div className={styles.profileContainer}>
               <div className={styles.imageHolder}>{getInitials(user)}</div>
@@ -252,8 +252,8 @@ const ProfileModal = ({
               <button onClick={logout}>logout</button>
             </div>
           </Content>
-        )}
-      </Root>
+        </Root>
+      )}
     </>
   );
 };

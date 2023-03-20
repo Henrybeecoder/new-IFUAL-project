@@ -40,12 +40,12 @@ const Profile = () => {
         )}
       </div>
       <CustomerProfile
-        profileImg={profile}
         page={page}
         changePassword={changePassword}
         setChangePassword={setChangePassword}
         backHome={backHome}
         edit={page === "edit"}
+        setEditFalse={() => setPage("home")}
       />
     </LayoutCustomer>
   );

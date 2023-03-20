@@ -33,9 +33,10 @@ const UploadImageTemp = ({ edit, src, onChange, btnText, fallback }: Props) => {
             hidden
             ref={imageRef}
             type='file'
-            accept='image/*'
+            accept='image/jpeg'
             onChange={onChange}
           />
+          {/* TODO accept only jpeg file. Should convert or warn? */}
           <button
             type='button'
             onClick={() => imageRef.current && imageRef.current.click()}>
