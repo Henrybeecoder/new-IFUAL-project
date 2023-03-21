@@ -206,10 +206,12 @@
   right: 0;
   top: 72px;
   background-color: white;
+}
+
+.notificationsContainer {
+  background-color: white;
   box-shadow: 0px 1px 10px 2px rgba(52, 68, 55, 0.06);
   border-radius: 15px;
-  /* width: 300px;   */
-  padding: 10px 0;
 }
 
 .notificationContainer {
@@ -276,12 +278,17 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+  margin: auto;
 }
 
 h3,
 h2,
 p {
   margin: auto;
+}
+
+.miniNav {
+  display: none;
 }
 
 @media screen and (max-width: 800px) {
@@ -330,5 +337,47 @@ p {
   }
   .modalContainer {
     width: 300px;
+  }
+  .activeNOuter {
+    position: fixed;
+    z-index: 50;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%);
+    width: 90%;
+  }
+  .activeN {
+    position: relative;
+    margin: auto;
+    width: 100%;
+    padding: 50px 30px;
+  }
+  .activeNFlex h3 {
+    flex: 1;
+  }
+  .activeN p {
+    padding-top: 20px;
+    font-weight: 300;
+    font-size: 16px;
+    line-height: 24px;
+  }
+  .nModal {
+    position: fixed;
+    top: 15%;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 20px;
+    overflow: hidden;
+  }
+  .miniNav h3 {
+    margin: auto;
+    font-weight: 600;
+    font-size: 19px;
+    line-height: 21px;
+  }
+  .miniNav {
+    padding-bottom: 30px;
+    display: block;
   }
 }

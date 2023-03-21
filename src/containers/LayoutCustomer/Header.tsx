@@ -1,12 +1,11 @@
 import styles from "./style.module.css";
 import logo from "../../assets/logo.svg";
 import { NavLink, useNavigate } from "react-router-dom";
-import Button from "../../Components/Button";
+import Button, { BackBtn } from "../../Components/Button";
 import notificationLogo from "../../assets/svg/Ellipse.svg";
 import { Fragment, ReactNode, useState } from "react";
 import { ReactComponent as NotificationSvg } from "../../assets/navbericon/notification-outline.svg";
 import { ReactComponent as CartSvg } from "../../assets/navbericon/cart-outline.svg";
-import { ReactComponent as HamburgerSvg } from "../../assets/navbericon/hamburger.svg";
 import { ReactComponent as SvgSearchIcon } from "../../assets/navbericon/mobileSearch.svg";
 import { ReactComponent as SearchIconWBorder } from "../../assets/navbericon/searchIcon.svg";
 import { User } from "../../t/shared";
@@ -17,6 +16,8 @@ import X from "../../assets/svg/x.svg";
 
 const Header = ({ user }: { user: User }) => {
   const navigate = useNavigate();
+
+  const [nOpen, setNOpen] = useState(false);
 
   const toCart = () => {
     navigate("/cart");
@@ -53,38 +54,36 @@ const Header = ({ user }: { user: User }) => {
             <SvgSearchIcon className={styles.searchIcon} />
           </div>
 
-          {!user ? (
+          {!user && (
             <Button
               variant='primary'
               text='login'
               width='150px'
               onClick={toLogin}
             />
-          ) : (
-            <>
-              <Root>
-                <Trigger>
-                  <NotificationSvg width={52} />
-                </Trigger>
-                <Content className={styles.nModal}>
-                  <NotificationModal />
-                </Content>
-              </Root>
-              <button onClick={toCart} className={styles.btnCart}>
-                <CartSvg width={52} />
-              </button>
-            </>
           )}
         </div>
 
         <div className={styles.mobile}>
           <button>
-            <HamburgerSvg width={48} />
-          </button>
-          <button>
             <SearchIconWBorder width={48} />
           </button>
         </div>
+
+        <Root open={nOpen} onOpenChange={setNOpen}>
+          <Trigger>
+            <NotificationSvg
+              style={{ stroke: nOpen ? "#36B44A" : "#2F3930" }}
+              width={52}
+            />
+          </Trigger>
+          <Content className={styles.nModal}>
+            <NotificationModal setOpen={setNOpen} />
+          </Content>
+        </Root>
+        <button onClick={toCart} className={styles.btnCart}>
+          <CartSvg width={52} />
+        </button>
 
         <ProfileModal user={user}>{getInitials(user)}</ProfileModal>
       </div>
@@ -137,7 +136,11 @@ const notData = [
   },
 ];
 
-const NotificationModal = () => {
+const NotificationModal = ({
+  setOpen,
+}: {
+  setOpen: (state: boolean) => void;
+}) => {
   const navigate = useNavigate();
   const matches = useMediaQuery("(min-width: 800px)");
 
@@ -172,31 +175,37 @@ const NotificationModal = () => {
           </div>
         </div>
       )}
-      {notData.slice(0, 6).map((not) => (
-        <Fragment key={not.id}>
-          <div className='divider' />
-          <div
-            className={styles.notificationContainer}
-            onClick={() => setActive(not.id)}>
+      <div className={styles.miniNav}>
+        <BackBtn onClick={() => setOpen(false)} />
+        <h3>Notifications</h3>
+      </div>
+      <div className={styles.notificationsContainer}>
+        {notData.slice(0, 6).map((not, index) => (
+          <Fragment key={not.id}>
+            {index > 0 && <div className='divider' />}
             <div
-              style={{
-                backgroundColor:
-                  not.status === "opened" ? "#3444374a" : "#36B44A",
-              }}
-              className={`${
-                not.status === "opened"
-                  ? styles.nStatusOpened
-                  : styles.nStatusClosed
-              } ${styles.nIndicator}`}
-            />
-            <img alt='nLogo' src={notificationLogo} />
-            <div className={styles.nTextArea}>
-              <h3>{not.title}</h3>
-              <p>{not.time}</p>
+              className={styles.notificationContainer}
+              onClick={() => setActive(not.id)}>
+              <div
+                style={{
+                  backgroundColor:
+                    not.status === "opened" ? "#3444374a" : "#36B44A",
+                }}
+                className={`${
+                  not.status === "opened"
+                    ? styles.nStatusOpened
+                    : styles.nStatusClosed
+                } ${styles.nIndicator}`}
+              />
+              <img alt='nLogo' src={notificationLogo} />
+              <div className={styles.nTextArea}>
+                <h3>{not.title}</h3>
+                <p>{not.time}</p>
+              </div>
             </div>
-          </div>
-        </Fragment>
-      ))}
+          </Fragment>
+        ))}
+      </div>
     </>
   );
 };

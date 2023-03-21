@@ -13,13 +13,18 @@ import TableContainer from "@mui/material/TableContainer";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import { styled } from "@mui/material/styles";
-import { dateLocale, limitText } from "../../../../src/Custom hooks/helpers";
+import {
+  dateLocale,
+  getDateInMs,
+  limitText,
+} from "../../../../src/Custom hooks/helpers";
 import Loading from "../../../../src/Components/Loading";
 import { useData } from "../../../../src/Custom hooks/Hooks";
 import { Order } from "../../../../src/t/payloads";
 import companyLogo from "../../../assets/image/companyLogo.png";
 import { ReactComponent as ArrowRight } from "../../../assets/svg/dark-arrow-right.svg";
 import { codeToStatus } from "../../../../src/Custom hooks/helpers";
+import { useState } from "react";
 
 const StyledTableRow = styled(TableRow)(({ theme }) => ({
   "&:nth-of-type(odd)": {
@@ -41,11 +46,36 @@ const StyledTableCell = styled(TableCell)(({ theme }) => ({
   },
 }));
 
+const options = [
+  { value: "Newest to oldest", code: 0 },
+  { value: "Oldest to Newest", code: 1 },
+  { value: "Completed", code: 2 },
+  { value: "In Progress", code: 3 },
+  { value: "Cancelled", code: 4 },
+];
+
 const Orders = () => {
   const matches = useMediaQuery("(min-width: 800px)");
 
+  const [sort, setSort] = useState(0);
   const { data, loading } = useData("Order/OrderbyCustomer");
-  const orders: Order[] | null = data;
+  const orderData: Order[] | null = data || [];
+  const filterOrders = () => {
+    switch (sort) {
+      case 0:
+        return orderData.sort(
+          (a, b) => getDateInMs(a.dateCreated) - getDateInMs(b.dateCreated)
+        );
+      case 1:
+        return orderData.sort(
+          (a, b) => getDateInMs(b.dateCreated) - getDateInMs(a.dateCreated)
+        );
+      default:
+        return [];
+    }
+  };
+
+  const orders = filterOrders();
 
   return (
     <Layout>
@@ -53,16 +83,10 @@ const Orders = () => {
       <PageHeader pageTitle='My Orders'>
         {matches && <PaginationOf current={[1, 20]} total={20} />}
         <FilterModal
-          selected={0}
-          currentLabel='Newest to oldest'
-          options={[
-            { value: "Newest to oldest", code: 0 },
-            { value: "Oldest to Newest", code: 1 },
-            { value: "Oldest to Newest", code: 2 },
-            { value: "Completed", code: 3 },
-            { value: "In Progress", code: 4 },
-            { value: "Cancelled", code: 5 },
-          ]}
+          selected={sort}
+          currentLabel={options.find((opt) => sort === opt.code).value}
+          options={options}
+          onSelect={({ code }) => setSort(code)}
         />
       </PageHeader>
 
@@ -116,7 +140,7 @@ const Orders = () => {
                         </StyledTableCell>
                         <StyledTableCell align='center'>
                           <h3 className={"TablesubText"}>
-                            {dateLocale(row.deliveryDateTime)}
+                            {dateLocale(row.dateCreated)}
                           </h3>
                         </StyledTableCell>
                         <StyledTableCell align='center'>

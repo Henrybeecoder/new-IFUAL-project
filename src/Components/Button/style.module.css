@@ -89,14 +89,15 @@ button:disabled {
   }
 
   .backBtn {
-    gap: 5px;
+    gap: 10px;
   }
 
   .backBtn p {
-    font-size: 15px;
+    font-size: 17px;
     line-height: 15px;
+    font-weight: 400;
   }
   .backBtn svg {
-    width: 8px;
+    width: 10px;
   }
 }

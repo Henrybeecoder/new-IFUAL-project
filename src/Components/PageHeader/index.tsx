@@ -1,11 +1,11 @@
-import { ReactNode } from "react";
+import { ReactNode, useState } from "react";
 import { ReactComponent as LeftSvg } from "../../assets/svg/left.svg";
 import { ReactComponent as RightSvg } from "../../assets/svg/right.svg";
 import { ReactComponent as FilterSvg } from "../../assets/navbericon/filter-outline.svg";
 import { ReactComponent as EditSvg } from "../../assets/navbericon/edit.svg";
 import { ReactComponent as ArrowBackSvg } from "../../assets/svg/left.svg";
 import styles from "./style.module.css";
-import { Root, Trigger, Portal, Content } from "@radix-ui/react-popover";
+import { Root, Portal, Content, Trigger } from "@radix-ui/react-popover";
 import { useNavigate } from "react-router-dom";
 
 export interface Props {
@@ -34,9 +34,12 @@ export const FilterModal = ({
   currentLabel = "Filter",
 }: FilterModalProps) => {
   const active = (code: number) => !!(selected === code);
+
+  const [open, setOpen] = useState(false);
+
   return (
     <div>
-      <Root>
+      <Root open={open} onOpenChange={setOpen}>
         <Trigger className={"flex-btwn gap-10"}>
           <h3>{currentLabel}</h3>
           <FilterSvg />
@@ -50,18 +53,19 @@ export const FilterModal = ({
             }>
             <h3>Filter;</h3>
             <div className='divider' />
-            <div className={styles.bigFilter}>
+            <>
               {table ? (
-                <>{children}</>
+                <div className={styles.bigFilter}>{children}</div>
               ) : (
                 <div className={styles.optionsContainer}>
                   {options.map((option) => (
                     <button
                       key={option.value}
                       className={`${active(option.code) ? "text-green" : ""}`}
-                      onClick={() =>
-                        onSelect({ code: option.code, value: option.value })
-                      }>
+                      onClick={() => {
+                        setOpen(false);
+                        onSelect({ code: option.code, value: option.value });
+                      }}>
                       {`${option.value
                         .charAt(0)
                         .toUpperCase()}${option.value.slice(1)}`}
@@ -69,7 +73,7 @@ export const FilterModal = ({
                   ))}
                 </div>
               )}
-            </div>
+            </>
           </Content>
         </Portal>
       </Root>

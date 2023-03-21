@@ -57,3 +57,5 @@ export const codeToStatus: (code: StatusCode) => {
   code === 0
     ? { text: "In Progress", style: { backgroundColor: "#3444374e" } }
     : { text: "", style: {} };
+
+export const getDateInMs = (date: Date | string) => new Date(date).getTime();
