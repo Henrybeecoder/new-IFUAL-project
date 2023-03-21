@@ -1,10 +1,8 @@
 import React, { useEffect, useState } from "react";
 import styles from "./style.module.css";
-import emoji from "../../assets/svg/emoji.svg";
 import Visibility from "@material-ui/icons/Visibility";
 import VisibilityOff from "@material-ui/icons/VisibilityOff";
 import { useNavigate } from "react-router-dom";
-import { states } from "../../utils/state";
 import useMediaQuery from "../../Custom hooks/useMediaQuery";
 import Button from "../../Components/Button";
 import Checkbox from "../../Components/Checkbox";
@@ -15,13 +13,6 @@ import axios from "axios";
 import errorAlert from "../../assets/svg/errorAlert.svg";
 import Error from "../../assets/svg/Error.svg";
 import newX from "../../assets/svg/newX.svg";
-
-// import { setLocalStorageItem } from "../../utils/localStorage";
-// import Modal from "../../Components/Modals";
-
-// interface SignUpDetails {
-//   email: string;
-// }
 
 export default function LoginForm() {
   const navigate = useNavigate();
