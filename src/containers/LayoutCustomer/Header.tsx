@@ -152,7 +152,7 @@ const NotificationModal = ({
   return (
     <>
       {activeNData && (
-        <div className={styles.activeNOuter}>
+        <div className={styles.overlay}>
           <div className={styles.activeN}>
             <button
               className={styles.closeModalX}
