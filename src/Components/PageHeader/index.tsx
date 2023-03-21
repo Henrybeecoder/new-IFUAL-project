@@ -20,7 +20,7 @@ interface FilterModalProps {
   children?: ReactNode;
   options?: { value: string; code?: number }[];
   onSelect?: ({ value, code }: { value: string; code?: number }) => void;
-  selected?: string;
+  selected?: number;
   table?: boolean;
   currentLabel?: string;
 }
@@ -33,7 +33,7 @@ export const FilterModal = ({
   children,
   currentLabel = "Filter",
 }: FilterModalProps) => {
-  const active = (id: string) => !!(selected === id);
+  const active = (code: number) => !!(selected === code);
   return (
     <div>
       <Root>
@@ -50,15 +50,15 @@ export const FilterModal = ({
             }>
             <h3>Filter;</h3>
             <div className='divider' />
-            <div className={styles.optionsContainer}>
+            <div className={styles.bigFilter}>
               {table ? (
                 <>{children}</>
               ) : (
-                <>
+                <div className={styles.optionsContainer}>
                   {options.map((option) => (
                     <button
                       key={option.value}
-                      className={`${active(option.value) ? "text-green" : ""}`}
+                      className={`${active(option.code) ? "text-green" : ""}`}
                       onClick={() =>
                         onSelect({ code: option.code, value: option.value })
                       }>
@@ -67,7 +67,7 @@ export const FilterModal = ({
                         .toUpperCase()}${option.value.slice(1)}`}
                     </button>
                   ))}
-                </>
+                </div>
               )}
             </div>
           </Content>

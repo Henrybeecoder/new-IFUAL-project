@@ -53,14 +53,15 @@ const Orders = () => {
       <PageHeader pageTitle='My Orders'>
         {matches && <PaginationOf current={[1, 20]} total={20} />}
         <FilterModal
+          selected={0}
           currentLabel='Newest to oldest'
           options={[
-            { value: "Newest to oldest", code: 1 },
+            { value: "Newest to oldest", code: 0 },
             { value: "Oldest to Newest", code: 1 },
-            { value: "Oldest to Newest", code: 1 },
-            { value: "Completed", code: 1 },
-            { value: "In Progress", code: 1 },
-            { value: "Cancelled", code: 1 },
+            { value: "Oldest to Newest", code: 2 },
+            { value: "Completed", code: 3 },
+            { value: "In Progress", code: 4 },
+            { value: "Cancelled", code: 5 },
           ]}
         />
       </PageHeader>

@@ -42,93 +42,134 @@ const SupportPage = () => {
           </div>
         )}
 
-        {!matches && <div className='divider' />}
+        {/* {!matches && <div className='divider' />} */}
 
-        <div className={styles.mainPage}>
-          <div className={styles.accordions}>
-            <h3>FAQs</h3>
-
-            <Accordion.Root
-              type='single'
-              collapsible
-              className={styles.accordionsContainer}>
-              <AccordionItem value='item-1' triggerQuestion='What is Diesel'>
-                Diesel is know as abcd........xyz
-              </AccordionItem>
-
-              <AccordionItem value='item-2' triggerQuestion='What is Diesel'>
-                Diesel is know as abcd........xyz
-              </AccordionItem>
-
-              <AccordionItem
-                value='item-3'
-                triggerQuestion='What is the average rate of diesel?'>
-                Diesel is know as abcd........xyz
-              </AccordionItem>
-
-              <AccordionItem
-                value='item-4'
-                triggerQuestion='What do I do when the vendor doesn’t show up?'>
-                Diesel is know as abcd........xyz
-              </AccordionItem>
-
-              <AccordionItem
-                value='item-5'
-                triggerQuestion='What do I do when the vendor doesn’t show up?'>
-                Diesel is know as abcd........xyz
-              </AccordionItem>
-            </Accordion.Root>
-          </div>
-
-          <div className={styles.contactSection}>
-            <h3>Contact iFuel</h3>
-            <div className={styles.socialsFlex}>
-              <a href='/facebook.com'>
-                <FacebookIcon />
-              </a>
-              <a href='/twitter.com'>
-                <TwitterIcon />
-              </a>
-              <a href='/linkedin.com'>
-                <LinkedInIcon />
-              </a>
-              <a href='/instagram.com'>
-                <InstagramIcon />
-              </a>
-              <a href='/youtube.com'>
-                <YoutubeIcon />
-              </a>
-            </div>
-            <div className='divider' />
-            <div className={styles.links}>
-              <a href='mailto: feedback@activ8it.ng'>
-                <MailIcon /> <span>ago@ifuel.com</span>
-              </a>
-              <a href='tel: 0803453423'>
-                <PhoneIcon /> <span>080-345-3423</span>
-              </a>
-              <a href='/'>
-                <LocationIcon /> <span>20 Marina, Lagos Island, Lagos.</span>
-              </a>
-            </div>
-          </div>
-
-          <div className={styles.sendReport}>
-            <h3>Send a Report</h3>
-            <div className={styles.reportBox}>
-              <div className={styles.inputArea}>
-                <h3>Share your complaints / Reports</h3>
-                <input placeholder='Title' />
-
-                <textarea placeholder='Report' rows={7} />
-                <Button text='Submit Report' variant='primary' />
-              </div>
-              {matches && (
-                <img alt='vector' src={image} className={styles.image} />
+        <Accordion.Root
+          type='multiple'
+          value={matches ? ["faqs", "contact", "report"] : undefined}
+          className={styles.mainPage}
+          disabled={matches}>
+          <>
+            <Accordion.Item value='faqs' className={styles.accordions}>
+              {!matches && (
+                <Accordion.Trigger className={styles.TriggerHeader}>
+                  FAQs
+                  <span>
+                    <ArrowDown style={{ margin: "auto" }} />
+                  </span>
+                </Accordion.Trigger>
               )}
-            </div>
-          </div>
-        </div>
+
+              <Accordion.Content>
+                <h4>FAQs</h4>
+                <Accordion.Root
+                  type='single'
+                  collapsible
+                  className={styles.accordionsContainer}>
+                  <AccordionItem
+                    value='item-1'
+                    triggerQuestion='What is Diesel'>
+                    Diesel is know as abcd........xyz
+                  </AccordionItem>
+
+                  <AccordionItem
+                    value='item-2'
+                    triggerQuestion='What is Diesel'>
+                    Diesel is know as abcd........xyz
+                  </AccordionItem>
+
+                  <AccordionItem
+                    value='item-3'
+                    triggerQuestion='What is the average rate of diesel?'>
+                    Diesel is know as abcd........xyz
+                  </AccordionItem>
+
+                  <AccordionItem
+                    value='item-4'
+                    triggerQuestion='What do I do when the vendor doesn’t show up?'>
+                    Diesel is know as abcd........xyz
+                  </AccordionItem>
+
+                  <AccordionItem
+                    value='item-5'
+                    triggerQuestion='What do I do when the vendor doesn’t show up?'>
+                    Diesel is know as abcd........xyz
+                  </AccordionItem>
+                </Accordion.Root>
+              </Accordion.Content>
+            </Accordion.Item>
+
+            <Accordion.Item value='contact' className={styles.contactSection}>
+              {!matches && (
+                <Accordion.Trigger className={styles.TriggerHeader}>
+                  Contact iFuel
+                  <span>
+                    <ArrowDown style={{ margin: "auto" }} />
+                  </span>
+                </Accordion.Trigger>
+              )}
+              <Accordion.Content>
+                <h4>Contact iFuel</h4>
+                <div className={styles.socialsFlex}>
+                  <a href='/facebook.com'>
+                    <FacebookIcon />
+                  </a>
+                  <a href='/twitter.com'>
+                    <TwitterIcon />
+                  </a>
+                  <a href='/linkedin.com'>
+                    <LinkedInIcon />
+                  </a>
+                  <a href='/instagram.com'>
+                    <InstagramIcon />
+                  </a>
+                  <a href='/youtube.com'>
+                    <YoutubeIcon />
+                  </a>
+                </div>
+                <div className='divider' />
+                <div className={styles.links}>
+                  <a href='mailto: feedback@activ8it.ng'>
+                    <MailIcon /> <span>ago@ifuel.com</span>
+                  </a>
+                  <a href='tel: 0803453423'>
+                    <PhoneIcon /> <span>080-345-3423</span>
+                  </a>
+                  <a href='/'>
+                    <LocationIcon />{" "}
+                    <span>20 Marina, Lagos Island, Lagos.</span>
+                  </a>
+                </div>
+              </Accordion.Content>
+            </Accordion.Item>
+
+            <Accordion.Item value='report' className={styles.sendReport}>
+              {!matches && (
+                <Accordion.Trigger className={styles.TriggerHeader}>
+                  Send a Report
+                  <span>
+                    <ArrowDown style={{ margin: "auto" }} />
+                  </span>
+                </Accordion.Trigger>
+              )}
+              <Accordion.Content>
+                <h4>Send a Report</h4>
+                <div className={styles.reportBox}>
+                  <div className={styles.inputArea}>
+                    <h3>Share your complaints / Reports</h3>
+                    <input placeholder='Title' />
+
+                    <textarea placeholder='Report' rows={7} />
+                    <Button text='Submit Report' variant='primary' />
+                  </div>
+                  {matches && (
+                    <img alt='vector' src={image} className={styles.image} />
+                  )}
+                </div>
+              </Accordion.Content>
+            </Accordion.Item>
+          </>
+        </Accordion.Root>
       </div>
     </Layout>
   );

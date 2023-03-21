@@ -11,6 +11,12 @@
   gap: 60px;
 }
 
+.mainPage h4 {
+  font-weight: 400;
+  font-size: 25px;
+  line-height: 25px;
+}
+
 .smallMenu {
   display: block;
   background: #fdfffd;
@@ -29,7 +35,7 @@
 }
 
 .mainPage h3 {
-  font-size: 28px;
+  font-size: 25px;
   font-weight: 400;
 }
 
@@ -101,6 +107,27 @@
   padding: 12px 22px;
   justify-content: space-between;
   width: 100%;
+}
+
+.TriggerHeader {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 10px;
+  border-radius: 0;
+  padding: 20px 10px;
+  font-weight: 400;
+  font-size: 26px;
+  line-height: 26px;
+}
+
+.TriggerHeader span {
+  display: none;
+}
+
+.TriggerHeader:disabled {
+  color: #000000e1;
+  opacity: 1;
 }
 
 .accordionTrigger[data-state="open"] {
@@ -215,7 +242,7 @@
   }
   .mobileNav h3 {
     margin: auto;
-    font-weight: 500;
+    font-weight: 600;
     font-size: 21px;
     line-height: 21px;
   }
@@ -230,5 +257,29 @@
     font-size: 18px;
     line-height: 18px;
     text-decoration-line: underline;
+  }
+  .mainPage h3 {
+    font-size: 20px;
+    font-weight: 400;
+  }
+  .TriggerHeader {
+    border-bottom: 0.5px solid #00000025;
+    width: 100%;
+    font-size: 18px;
+    line-height: 18px;
+  }
+  .TriggerHeader span {
+    display: block;
+  }
+
+  .mainPage {
+    gap: 10px;
+  }
+
+  .mainPage h4 {
+    font-weight: 500;
+    font-size: 17px;
+    line-height: 17px;
+    padding: 15px 20px;
   }
 }
