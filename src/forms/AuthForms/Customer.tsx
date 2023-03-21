@@ -129,6 +129,7 @@ export default function LoginForm() {
         label='EMAIL ADDRESS'
         placeholder='email@host.co..'
         inputType='email'
+        mode='light'
         value={email}
         onChange={(e) => setEmail(e.target.value)}
       />
@@ -137,6 +138,7 @@ export default function LoginForm() {
         label='PASSWORD'
         placeholder='Enter Password'
         value={password}
+        mode='light'
         onChange={(e) => setPassword(e.target.value)}
         inputType={passwordVisible ? "text" : "password"}>
         <i className={styles.btnVisibility} onClick={togglePasswordVisiblity}>

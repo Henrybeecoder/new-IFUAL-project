@@ -83,11 +83,21 @@ const SupportPage = () => {
           <div className={styles.contactSection}>
             <h3>Contact iFuel</h3>
             <div className={styles.socialsFlex}>
-              <FacebookIcon />
-              <TwitterIcon />
-              <LinkedInIcon />
-              <InstagramIcon />
-              <YoutubeIcon />
+              <a href='/facebook.com'>
+                <FacebookIcon />
+              </a>
+              <a href='/twitter.com'>
+                <TwitterIcon />
+              </a>
+              <a href='/linkedin.com'>
+                <LinkedInIcon />
+              </a>
+              <a href='/instagram.com'>
+                <InstagramIcon />
+              </a>
+              <a href='/youtube.com'>
+                <YoutubeIcon />
+              </a>
             </div>
             <div className='divider' />
             <div className={styles.links}>

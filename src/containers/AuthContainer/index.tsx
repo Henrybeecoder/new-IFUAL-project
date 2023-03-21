@@ -1,9 +1,6 @@
 import React, { ReactNode } from "react";
 import PrimaryContainer from "../PrimaryContainer";
 import styles from "./style.module.css";
-import CustomerAuthForm from "../../forms/AuthForms/Customer";
-import { useSearchParams } from "react-router-dom";
-import { RenderPageProps } from "../../t/shared";
 import emoji from "../../assets/svg/emoji.svg";
 
 interface AuthContainerProps {

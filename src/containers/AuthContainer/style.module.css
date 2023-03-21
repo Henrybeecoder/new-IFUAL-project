@@ -1,6 +1,7 @@
 .flexContainer {
   display: flex;
-  margin: 40px 0 0 0;
+  margin: 35px 0 0 0;
+  height: 100%;
 }
 
 .flexContainer h1 {
@@ -8,10 +9,11 @@
   margin: 10px 0;
   font-size: 7rem;
   line-height: 100px;
+  text-align: start;
 }
 
 .textContainer {
-  margin: 70px 50px 0 0;
+  margin: 60px 50px 0 0;
 }
 
 .subText {
@@ -42,8 +44,8 @@
 
 .emoji {
   position: relative;
-  bottom: 17%;
-  right: 10%;
+  bottom: 20%;
+  right: 20%;
 }
 
 @media screen and (max-width: 800px) {

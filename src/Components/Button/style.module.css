@@ -15,12 +15,14 @@ button:disabled {
 }
 
 .primary {
-  background: #36b44a;
+  background: #36b54b;
   color: #ffffff;
   border: none;
   cursor: pointer;
 }
-
+.primary:hover {
+  background: #2c8d3c;
+}
 .outline,
 .outlinePrimary {
   color: #344437;

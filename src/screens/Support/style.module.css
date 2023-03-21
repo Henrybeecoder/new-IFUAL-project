@@ -18,6 +18,9 @@
   border-radius: 10px;
   height: fit-content;
   width: 17%;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 18px;
 }
 
 .smallMenu button {
@@ -53,6 +56,14 @@
   flex-direction: column;
   gap: 30px;
   width: 100%;
+}
+
+.inputArea h3 {
+  font-family: "Poppins";
+  font-style: normal;
+  font-weight: 500;
+  font-size: 22px;
+  line-height: 22px;
 }
 
 .reportBox input,
@@ -120,7 +131,7 @@
 
 .flexText h3 {
   margin: auto 0;
-  font-weight: 500;
+  font-weight: 600;
   font-size: 16px;
 }
 .flexText p {
@@ -131,13 +142,36 @@
 .accordionIndicator {
   display: flex;
   gap: 10px;
+  align-items: center;
+  color: #34443799;
 }
-
+.accordionIndicator:hover {
+  opacity: 0.7;
+}
+.accordionIndicator span {
+  font-style: normal;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 14px;
+}
+.accordionIndicator svg {
+  box-sizing: border-box;
+  width: 13px;
+}
 .socialsFlex {
   display: flex;
   align-items: center;
   padding: 15px;
   gap: 30px;
+}
+.socialsFlex a:hover {
+  opacity: 0.7;
+}
+.socialsFlex svg {
+  width: 27px;
+  outline: none;
+  border: none;
+  stroke: none;
 }
 
 .contactSection a {
@@ -145,12 +179,26 @@
   gap: 10px;
   color: #000000e2;
 }
-
+.contactSection h3 {
+  font-weight: 400;
+  font-size: 28px;
+  line-height: 28px;
+}
 .links {
   display: flex;
   flex-direction: column;
   gap: 8px;
   margin-top: 20px;
+}
+
+.links a:hover {
+  opacity: 0.7;
+  color: #000000ed;
+}
+
+.links svg {
+  stroke: none;
+  width: 22px;
 }
 
 @media screen and (max-width: 800px) {
