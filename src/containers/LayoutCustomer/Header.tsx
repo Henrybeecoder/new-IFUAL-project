@@ -243,7 +243,7 @@ const ProfileModal = ({
               <button onClick={() => navigate("/customer/profile")}>
                 View Profile
               </button>
-              <button>View Orders</button>
+              <button onClick={() => navigate("/orders")}>View Orders</button>
               <button>Track Order</button>
               <button>Support</button>
             </div>
