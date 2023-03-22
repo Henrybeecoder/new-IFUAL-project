@@ -26,10 +26,9 @@ textarea::placeholder {
 }
 
 .formHolder label {
-  font-size: 0.7rem;
-  margin: 0 0 10px 0;
+  font-size: 12px;
+  margin: 0 0 7px 0;
   text-align: left;
-
 }
 
 .formHolder {

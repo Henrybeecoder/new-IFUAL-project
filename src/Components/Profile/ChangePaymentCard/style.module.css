@@ -1,0 +1,34 @@
+.container {
+  width: 70%;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+.container h2 {
+  font-weight: 600;
+  font-size: 24px;
+}
+.cardDisplayHolder {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: #f2f6f2;
+  border-radius: 4px;
+  padding: 5px 20px;
+}
+
+.cardDisplayHolder p {
+  margin: 0;
+  font-weight: 400;
+  font-size: 18px;
+}
+
+.logoHolder {
+  display: flex;
+  gap: 20px;
+}
+
+.inputFlexes {
+  display: flex;
+  gap: 20px;
+}

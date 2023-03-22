@@ -404,7 +404,9 @@ export const CustomerProfile = ({
             />
           )}
 
-          {changePaymentCard && <ChangePaymentCard />}
+          {changePaymentCard && (
+            <ChangePaymentCard backToProfile={changeMainAccountOnClick} />
+          )}
         </div>
       </div>
     </>
