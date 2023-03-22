@@ -85,7 +85,17 @@ const Header = ({ user }: { user: User }) => {
           <CartSvg width={52} />
         </button>
 
-        <ProfileModal user={user}>{getInitials(user)}</ProfileModal>
+        <ProfileModal user={user}>
+          {user.profileImage ? (
+            <img
+              alt='profileimage'
+              src={`data:image/png;base64,${user.profileImage}`}
+              className={styles.avatarImage}
+            />
+          ) : (
+            <> {getInitials(user)}</>
+          )}
+        </ProfileModal>
       </div>
     </div>
   );
@@ -214,7 +224,7 @@ const ProfileModal = ({
   user,
   children,
 }: {
-  user?: Partial<User>;
+  user: Partial<User>;
   children: ReactNode;
 }) => {
   const navigate = useNavigate();
@@ -234,7 +244,16 @@ const ProfileModal = ({
           <Trigger className={styles.imageHolder}>{children}</Trigger>
           <Content className={styles.modalContainer}>
             <div className={styles.profileContainer}>
-              <div className={styles.imageHolder}>{getInitials(user)}</div>
+              <div className={styles.imageHolder}>
+                {user.profileImage ? (
+                  <img
+                    alt='profileimage'
+                    src={`data:image/png;base64,${user.profileImage}`}
+                  />
+                ) : (
+                  <>{getInitials(user)}</>
+                )}
+              </div>
               {/* <img src={user.profileImage} alt="" /> */}
 
               <div className={styles.profileText}>
