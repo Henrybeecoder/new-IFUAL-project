@@ -47,29 +47,38 @@ const StyledTableCell = styled(TableCell)(({ theme }) => ({
 }));
 
 const options = [
-  { value: "Newest to oldest", code: 0 },
-  { value: "Oldest to Newest", code: 1 },
+  { value: "Newest to oldest", code: 100 },
+  { value: "Oldest to Newest", code: 101 },
   { value: "Completed", code: 2 },
-  { value: "In Progress", code: 3 },
-  { value: "Cancelled", code: 4 },
+  { value: "In Progress", code: 0 },
+  { value: "Cancelled", code: 5 },
 ];
 
 const Orders = () => {
   const matches = useMediaQuery("(min-width: 800px)");
 
-  const [sort, setSort] = useState(0);
+  const [sort, setSort] = useState(100);
   const { data, loading } = useData("Order/OrderbyCustomer");
   const orderData: Order[] | null = data || [];
   const filterOrders = () => {
     switch (sort) {
-      case 0:
+      case 100:
         return orderData.sort(
           (a, b) => getDateInMs(a.dateCreated) - getDateInMs(b.dateCreated)
         );
-      case 1:
+      case 101:
         return orderData.sort(
           (a, b) => getDateInMs(b.dateCreated) - getDateInMs(a.dateCreated)
         );
+      case 0:
+      case 4:
+        return orderData.filter(
+          (order) => order.orderStatus === 0 || order.orderStatus === 4
+        );
+      case 2:
+        return orderData.filter((order) => order.orderStatus === 2);
+      case 5:
+        return orderData.filter((order) => order.orderStatus === 5);
       default:
         return [];
     }
@@ -156,7 +165,9 @@ const Orders = () => {
                             }>{`N${row.unitPrice}.00`}</h3>
                         </StyledTableCell>
                         <StyledTableCell align='center'>
-                          <h3 className={"TablesubText"}>
+                          <h3
+                            className={styles.progressH}
+                            style={codeToStatus(row.orderStatus).style}>
                             {codeToStatus(row.orderStatus).text}
                           </h3>
                         </StyledTableCell>
@@ -196,7 +207,9 @@ const Orders = () => {
                         </h3>
                       </StyledTableCell>
                       <StyledTableCell align='center'>
-                        <h3 className={"TablesubText"}>
+                        <h3
+                          className={styles.progressH}
+                          style={codeToStatus(row.orderStatus).style}>
                           {codeToStatus(row.orderStatus).text}
                         </h3>
                       </StyledTableCell>

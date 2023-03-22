@@ -54,8 +54,24 @@ export const codeToStatus: (code: StatusCode) => {
   text: string;
   style: CSSProperties;
 } = (code) =>
-  code === 0
-    ? { text: "In Progress", style: { backgroundColor: "#3444374e" } }
-    : { text: "", style: {} };
+  code === 0 || code === 4
+    ? {
+        text: "In Progress",
+        style: { backgroundColor: "#E2E5E3", color: "#344437" },
+      }
+    : code === 2
+    ? {
+        text: "Completed",
+        style: { backgroundColor: "#F3FFF3", color: "#36B44A" },
+      }
+    : code === 5
+    ? {
+        text: "Cancelled",
+        style: { backgroundColor: "#FCDEE4", color: "#CD2B65" },
+      }
+    : {
+        text: "In Progress",
+        style: { backgroundColor: "#E2E5E3", color: "#344437" },
+      };
 
 export const getDateInMs = (date: Date | string) => new Date(date).getTime();
