@@ -92,6 +92,11 @@
 .companyLogo {
   display: flex;
   align-items: center;
+  margin: 0;
+}
+
+.companyLogo h3 {
+  margin: 0;
 }
 
 .companyLogo img {
@@ -260,24 +265,23 @@
 
 .filterTag {
   display: flex;
-  gap: 4px;
   align-items: center;
-  background-color: #36b44b5d;
-  width: fit-content;
+  background-color: rgba(54, 180, 74, 0.4);
   border-radius: 15px;
   color: #344437;
-  padding: 4px 12px;
+  padding: 6px 12px 4px 12px;
   gap: 7px;
 }
 
 .filterTag p {
-  margin: auto;
+  margin: 0;
+  font-size: 14px;
 }
 
-.filterTag button {
+.filterTag button,
+filterTag svg {
   padding: 0;
-  margin: auto;
-  position: static;
+  margin: 0;
 }
 
 @media screen and (max-width: 800px) {

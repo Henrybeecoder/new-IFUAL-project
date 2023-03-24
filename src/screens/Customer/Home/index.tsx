@@ -11,129 +11,42 @@ import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import companyLogo from "../../../assets/image/companyLogo.png";
 import { useNavigate, useSearchParams } from "react-router-dom";
-import { Reducer, useCallback, useEffect, useReducer, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import Button from "../../../Components/Button";
 import Modal from "../../../Components/Modals";
-import PageHeader, {
-  FilterModal,
-  PaginationOf,
-} from "../../../Components/PageHeader";
+import PageHeader, { PaginationOf } from "../../../Components/PageHeader";
 import useMediaQuery from "../../../Custom hooks/useMediaQuery";
 import { ReactComponent as ArrowRight } from "../../../assets/svg/dark-arrow-right.svg";
 import { limitText } from "../../../Custom hooks/helpers";
 import Loading from "../../../Components/Loading";
 import { customerBaseUrl } from "../../../utils/baseUrl";
-import { SelectTemp } from "../../../Components/InputTemp";
 import { ToastContainer, toast } from "react-toastify";
 import axios from "axios";
 import EmptyStates from "../../../containers/EmptyStates";
-import { priceRangeData, productTypeData, supplyTimeData } from "./data";
 import { getUser } from "../../../../src/Custom hooks/Hooks";
-
-const initialData: InitialData = {
-  data: { products: [], states: [], lgas: [] },
-  values: {
-    productType: {},
-    state: { value: undefined },
-    lga: {},
-    priceRange: {},
-    supplyTime: {},
-  },
-};
-
-interface InitialData {
-  data: { products: any[]; states: any[]; lgas: any[] };
-  values: {
-    productType: { value?: any };
-    state: { value?: any };
-    lga: { value?: any };
-    priceRange: { value?: any };
-    supplyTime: { value?: any };
-  };
-}
-
-type Actions =
-  | {
-      type: "setData";
-      payload: { products: any[]; states: any[]; lgas: any[] };
-    }
-  | {
-      type:
-        | "setProductTypeV"
-        | "setStateV"
-        | "setLgaV"
-        | "setPriceRangeV"
-        | "setSupplyTimeV";
-      payload: {};
-    };
-
-const reducer: Reducer<InitialData, Actions> = (state, actions) => {
-  switch (actions.type) {
-    case "setData":
-      return { ...state, data: actions.payload };
-    case "setLgaV":
-      return { ...state, values: { ...state.values, lga: actions.payload } };
-    case "setProductTypeV":
-      return {
-        ...state,
-        values: { ...state.values, productType: actions.payload },
-      };
-    case "setStateV":
-      return { ...state, values: { ...state.values, state: actions.payload } };
-    case "setPriceRangeV":
-      return {
-        ...state,
-        values: { ...state.values, priceRange: actions.payload },
-      };
-    case "setSupplyTimeV":
-      return {
-        ...state,
-        values: { ...state.values, supplyTime: actions.payload },
-      };
-    default:
-      return state;
-  }
-};
+import FilterComponent from "./FilterComponent";
+import { ProductFilterValues } from "../../../../src/t/shared";
+import { FullProduct } from "../../../../src/t/payloads";
+import { ReactComponent as FilterTagX } from "../../../assets/svg/filterTagX.svg";
 
 const Home = () => {
   const navigate = useNavigate();
   const matches = useMediaQuery("(min-width: 800px)");
   const user = getUser();
   const [searchParams] = useSearchParams();
+  const [filter, setFilter] = useState<ProductFilterValues>({});
+
   const orderStatus = searchParams.get("order");
   const [loading, setLoading] = useState(false);
 
   const [confmDelivery, setConfmDelivery] = useState(false);
   const [reviewModal, setReviewModal] = useState(false);
 
-  const [{ data, values }, dispatch] = useReducer(reducer, initialData);
-
-  const handleLgaGlobalChange = (event: any) => {
-    if (values.state?.value?.length > 1) {
-      dispatch({ type: "setLgaV", payload: event });
-    } else {
-      toast.error("Please Select a State First");
-    }
-  };
-  // const handleGlobalChange = (actions: Actions) => {
-  //   dispatch(actions);
-  // };
-
-  const handleStateGlobalChange = (event: any) => {
-    dispatch({ type: "setStateV", payload: event });
-  };
-
-  const handleProductTypeGlobalChange = (event: any) => {
-    dispatch({ type: "setProductTypeV", payload: event });
-  };
-
-  const handlePriceRangeGlobalChange = (event: any) => {
-    dispatch({ type: "setPriceRangeV", payload: event });
-  };
-
-  const handleSupplyTimeGlobalChange = (event: any) => {
-    dispatch({ type: "setSupplyTimeV", payload: event });
-  };
+  const [data, setData] = useState<{
+    products?: FullProduct[];
+    states: any[];
+    lgas: any[];
+  }>({ products: [], states: [], lgas: [] });
 
   useEffect(() => {
     if (!orderStatus) return;
@@ -141,29 +54,23 @@ const Home = () => {
     setReviewModal(false);
   }, [orderStatus]);
 
-  const [page, setPage] = useState("home");
-
-  const [selected, setSelected] = useState<string | null>(null);
-  const selectedProduct = data.products.find(
-    (product) => product.id === selected
-  );
-
   const confirmDelivery = () => {
     setConfmDelivery(false);
     setReviewModal(true);
   };
 
-  const buyProduct = (productId: string) => {
-    setSelected(productId);
-    setPage("order-page");
-  };
-
-  const backHome = () => {
-    setPage("home");
-  };
-
   const review = () => {
     setReviewModal(false);
+  };
+
+  //filter function
+  const filterProducts = () => {
+    if (filter.productType) {
+      return data.products.filter(
+        (product) => filter.productType.value === product.category
+      );
+    }
+    return data.products;
   };
 
   useEffect(() => {
@@ -185,13 +92,10 @@ const Home = () => {
         const { data: lgas } = await axios.get(
           `${customerBaseUrl}Account/GetLocalGovt/${userState?.value}`
         );
-        dispatch({
-          type: "setData",
-          payload: {
-            products: products.data,
-            lgas: lgas.data,
-            states: states.data,
-          },
+        setData({
+          products: products.data,
+          lgas: lgas.data,
+          states: states.data,
         });
         setLoading(false);
       } catch (err) {
@@ -248,20 +152,6 @@ const Home = () => {
     }
   }, [getRemainingTime, user, logout, state]);
 
-  const [tags, setTags] = useState([{ value: "Surulere" }]);
-
-  const addTag = (value: string) =>
-    setTags((state) => [
-      ...state.filter((tag) => tag.value !== value),
-      { value },
-    ]);
-  const removeTag = (value: string) =>
-    setTags((state) => state.filter((tag) => tag.value !== value));
-
-  const applyFilter = () => {
-    addTag(values.priceRange.value);
-  };
-
   const buyNow = (productId?: string) => {
     if (user) {
       navigate(`/product/${productId}`);
@@ -272,12 +162,6 @@ const Home = () => {
 
   return (
     <>
-      {/* <h1>React Idle Timer</h1>
-      <h2>useIdleTimer</h2>
-      <br />
-      <p>Current State: {state}</p>
-      <p>Action Events: {count}</p>
-      <p>{remaining} seconds remaining</p> */}
       {loading && <Loading />}
       <ToastContainer
         position='bottom-right'
@@ -342,97 +226,69 @@ const Home = () => {
         <>
           <PageHeader pageTitle='Available Products'>
             {matches && <PaginationOf current={[1, 20]} total={45} />}
-            <FilterModal table>
-              <>
-                <div className={styles.singleFilter}>
-                  <p>State:</p>
-                  <SelectTemp
-                    mode='dark'
-                    options={data.states.map((state) => ({
-                      label: state.text,
-                      value: state.value,
-                    }))}
-                    value={values.state.value}
-                    onValueChange={handleStateGlobalChange}
-                    className={styles.singleFilterSelect}
-                  />
-                </div>
-                <div className={styles.singleFilter}>
-                  <p>LGA:</p>
-                  <SelectTemp
-                    mode='dark'
-                    options={data.lgas.map((state) => ({
-                      label: state.text,
-                      value: state.value,
-                    }))}
-                    value={values.lga}
-                    onValueChange={handleLgaGlobalChange}
-                    className={styles.singleFilterSelect}
-                  />
-                </div>
-                <div className={styles.singleProductFilter}>
-                  <p>Product Type:</p>
-                  <SelectTemp
-                    mode='dark'
-                    options={productTypeData.map((state) => ({
-                      label: state.name,
-                      value: state.value,
-                    }))}
-                    value={values.productType}
-                    onValueChange={handleProductTypeGlobalChange}
-                    className={styles.singleProductFilterSelect}
-                  />
-                </div>
-                <div className={styles.singleProductFilter}>
-                  <p>Price range:</p>
-                  <SelectTemp
-                    mode='dark'
-                    options={priceRangeData.map((state) => ({
-                      label: state.name,
-                      value: state.value,
-                    }))}
-                    value={values.priceRange}
-                    onValueChange={handlePriceRangeGlobalChange}
-                    className={styles.singleProductFilterSelect}
-                  />
-                </div>
-                <div className={styles.singleProductFilter}>
-                  <p>Supply Time:</p>
-                  <SelectTemp
-                    mode='dark'
-                    options={supplyTimeData.map((state) => ({
-                      label: state.name,
-                      value: state.value,
-                    }))}
-                    value={values.supplyTime}
-                    onValueChange={handleSupplyTimeGlobalChange}
-                    className={styles.singleProductFilterSelect}
-                  />
-                </div>
-                <div
-                  className='divider'
-                  style={{ width: "100%", margin: "15px 0" }}
-                />
-                <div className={"flex-btwn"}>
-                  <Button variant='outline' text='Cancel' width='40%' />
-                  <Button
-                    variant='primary'
-                    text='Search'
-                    width='55%'
-                    onClick={applyFilter}
-                  />
-                </div>
-              </>
-            </FilterModal>
+            <FilterComponent
+              applyFilter={setFilter}
+              lgas={data.lgas}
+              states={data.states}
+            />
           </PageHeader>
 
           <div className={styles.filterTags}>
-            {tags.map((tag) => (
-              <div key={tag.value} className={styles.filterTag}>
-                <p>{tag.value}</p>
-                <button>x</button>
+            {filter.state && (
+              <div className={styles.filterTag}>
+                <p>{filter.state.label}</p>
+                <button
+                  onClick={() =>
+                    setFilter((state) => ({ ...state, state: undefined }))
+                  }>
+                  <FilterTagX />
+                </button>
               </div>
-            ))}
+            )}
+            {filter.lga && (
+              <div className={styles.filterTag}>
+                <p>{filter.lga.label}</p>
+                <button
+                  onClick={() =>
+                    setFilter((state) => ({ ...state, lga: undefined }))
+                  }>
+                  <FilterTagX />
+                </button>
+              </div>
+            )}
+            {filter.productType && (
+              <div className={styles.filterTag}>
+                <p>{filter.productType.label}</p>
+                <button
+                  onClick={() =>
+                    setFilter((state) => ({ ...state, productType: undefined }))
+                  }>
+                  <FilterTagX />
+                </button>
+              </div>
+            )}
+            {filter.priceRange && (
+              <div className={styles.filterTag}>
+                <p>{filter.priceRange.label}</p>
+                <button
+                  onClick={() =>
+                    setFilter((state) => ({ ...state, priceRange: undefined }))
+                  }>
+                  <FilterTagX />
+                </button>
+              </div>
+            )}
+            {filter.supplyTime && (
+              <div className={styles.filterTag}>
+                <p>{filter.supplyTime.label}</p>
+                <button
+                  onClick={() =>
+                    setFilter((state) => ({ ...state, supplyTime: undefined }))
+                  }>
+                  <FilterTagX />
+                </button>
+              </div>
+            )}
           </div>
 
           {data.products.length < 1 ? (
@@ -470,8 +326,8 @@ const Home = () => {
                     </StyledTableRow>
 
                     <>
-                      {data.products.map((row) => (
-                        <StyledTableRow key={row.id}>
+                      {filterProducts()?.map((row) => (
+                        <StyledTableRow key={row.productId}>
                           <StyledTableCell component='th' scope='row'>
                             <div className={styles.companyLogo}>
                               <img alt='company-logo' src={companyLogo} />
@@ -537,8 +393,8 @@ const Home = () => {
                       </StyledTableCell>
                       <StyledTableCell align='right'></StyledTableCell>
                     </StyledTableRow>
-                    {data.products.map((row, index) => (
-                      <StyledTableRow key={row.id}>
+                    {filterProducts()?.map((row, index) => (
+                      <StyledTableRow key={row.productId}>
                         <StyledTableCell
                           align='center'
                           style={{ padding: "15x 3px" }}>

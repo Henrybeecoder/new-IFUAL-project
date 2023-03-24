@@ -8,6 +8,38 @@ export interface Product {
   discount: string;
 }
 
+export interface FullProduct {
+  productId: string;
+  barcode: string;
+  brand: string;
+  category: string;
+  categoryId: string;
+  companyName: string | null;
+  dateCreated: string;
+  dateModified: string;
+  description: string;
+  discountPrice: number;
+  filePath: string | null;
+  fileType: string | null;
+  interval: number;
+  intervalOf: number;
+  lga: string;
+  lgaId: string | null;
+  productCode: string;
+  productName: string;
+  quantity: number;
+  rating: number;
+  shippingWeight: string;
+  state: string;
+  stateId: null;
+  stateList: null;
+  subTotal: number;
+  supply: string;
+  unitPrice: number;
+  vendorId: string;
+  vendorName: string;
+}
+
 //2023-02-16T13:35:12.53343
 
 export interface Order {

@@ -24,3 +24,11 @@ export interface User {
 }
 
 export type State = { value: string; text: string };
+
+export interface ProductFilterValues {
+  productType?: { value?: string; label?: string };
+  state?: { value?: string; label?: string };
+  lga?: { value?: string; label?: string };
+  priceRange?: { value?: string; label?: string };
+  supplyTime?: { value?: string; label?: string };
+}

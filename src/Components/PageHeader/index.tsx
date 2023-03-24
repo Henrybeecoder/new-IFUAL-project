@@ -1,4 +1,4 @@
-import { ReactNode, useState } from "react";
+import { Dispatch, ReactNode, SetStateAction, useState } from "react";
 import { ReactComponent as LeftSvg } from "../../assets/svg/left.svg";
 import { ReactComponent as RightSvg } from "../../assets/svg/right.svg";
 import { ReactComponent as FilterSvg } from "../../assets/navbericon/filter-outline.svg";
@@ -23,6 +23,8 @@ interface FilterModalProps {
   selected?: number;
   table?: boolean;
   currentLabel?: string;
+  open?: boolean;
+  setOpen?: Dispatch<SetStateAction<boolean>>;
 }
 
 export const FilterModal = ({
@@ -32,14 +34,21 @@ export const FilterModal = ({
   table,
   children,
   currentLabel = "Filter",
+  open: filterOpen,
+  setOpen: setFilterOpen,
 }: FilterModalProps) => {
   const active = (code?: number) => !!(selected === code);
 
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState<boolean | undefined>();
 
   return (
     <div>
-      <Root open={open} onOpenChange={setOpen}>
+      <Root
+        open={filterOpen ?? open}
+        onOpenChange={(state) => {
+          setOpen(state);
+          setOpen && setFilterOpen(state);
+        }}>
         <Trigger className={"flex-btwn gap-10"}>
           <h3>{currentLabel}</h3>
           <FilterSvg />

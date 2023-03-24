@@ -61,8 +61,6 @@ const Checkout = () => {
       });
   }, [user?.token, params.id]);
 
-  console.log(data, params.id);
-
   return (
     <>
       {loading && <Loading />}
