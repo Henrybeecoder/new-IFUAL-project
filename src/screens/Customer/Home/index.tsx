@@ -28,6 +28,7 @@ import { ToastContainer, toast } from "react-toastify";
 import axios from "axios";
 import EmptyStates from "../../../containers/EmptyStates";
 import { priceRangeData, productTypeData, supplyTimeData } from "./data";
+import { getUser } from "../../../../src/Custom hooks/Hooks";
 
 const initialData: InitialData = {
   data: { products: [], states: [], lgas: [] },
@@ -97,8 +98,7 @@ const reducer: Reducer<InitialData, Actions> = (state, actions) => {
 const Home = () => {
   const navigate = useNavigate();
   const matches = useMediaQuery("(min-width: 800px)");
-  const str = localStorage.getItem("user");
-  const user = str && JSON.parse(str);
+  const user = getUser();
   const [searchParams] = useSearchParams();
   const orderStatus = searchParams.get("order");
   const [loading, setLoading] = useState(false);
@@ -179,17 +179,27 @@ const Home = () => {
         const { data: states } = await axios.get(
           `${customerBaseUrl}Account/GetState`
         );
-        const { data: lgas } = await axios.get(
-          `${customerBaseUrl}Account/GetLocalGovt/${values.state.value}`
+        const userState = states.data?.find(
+          (state) => state.text === user.state
         );
-        dispatch({ type: "setData", payload: { products, lgas, states } });
+        const { data: lgas } = await axios.get(
+          `${customerBaseUrl}Account/GetLocalGovt/${userState?.value}`
+        );
+        dispatch({
+          type: "setData",
+          payload: {
+            products: products.data,
+            lgas: lgas.data,
+            states: states.data,
+          },
+        });
         setLoading(false);
       } catch (err) {
         console.log(err);
         setLoading(false);
       }
     })();
-  }, [user?.token, values.state?.value]);
+  }, [user.token, user.state]);
 
   const [state, setState] = useState<string>("Active");
   const [count, setCount] = useState<number>(0);
@@ -254,7 +264,7 @@ const Home = () => {
 
   const buyNow = (productId?: string) => {
     if (user) {
-      navigate(productId);
+      navigate(`/product/${productId}`);
     } else {
       navigate("/login");
     }
@@ -550,7 +560,7 @@ const Home = () => {
                           <ArrowRight
                             style={{ cursor: "pointer" }}
                             onClick={() => {
-                              navigate(row.productId);
+                              buyNow(row.productId);
                             }}
                           />
                         </StyledTableCell>

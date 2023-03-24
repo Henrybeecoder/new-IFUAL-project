@@ -12,16 +12,13 @@ import checkSuccess from "../../assets/svg/modalCheck.svg";
 import Loading from "../../Components/Loading";
 import { customerBaseUrl } from "../../utils/baseUrl";
 import axios from "axios";
+import { getUser } from "../../../src/Custom hooks/Hooks";
 
 const Checkout = () => {
   const navigate = useNavigate();
-  const user = JSON.parse(localStorage.getItem("user") || "");
-
   const [activeModal, setActiveModal] = useState<string | null>(null);
 
   const [orderSuccessful, setOrderSuccessful] = useState(false);
-
-  const backHome = () => navigate("/");
 
   const confirm = () => {
     setActiveModal(null);
@@ -40,23 +37,21 @@ const Checkout = () => {
 
   const closeModals = () => setActiveModal(null);
 
-  const str = localStorage.getItem("user");
-  const newUser = str && JSON.parse(str);
+  const user = getUser();
   const [loading, setLoading] = useState(false);
-  const [data, setData] = useState([]);
+  const [data, setData] = useState();
 
   let params = useParams();
 
-  console.log(params);
-
   useEffect(() => {
+    if (!params.id) return;
     setLoading(true);
     axios
-      .get(`${customerBaseUrl}Product/Product`, {
-        headers: { Authorization: `${newUser?.token}` },
+      .get(`${customerBaseUrl}Product/Product/${params.id}`, {
+        headers: { Authorization: `${user?.token}` },
       })
       .then((response) => {
-        console.log(response, "the products");
+        console.log(response);
         setData(response.data.data);
         setLoading(false);
       })
@@ -64,20 +59,9 @@ const Checkout = () => {
         console.log(err);
         setLoading(false);
       });
-  }, [newUser?.token]);
+  }, [user?.token, params.id]);
 
-  const selectedProduct = data.find(
-    (product) => product.productId === params.id
-  );
-
-  console.log(selectedProduct, "This is the selected product");
-
-  const checkout = () => {
-    navigate({
-      pathname: `/checkout/${selectedProduct.productId}`,
-      //   search: `checkout=${selectedProduct.id}`,
-    });
-  };
+  console.log(data, params.id);
 
   return (
     <>
@@ -85,33 +69,32 @@ const Checkout = () => {
       <LayoutCustomer>
         <Modal openModal={modalState.pWSA} closeModal={closeModals}>
           <h3>Pay with saved account</h3>
-          <h2>{`${newUser.bankAccountNumber} - ${newUser?.name}`}</h2>
+          <h2>{`${user.bankAccountNumber} - ${user?.name}`}</h2>
           <p>Request for a one-time passcode (OTP)</p>
           <Button
-            variant="primary"
-            text="Request OTP"
+            variant='primary'
+            text='Request OTP'
             width={"260px"}
             onClick={() => setActiveModal("otp")}
           />
         </Modal>
         <Modal
-          variant="unstyled"
+          variant='unstyled'
           style={{ top: "30px" }}
           openModal={modalState.otp}
-          closeModal={closeModals}
-        >
+          closeModal={closeModals}>
           <div className={styles.requestOtp}>
             <h2>Pay with saved account</h2>
-            <h3>{`${newUser.bankAccountNumber} - ${newUser?.name}`}</h3>
+            <h3>{`${user.bankAccountNumber} - ${user?.name}`}</h3>
             <p>Enter the OTP sent to your email or Phone Number</p>
-            <PinInput autoSelect={true} length={6} initialValue="" />
+            <PinInput autoSelect={true} length={6} initialValue='' />
             <div className={styles.btnOtpModal}>
               <Button
-                variant="primary"
-                text="Submit"
+                variant='primary'
+                text='Submit'
                 onClick={() => setActiveModal("confm")}
               />
-              <Button text="Request OTP again" />
+              <Button text='Request OTP again' />
             </div>
           </div>
         </Modal>
@@ -122,10 +105,10 @@ const Checkout = () => {
           </p>
           <p>Kindly click to confirm</p>
           <div className={"flex-btwn"}>
-            <Button text="Cancel" width={"40%"} onClick={confirm} />
+            <Button text='Cancel' width={"40%"} onClick={confirm} />
             <Button
-              variant="primary"
-              text="Confirm"
+              variant='primary'
+              text='Confirm'
               width={"55%"}
               onClick={confirm}
             />
@@ -134,12 +117,12 @@ const Checkout = () => {
         <Modal openModal={orderSuccessful}>
           <div className={styles.orderSuccessful}>
             <h2>Order Successful</h2>
-            <img src={checkSuccess} />
+            <img alt='success-checkout' src={checkSuccess} />
             <p>Redirecting to home page...</p>
           </div>
         </Modal>
 
-        <button className={styles.btnBack} onClick={backHome}>
+        <button className={styles.btnBack} onClick={() => navigate("/")}>
           <SvgArrowback />
           <h2>Back to Home</h2>
         </button>
@@ -150,15 +133,15 @@ const Checkout = () => {
             <SvgEdit />
           </button>
         </div>
-        <OrderDetailsForm selectedProduct={selectedProduct} />
+        <OrderDetailsForm selectedProduct={data} />
 
         <div className={styles.btns}>
           <Button
-            variant="primary"
-            text="Pay with Saved Account"
+            variant='primary'
+            text='Pay with Saved Account'
             onClick={() => setActiveModal("pWSA")}
           />
-          <Button text="Pay with Other Account" />
+          <Button text='Pay with Other Account' />
         </div>
       </LayoutCustomer>
     </>

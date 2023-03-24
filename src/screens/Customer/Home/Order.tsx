@@ -10,16 +10,14 @@ import Button from "../../../Components/Button";
 import Loading from "../../../Components/Loading";
 import { customerBaseUrl } from "../../../utils/baseUrl";
 import axios from "axios";
+import { getUser } from "../../../../src/Custom hooks/Hooks";
 
 const Order = () => {
-  const str = localStorage.getItem("user");
-  const user = str && JSON.parse(str);
+  const user = getUser();
   const [loading, setLoading] = useState(false);
   const [data, setData] = useState([]);
   const navigate = useNavigate();
   let params = useParams();
-
-  console.log(params);
 
   useEffect(() => {
     setLoading(true);
@@ -38,11 +36,8 @@ const Order = () => {
       });
   }, [user?.token]);
 
-  const selectedProduct = data.find(
-    (product) => product.productId === params.id
-  );
-
-  console.log(selectedProduct, "This is the selected product");
+  const selectedProduct =
+    data.find((product) => product.productId === params.id) || {};
 
   const checkout = () => {
     navigate({
@@ -59,12 +54,12 @@ const Order = () => {
           <h2>Back to Home</h2>
         </button>
         <div className={styles.header}>
-          <h2>{`${selectedProduct?.category} Order`}</h2>
+          <h2>{`${selectedProduct?.category || "No"} Order`}</h2>
         </div>
         <div className={""}>
           <div className={styles.productMetaContainer}>
             <div className={styles.productMeta}>
-              <img src={companyLogo} />
+              <img alt='logo' src={companyLogo} />
               <h3>{selectedProduct?.productName}</h3>
               <div className={styles.flexTight}>
                 <p className={styles.margin}>{selectedProduct?.rating}</p>{" "}
@@ -97,11 +92,11 @@ const Order = () => {
           <OrderDetailsForm selectedProduct={selectedProduct} />
           <div className={styles.footer}>
             <Button
-              variant="primary"
-              text="Proceed to Payment"
+              variant='primary'
+              text='Proceed to Payment'
               onClick={checkout}
             />
-            <Button text="Add to Cart" />
+            <Button text='Add to Cart' />
           </div>
         </div>
       </Layout>

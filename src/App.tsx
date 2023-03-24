@@ -61,7 +61,7 @@ import ComplaintsLogSuperAdmin from "./screens/SuperAdmin/ComplaintsLog";
 import CustomMessageSuperAdmin from "./screens/SuperAdmin/ComplaintsLog/CustomMessage";
 import ActivityLogSuperAdmin from "./screens/SuperAdmin/ActivityLog";
 import LoginSuperAdmin from "./screens/SuperAdmin/Login";
-import CustomerInfo from "./screens/SuperAdmin/ManageUsers/CustomerInfo";
+// import CustomerInfo from "./screens/SuperAdmin/ManageUsers/CustomerInfo";
 import CannotLoginSuperAdmin from "./screens/SuperAdmin/Login/CannotLogin";
 import NotificationSuperAdmin from "./screens/SuperAdmin/Notification";
 import Order from "./screens/Customer/Home/Order";
@@ -90,7 +90,7 @@ function App() {
         <Route path='/kyc-notification' element={<KycNotification />} />
         {/* //customer */}
         <Route path='/' element={<Home />} />
-        <Route path=':id' element={<Order />} />
+        <Route path='/product/:id' element={<Order />} />
         <Route path='customer'>
           <Route path='profile' element={<Profile />} />
         </Route>
