@@ -31,7 +31,7 @@ interface CustomerProfileProps {
   setChangePassword?: any;
   backHome?: any;
   edit?: boolean;
-  setEditFalse: () => void;
+  setEditFalse?: () => void;
 }
 
 interface VendorProfileProps {
@@ -107,7 +107,7 @@ export const CustomerProfile = ({
           (state) => state.text === user.state
         );
         const { data: lgasData } = await axios.get<{ data: State[] }>(
-          `${customerBaseUrl}Account/GetLocalGovt/${userStateId.value}`
+          `${customerBaseUrl}Account/GetLocalGovt/${userStateId?.value}`
         );
         setData({ lgas: lgasData.data, states: data.data });
         setLoading(false);
@@ -191,6 +191,7 @@ export const CustomerProfile = ({
   };
 
   const changeImage = async () => {
+    if (!profileImagePreview?.file) return;
     let form = new FormData();
     form.append("UploadImage", profileImagePreview?.file);
     setLoading(true);
@@ -355,7 +356,10 @@ export const CustomerProfile = ({
                       }))}
                       value={values.lga}
                       onValueChange={(e: any) => {
-                        if (values.state?.value?.length > 1) {
+                        if (
+                          values.state?.value &&
+                          values.state?.value?.length > 1
+                        ) {
                           setFieldValue("lga", e);
                         } else {
                           toast.error("Please Select a State First");

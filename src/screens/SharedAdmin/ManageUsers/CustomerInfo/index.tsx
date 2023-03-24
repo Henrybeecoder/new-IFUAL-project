@@ -119,7 +119,7 @@ const CustomerInfo = () => {
             </h3>
           )}
         </div>
-        <CustomerProfile profileImg={profile}>
+        <CustomerProfile>
           <>
             {data?.status && data.status === "active" ? (
               <Button

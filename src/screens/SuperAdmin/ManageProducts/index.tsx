@@ -44,12 +44,12 @@ const ManageProducts = () => {
         <Header pageTitle='MANAGE PRODUCTS'>
           <FilterModal
             options={[
-              { value: "diesel" },
-              { value: "kerosene" },
-              { value: "petrol" },
-              { value: "gas" },
+              { value: "diesel", code: 0 },
+              { value: "kerosene", code: 1 },
+              { value: "petrol", code: 2 },
+              { value: "gas", code: 3 },
             ]}
-            selected='diesel'
+            selected={0}
           />
           <Button
             text='Add New'

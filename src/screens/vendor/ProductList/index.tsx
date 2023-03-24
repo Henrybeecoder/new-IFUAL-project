@@ -152,89 +152,86 @@ export default function ProductList() {
           product will be permanently deleted.
         </p>
         <p>Kindly click to confirm</p>
-        <div className="flex-btwn">
-          <Button text="Back" width="55%" />
-          <Button text="Delete" variant="danger" width="40%" />
+        <div className='flex-btwn'>
+          <Button text='Back' width='55%' />
+          <Button text='Delete' variant='danger' width='40%' />
         </div>
       </Modal>
       <>
-        <PageHeader pageTitle="Product List">
+        <PageHeader pageTitle='Product List'>
           {matches && <PaginationOf current={[1, 4]} total={6} />}
           <FilterModal
-            selected="In-stock"
+            selected={0}
             options={[
-              { value: "In-stock" },
-              { value: "Out of Stock" },
-              { value: "Newest to Oldest" },
-              { value: "Oldest to Newest" },
+              { value: "In-stock", code: 0 },
+              { value: "Out of Stock", code: 1 },
+              { value: "Newest to Oldest", code: 2 },
+              { value: "Oldest to Newest", code: 3 },
             ]}
           />
           <Button
             text={matches ? "Add Product" : "Add"}
             width={matches ? "190px" : "80px"}
             height={matches ? "48px" : "30px"}
-            variant="outlinePrimary"
+            variant='outlinePrimary'
             onClick={() => navigate("new")}
           />
         </PageHeader>
 
         <TableContainer
           style={{ marginTop: "35px", borderRadius: "17px" }}
-          component={Paper}
-        >
+          component={Paper}>
           {matches ? (
-            <Table sx={{ minWidth: 700 }} aria-label="customized table">
+            <Table sx={{ minWidth: 700 }} aria-label='customized table'>
               <TableBody>
                 <StyledTableRow>
                   <StyledTableCell>
                     <h2 className={styles.title}>Description</h2>
                   </StyledTableCell>
-                  <StyledTableCell align="center">
+                  <StyledTableCell align='center'>
                     <h2 className={styles.title}>Category</h2>
                   </StyledTableCell>
-                  <StyledTableCell align="center">
+                  <StyledTableCell align='center'>
                     <h2 className={styles.title}>Status</h2>
                   </StyledTableCell>
-                  <StyledTableCell align="center">
+                  <StyledTableCell align='center'>
                     <h2 className={styles.title}>Supply Time</h2>
                   </StyledTableCell>
-                  <StyledTableCell align="center">
+                  <StyledTableCell align='center'>
                     <h2 className={styles.title}>Price/Ltr</h2>
                   </StyledTableCell>
-                  <StyledTableCell align="right"></StyledTableCell>
+                  <StyledTableCell align='right'></StyledTableCell>
                 </StyledTableRow>
                 {rows.map((row) => (
                   <StyledTableRow key={row.name}>
-                    <StyledTableCell component="th" scope="row">
+                    <StyledTableCell component='th' scope='row'>
                       <h3 className={styles.subText}>{row.name}</h3>
                     </StyledTableCell>
-                    <StyledTableCell align="center">
+                    <StyledTableCell align='center'>
                       <h3 className={styles.subText}>{row.calories}</h3>
                     </StyledTableCell>
-                    <StyledTableCell align="center">
+                    <StyledTableCell align='center'>
                       <p
                         className={`${
                           row.fat === "In stock" && styles.delivered
                         } ${row.fat === "Pending" && styles.pending} ${
                           row.fat === "Out of stock" && styles.cancelled
-                        } `}
-                      >
+                        } `}>
                         {row.fat}
                       </p>
                     </StyledTableCell>
-                    <StyledTableCell align="center">
+                    <StyledTableCell align='center'>
                       <h3 className={styles.subText}>{row.carbs}</h3>
                     </StyledTableCell>
-                    <StyledTableCell align="center">
+                    <StyledTableCell align='center'>
                       <h3 className={styles.subText}>{row.protein}</h3>
                     </StyledTableCell>
-                    <StyledTableCell align="right">
+                    <StyledTableCell align='right'>
                       <OptionsModal>
                         <button
                           onClick={() => {
                             navigate(row.id);
-                          }}
-                        >
+                          }}>
                           View
                         </button>
                         <button>Edit</button>
@@ -246,50 +243,46 @@ export default function ProductList() {
               </TableBody>
             </Table>
           ) : (
-            <Table aria-label="customized table">
+            <Table aria-label='customized table'>
               <TableBody>
                 <StyledTableRow>
-                  <StyledTableCell align="center">
+                  <StyledTableCell align='center'>
                     <h2 className={styles.title}>Category</h2>
                   </StyledTableCell>
-                  <StyledTableCell align="center">
+                  <StyledTableCell align='center'>
                     <h2 className={styles.title}>Status</h2>
                   </StyledTableCell>
-                  <StyledTableCell align="center">
+                  <StyledTableCell align='center'>
                     <h2 className={styles.title}>N/Ltr</h2>
                   </StyledTableCell>
-                  <StyledTableCell align="right"></StyledTableCell>
+                  <StyledTableCell align='right'></StyledTableCell>
                 </StyledTableRow>
                 {rows.map((row) => (
                   <StyledTableRow key={row.name}>
                     <StyledTableCell
-                      align="center"
-                      style={{ padding: "15x 3px" }}
-                    >
+                      align='center'
+                      style={{ padding: "15x 3px" }}>
                       <h3 className={styles.subText}>{row.calories}</h3>
                     </StyledTableCell>
                     <StyledTableCell
-                      align="center"
-                      style={{ padding: "10px 3px" }}
-                    >
+                      align='center'
+                      style={{ padding: "10px 3px" }}>
                       <p
                         style={{ padding: "1px 2px" }}
                         className={`${
                           row.fat === "In stock" && styles.delivered
                         } ${row.fat === "Pending" && styles.pending} ${
                           row.fat === "Out of stock" && styles.cancelled
-                        } `}
-                      >
+                        } `}>
                         {limitText(row.fat, 8)}
                       </p>
                     </StyledTableCell>
-                    <StyledTableCell align="center">
+                    <StyledTableCell align='center'>
                       <h3 className={styles.subText}>{row.protein}</h3>
                     </StyledTableCell>
                     <StyledTableCell
-                      align="left"
-                      style={{ padding: "10px 3px" }}
-                    >
+                      align='left'
+                      style={{ padding: "10px 3px" }}>
                       <ArrowRight
                         style={{ cursor: "pointer" }}
                         onClick={() => {

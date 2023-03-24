@@ -140,14 +140,14 @@ export default function OrderStatus() {
         <PaginationOf current={[1, 6]} total={6} />
         <FilterModal
           options={[
-            { value: "delivered" },
-            { value: "pending" },
-            { value: "cancelled" },
-            { value: "newest to oldest" },
-            { value: "oldest to newest" },
+            { value: "delivered", code: 0 },
+            { value: "pending", code: 1 },
+            { value: "cancelled", code: 2 },
+            { value: "newest to oldest", code: 3 },
+            { value: "oldest to newest", code: 4 },
           ]}
           onSelect={setFilter}
-          selected={filter.value}
+          selected={filter.code}
         />
       </PageHeader>
 

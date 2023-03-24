@@ -123,7 +123,7 @@ const VendorInfo = () => {
           </div>
         ) : null}
       </>
-      <VendorProfile profileImg={image}>
+      <VendorProfile>
         {data?.status && data.status === "onboarded" ? (
           <>
             <Button

@@ -6,11 +6,11 @@ import OrderDetailsForm from "../../../Components/OrderDetailsForm";
 const OrderDetails = () => {
   return (
     <Layout>
-      <PageHeader backBtn pageTitle="Product Details">
+      <PageHeader backBtn pageTitle='Product Details'>
         <h3>#Declined</h3>
       </PageHeader>
-      <div className=""></div>
-      <OrderDetailsForm />
+      <div className=''></div>
+      <OrderDetailsForm selectedProduct={{}} />
     </Layout>
   );
 };

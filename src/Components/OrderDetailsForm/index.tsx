@@ -5,7 +5,7 @@ import useMediaQuery from "../../Custom hooks/useMediaQuery";
 import { InputTemp, SelectTemp } from "../InputTemp";
 import styles from "./style.module.css";
 
-const OrderDetailsForm = ({ selectedProduct }) => {
+const OrderDetailsForm = ({ selectedProduct }: { selectedProduct: any }) => {
   const matches = useMediaQuery("(min-width: 800px)");
   const [productQuantity, setPQ] = useState(0);
   const [productPrice, setProductPrice] = useState("");
@@ -44,7 +44,7 @@ const OrderDetailsForm = ({ selectedProduct }) => {
             <div className={styles.flexDetail}>
               <p>Quantity</p>
               <span className={styles.inputGroup}>
-                <input type="tel" value={productQuantity} />
+                <input type='tel' value={productQuantity} />
                 <div className={styles.controls}>
                   <button onClick={increment}>
                     <SvgArrowUp />
@@ -65,27 +65,27 @@ const OrderDetailsForm = ({ selectedProduct }) => {
         <div className={styles.deliveryDetials}>
           <h3>Delivery Details</h3>
           <div className={styles.flexLg}>
-            <InputTemp label="FIRST NAME" value="Beatrice" marginRight />
-            <InputTemp label="SURNAME" value="Bimpe" marginLeft />
+            <InputTemp label='FIRST NAME' value='Beatrice' marginRight />
+            <InputTemp label='SURNAME' value='Bimpe' marginLeft />
           </div>
           <div className={styles.flexLg}>
-            <InputTemp label="PHONE NUMBER" value="08123456789" marginRight />
+            <InputTemp label='PHONE NUMBER' value='08123456789' marginRight />
             <InputTemp
-              label="EMAIL ADDRESS"
-              value="dash@ifuel.com"
+              label='EMAIL ADDRESS'
+              value='dash@ifuel.com'
               marginLeft
             />
           </div>
           <div className={styles.flexLg}>
             <InputTemp
-              label="DELIVERY ADDRESS"
-              value="No. 1, Bosipo district, Ikoyi"
+              label='DELIVERY ADDRESS'
+              value='No. 1, Bosipo district, Ikoyi'
               marginRight
             />
             <SelectTemp
               width={matches ? "150px" : "100%"}
-              label="STATE"
-              placeholder="Lagos"
+              label='STATE'
+              placeholder='Lagos'
               options={statesOptions}
             />
           </div>

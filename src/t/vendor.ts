@@ -45,11 +45,15 @@ export interface location {
   label: string;
   value: string;
 }
-export class AccountDetails {
+export interface AccountDetails {
   phoneNumber: string;
   email: string;
 }
-export class AccountData {
+export const initialAccountDetails: AccountDetails = {
+  email: "",
+  phoneNumber: "",
+};
+export interface AccountData {
   accountName: string;
   accountNumber: string;
   accountType: string;
@@ -64,6 +68,21 @@ export class AccountData {
   };
 }
 
+export const initialAccountData: AccountData = {
+  accountName: "",
+  accountNumber: "",
+  accountType: "",
+  currency: "",
+  email: "",
+  otpMetaData: {
+    otp: "",
+    otpId: "",
+    otpRequestId: "",
+    vendorId: "",
+  },
+  phoneNumber: "",
+};
+
 export interface AddKycPayload {
   emailAddress: string;
   uploadImage: string;
@@ -77,6 +96,3 @@ export interface AddKycPayload {
   bvn: string;
   acctPhoneNumber: string;
 }
-
-// eslint-disable-next-line @typescript-eslint/no-empty-interface
-export interface ProductType {}

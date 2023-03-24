@@ -6,11 +6,10 @@ export const setLocalStorageItem = (key: string, value: string) => {
 };
 
 export const getLocalStorageItem = (key: string) => {
-  if (localStorage.getItem(key)) {
-    var bytes = CryptoJS.AES.decrypt(
-      localStorage.getItem(key),
-      "dope encryption"
-    );
+  const val = localStorage.getItem(key);
+
+  if (val) {
+    var bytes = CryptoJS.AES.decrypt(val, "dope encryption");
     var originalText = bytes.toString(CryptoJS.enc.Utf8);
     // console.log(originalText)
     // console.log(JSON.parse(originalText))

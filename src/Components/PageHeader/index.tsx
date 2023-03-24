@@ -33,7 +33,7 @@ export const FilterModal = ({
   children,
   currentLabel = "Filter",
 }: FilterModalProps) => {
-  const active = (code: number) => !!(selected === code);
+  const active = (code?: number) => !!(selected === code);
 
   const [open, setOpen] = useState(false);
 
@@ -58,10 +58,10 @@ export const FilterModal = ({
                 <div className={styles.bigFilter}>{children}</div>
               ) : (
                 <div className={styles.optionsContainer}>
-                  {options.map((option) => (
+                  {options?.map((option) => (
                     <button
                       key={option.value}
-                      className={`${active(option.code) ? "text-green" : ""}`}
+                      className={`${active(option?.code) ? "text-green" : ""}`}
                       onClick={() => {
                         setOpen(false);
                         onSelect({ code: option.code, value: option.value });

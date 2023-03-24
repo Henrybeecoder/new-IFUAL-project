@@ -1,11 +1,10 @@
 import Button, { BackBtn } from "../../../Components/Button";
 import logo from "../../../assets/logo.svg";
 import styles from "./style.module.css";
-import PageHeader from "../../../Components/PageHeader";
 import UploadImageTemp from "../../../Components/UploadImageTemp";
 import { InputTemp, SelectTemp } from "../../../Components/InputTemp";
 import { useNavigate, useSearchParams } from "react-router-dom";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import Loading from "../../../Components/Loading";
 import RedirectError from "../../../screens/vendor/Errors/RedirectError";
 import { useMutations } from "../../../lib/vendorApi/vendorAgent";
@@ -14,28 +13,35 @@ import { Form, Formik } from "formik";
 import { authSchema } from "../../../lib/validation/vendor";
 import Modal from "../../../Components/Modals";
 import PinInput from "react-pin-input";
-import Select from "react-select";
-import { useMutation } from "@tanstack/react-query";
-import axios from "src/lib/axios";
-import { AccountData, AccountDetails, AddKycPayload } from "../../../t/vendor";
+import {
+  AccountData,
+  AccountDetails,
+  AddKycPayload,
+  initialAccountData,
+  initialAccountDetails,
+} from "../../../t/vendor";
 // import { InputActionMeta } from "react-select";
-import { Button as ButtonX, Label, Message } from "semantic-ui-react";
+import { Message } from "semantic-ui-react";
 import responseCodes from "../../../lib/vendorApi/helper";
 
 const Kyc = () => {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
-  const buttonRef = useRef();
 
   const [onPageLoad, setOnPageLoad] = useState("");
-  const [openModal, setOpenModal] = useState(false);
   const [activeModal, setActiveModal] = useState("");
   const [imageUpload, setImageUpload] = useState("");
   const [otp, setOtp] = useState("");
-  const [location, setLocation] = useState([]);
-  const [accountData, setAccountData] = useState(new AccountData());
-  const [accountDetails, setAccountDetails] = useState(new AccountDetails());
-  const [resInfo, setResInfo] = useState({
+  const [location, setLocation] = useState<any[]>([]);
+  const [accountData, setAccountData] =
+    useState<AccountData>(initialAccountData);
+  const [accountDetails, setAccountDetails] = useState<AccountDetails>(
+    initialAccountDetails
+  );
+  const [resInfo, setResInfo] = useState<{
+    status: boolean | null;
+    message: "";
+  }>({
     status: null,
     message: "",
   });
@@ -59,8 +65,7 @@ const Kyc = () => {
     bvn: "",
     acctPhoneNumber: "",
   };
-  const { mutate: vendorOtpValidate, isLoading } = useMutations();
-  const { mutate: bvnVerify, isLoading: isBvnLoading } = useMutations();
+  const { mutate: vendorOtpValidate } = useMutations();
   const { mutate: otpRegVerify, isLoading: isOtpRegVerifyLoading } =
     useMutations();
   const { mutate: resendOtpRegVerify, isLoading: isResendOtpRegVerifyLoading } =
@@ -189,18 +194,11 @@ const Kyc = () => {
           //   // setActiveModal("invalid");
           // }
           else {
-            // setActiveModal("invalid");
           }
           console.log(res);
         },
         onError: (err) => {
           console.log(err);
-          // setResInfo({
-          //   status: true,
-          //   message: err.data.responseDescription
-          //     ? err.data.responseDescription
-          //     : err?.data.title,
-          // });
         },
       }
     );
@@ -598,14 +596,12 @@ const Kyc = () => {
                       marginRight
                       label='REPRESENTATIVE -1 NAME'
                       placeholder='Enter Representative 1 Name'
-                      name='representativeName1'
                       {...getFieldProps("representativeName1")}
                     />
                     <InputTemp
                       marginLeft
                       label='REPRESENTATIVE -2 NAME'
                       placeholder='Enter Representative 2 Name'
-                      name='representativeName2'
                       {...getFieldProps("representativeName2")}
                     />
                   </div>
@@ -615,14 +611,12 @@ const Kyc = () => {
                       marginRight
                       label='DATE OF REGISTRATION'
                       placeholder='23/02/1997'
-                      name='dateofRegistration'
                       {...getFieldProps("dateofRegistration")}
                     />
                     <InputTemp
                       marginLeft
                       label='CAC REGISTRATION NUMBER'
                       placeholder='Enter CAC Registration Number'
-                      name='cacRegistrationNumber'
                       {...getFieldProps("cacRegistrationNumber")}
                     />
                   </div>
@@ -650,7 +644,7 @@ const Kyc = () => {
                       closeMenuOnSelect={false}
                       isMulti={true}
                       // defaultValue={locations[0]}
-                      onValueChange={(e) => {
+                      onValueChange={(e: any) => {
                         setFieldValue("operationLocation", e);
                       }}
                       // {...getFieldProps("operationLocation")}
@@ -661,14 +655,12 @@ const Kyc = () => {
                       marginRight
                       label='ACCOUNT NUMBER'
                       placeholder='Enter Account Number'
-                      name='accountNumber'
                       {...getFieldProps("accountNumber")}
                     />
                     <InputTemp
                       marginLeft
                       label='ACCOUNT NAME'
                       placeholder='Enter Account Name'
-                      name='accountName'
                       {...getFieldProps("accountName")}
                     />
                   </div>
@@ -684,7 +676,6 @@ const Kyc = () => {
                   <InputTemp
                     label='BVN'
                     placeholder='Enter bvn'
-                    name='bvn'
                     {...getFieldProps("bvn")}
                   />
                   <div className={styles.btns}>
