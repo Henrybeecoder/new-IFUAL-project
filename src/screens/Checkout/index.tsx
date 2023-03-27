@@ -47,6 +47,9 @@ const Checkout = () => {
 
   useEffect(() => {
     if (!params.id) return;
+    if (!user.token) {
+      navigate("/login");
+    }
     setLoading(true);
     axios
       .get(`${customerBaseUrl}Product/Product/${params.id}`, {
@@ -61,7 +64,7 @@ const Checkout = () => {
         console.log(err);
         setLoading(false);
       });
-  }, [user?.token, params.id]);
+  }, [user?.token, params.id, navigate]);
 
   return (
     <>
