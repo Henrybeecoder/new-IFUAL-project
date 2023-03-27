@@ -87,7 +87,7 @@ const Home = () => {
           `${customerBaseUrl}Account/GetState`
         );
         const userState = states.data?.find(
-          (state) => state.text === user.state
+          (state) => state.text === user?.state
         );
         const { data: lgas } = await axios.get(
           `${customerBaseUrl}Account/GetLocalGovt/${userState?.value}`
@@ -103,7 +103,7 @@ const Home = () => {
         setLoading(false);
       }
     })();
-  }, [user.token, user.state]);
+  }, [user?.token, user?.state]);
 
   const [state, setState] = useState<string>("Active");
   const [count, setCount] = useState<number>(0);
@@ -229,7 +229,7 @@ const Home = () => {
             <FilterComponent
               applyFilter={setFilter}
               lgas={data.lgas}
-              states={data.states}
+              states={data?.states}
             />
           </PageHeader>
 

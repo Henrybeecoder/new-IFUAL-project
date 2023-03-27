@@ -4,7 +4,7 @@ import LayoutCustomer from "../../containers/LayoutCustomer";
 import { useNavigate } from "react-router-dom";
 import { useParams } from "react-router-dom";
 import OrderDetailsForm from "../../Components/OrderDetailsForm";
-import { SvgArrowback, SvgEdit } from "../../assets/Svgs";
+import { SvgArrowback } from "../../assets/Svgs";
 import Button from "../../Components/Button";
 import Modal from "../../Components/Modals";
 import PinInput from "react-pin-input";
@@ -13,6 +13,8 @@ import Loading from "../../Components/Loading";
 import { customerBaseUrl } from "../../utils/baseUrl";
 import axios from "axios";
 import { getUser } from "../../../src/Custom hooks/Hooks";
+import { EditBtn } from "../../../src/Components/PageHeader";
+import EmptyStates from "../../../src/containers/EmptyStates";
 
 const Checkout = () => {
   const navigate = useNavigate();
@@ -126,21 +128,26 @@ const Checkout = () => {
         </button>
         <div className={styles.header}>
           <h2>Checkout</h2>
-          <button>
-            <p>Edit</p>
-            <SvgEdit />
-          </button>
+          {data && <EditBtn />}
         </div>
-        <OrderDetailsForm selectedProduct={data} />
+        {!data ? (
+          <>
+            <EmptyStates cart />
+          </>
+        ) : (
+          <>
+            <OrderDetailsForm selectedProduct={data} />
 
-        <div className={styles.btns}>
-          <Button
-            variant='primary'
-            text='Pay with Saved Account'
-            onClick={() => setActiveModal("pWSA")}
-          />
-          <Button text='Pay with Other Account' />
-        </div>
+            <div className={styles.btns}>
+              <Button
+                variant='primary'
+                text='Pay with Saved Account'
+                onClick={() => setActiveModal("pWSA")}
+              />
+              <Button text='Pay with Other Account' />
+            </div>
+          </>
+        )}
       </LayoutCustomer>
     </>
   );

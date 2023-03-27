@@ -86,7 +86,7 @@ const Header = ({ user }: { user: User }) => {
         </button>
 
         <ProfileModal user={user}>
-          {user.profileImage ? (
+          {user?.profileImage ? (
             <img
               alt='profileimage'
               src={`data:image/png;base64,${user.profileImage}`}
