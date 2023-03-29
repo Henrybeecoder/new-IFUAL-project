@@ -52,7 +52,6 @@ export default function LoginForm() {
       .post(`${customerBaseUrl}Account/Login`, loginPayload)
       .then((response) => {
         const token = response?.data?.data?.token;
-        console.log(token);
         localStorage.setItem(
           "user",
           JSON.stringify({
@@ -65,7 +64,6 @@ export default function LoginForm() {
             headers: { Authorization: `${token}` },
           })
           .then((response) => {
-            console.log(response, "customer profile");
             localStorage.setItem(
               "user",
               JSON.stringify({
@@ -88,14 +86,12 @@ export default function LoginForm() {
             setLoading(false);
           })
           .catch((err) => {
-            console.log(err);
             setLoading(false);
           });
         setLoading(true);
       })
       .catch((err) => {
         setLoginError(true);
-        console.log(err);
         setLoading(false);
       });
   };

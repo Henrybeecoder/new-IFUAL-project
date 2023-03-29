@@ -26,7 +26,7 @@ const Order = () => {
     setLoading(true);
     axios
       .get(`${customerBaseUrl}Product/Product/${params.id}`, {
-        headers: { Authorization: `${user?.token}` },
+        // headers: { Authorization: `${user?.token}` },
       })
       .then((response) => {
         //  console.log(response);

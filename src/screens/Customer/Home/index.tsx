@@ -49,9 +49,13 @@ const Home = () => {
   }>({ products: [], states: [], lgas: [] });
 
   useEffect(() => {
-    if (!orderStatus) return;
-    setConfmDelivery(true);
-    setReviewModal(false);
+    if (!orderStatus) {
+      return;
+    } else {
+      setConfmDelivery(true);
+      setReviewModal(false);
+      navigate("/", { replace: true });
+    }
   }, [orderStatus]);
 
   const confirmDelivery = () => {

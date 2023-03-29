@@ -87,4 +87,7 @@
   .formContainer label {
     color: #344437;
   }
+  .holder {
+    width: 100%;
+  }
 }

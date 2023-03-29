@@ -157,4 +157,15 @@
     font-size: 23px;
     line-height: 23px;
   }
+  .requestOtp {
+    padding: 20px 10px;
+    gap: 5px;
+  }
+  .btnOtpModal {
+    margin: auto;
+    width: 100%;
+  }
+  .btns {
+    width: auto;
+  }
 }

@@ -15,9 +15,13 @@ import axios from "axios";
 import { getUser } from "../../../src/Custom hooks/Hooks";
 import { EditBtn } from "../../../src/Components/PageHeader";
 import EmptyStates from "../../../src/containers/EmptyStates";
+import useMediaQuery from "../../../src/Custom hooks/useMediaQuery";
+import { toast } from "react-toastify";
 
 const Checkout = () => {
+  const matches = useMediaQuery("(min-width: 800px)");
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
   const [activeModal, setActiveModal] = useState<string | null>(null);
 
   const [orderSuccessful, setOrderSuccessful] = useState(false);
@@ -40,14 +44,14 @@ const Checkout = () => {
   const closeModals = () => setActiveModal(null);
 
   const user = getUser();
-  const [loading, setLoading] = useState(false);
+
   const [data, setData] = useState();
 
   let params = useParams();
 
   useEffect(() => {
     if (!params.id) return;
-    if (!user.token) {
+    if (!user?.token) {
       navigate("/login");
     }
     setLoading(true);
@@ -66,19 +70,54 @@ const Checkout = () => {
       });
   }, [user?.token, params.id, navigate]);
 
+  const [formOtp, setFormOtp] = useState<string>("");
+  const [serverOtp, setServerOtp] = useState<string>("");
+
+  const requestOtp = async () => {
+    setLoading(true);
+    try {
+      const { data } = await axios.get(
+        `${customerBaseUrl}Account/OtpEmail/${user?.email}/${user?.firstName}`
+      );
+      setServerOtp(data.data.otp);
+      setLoading(false);
+      setActiveModal("otp");
+    } catch (err) {
+      setLoading(false);
+    }
+  };
+
+  const verifyOtp = async () => {
+    setLoading(true);
+    if (formOtp !== serverOtp) {
+      toast.error("Wrong OTP, Please Try Again");
+      return;
+    } else {
+      try {
+        // await axios.get(
+        //   `${customerBaseUrl}Account/ChangeAccountNumber/${values.accountNo}`
+        // );
+        setActiveModal("confm");
+        return;
+      } catch (err) {
+        setLoading(false);
+      }
+    }
+  };
+
   return (
     <>
       {loading && <Loading />}
       <LayoutCustomer>
         <Modal openModal={modalState.pWSA} closeModal={closeModals}>
           <h3>Pay with saved account</h3>
-          <h2>{`${user.bankAccountNumber} - ${user?.name}`}</h2>
+          <h2>{`${user?.bankAccountNumber} - ${user?.name}`}</h2>
           <p>Request for a one-time passcode (OTP)</p>
           <Button
             variant='primary'
             text='Request OTP'
             width={"260px"}
-            onClick={() => setActiveModal("otp")}
+            onClick={requestOtp}
           />
         </Modal>
         <Modal
@@ -88,14 +127,25 @@ const Checkout = () => {
           closeModal={closeModals}>
           <div className={styles.requestOtp}>
             <h2>Pay with saved account</h2>
-            <h3>{`${user.bankAccountNumber} - ${user?.name}`}</h3>
+            <h3>{`${user?.bankAccountNumber} - ${user?.name}`}</h3>
             <p>Enter the OTP sent to your email or Phone Number</p>
-            <PinInput autoSelect={true} length={6} initialValue='' />
+            <PinInput
+              inputStyle={{
+                borderRadius: "5px",
+                width: !matches ? "39px" : "50px",
+                marginTop: !matches && "10px",
+              }}
+              autoSelect={true}
+              length={6}
+              initialValue=''
+              onComplete={(value) => setFormOtp(value)}
+            />
             <div className={styles.btnOtpModal}>
               <Button
                 variant='primary'
                 text='Submit'
-                onClick={() => setActiveModal("confm")}
+                onClick={verifyOtp}
+                invalid={formOtp.length < 5}
               />
               <Button text='Request OTP again' />
             </div>
@@ -133,7 +183,7 @@ const Checkout = () => {
           <h2>Checkout</h2>
           {data && <EditBtn />}
         </div>
-        {!data ? (
+        {data ? (
           <>
             <EmptyStates cart />
           </>

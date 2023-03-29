@@ -37,7 +37,7 @@ textarea::placeholder {
   letter-spacing: 0.08em;
   display: flex;
   flex-direction: column;
-  margin: 10px 0 0 0;
+  margin: 5px 0 0 0;
   width: 100%;
   font-family: "Sofia Pro";
   font-style: "normal";
