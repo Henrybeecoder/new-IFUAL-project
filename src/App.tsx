@@ -65,121 +65,127 @@ import LoginSuperAdmin from "./screens/SuperAdmin/Login";
 import CannotLoginSuperAdmin from "./screens/SuperAdmin/Login/CannotLogin";
 import NotificationSuperAdmin from "./screens/SuperAdmin/Notification";
 import Order from "./screens/Customer/Home/Order";
+import { Context } from "./utils/context";
+import { useState } from "react";
 
 // shared admin
 // import CustomMessage from "./screens/SharedAdmin/ComplaintsLog/CustomMessage";
 
 function App() {
+  const [paymentPayload, setPaymentPayload] = useState();
   return (
-    <Router>
-      <Routes>
-        <Route path='/start-page' element={<LoginPage />} />
-        <Route path='/checkout/:id' element={<Checkout />} />
-        <Route path='/cart' element={<Cart />} />
-        <Route path='/orders' element={<Orders />} />
-        <Route path='/login' element={<Login />} />
-        <Route path='/signup' element={<SignUp />} />
-        <Route path='/support' element={<Support />} />
-        <Route path='/forgot-password' element={<ForgotPassword />} />
-        <Route
-          path='/forgot-password-notification'
-          element={<ForgotPasswordMessage />}
-        />
-        <Route path='/reset-password' element={<ResetPassword />} />
-        <Route path='/sign-up-message' element={<SignUpMessage />} />
-        <Route path='/kyc-notification' element={<KycNotification />} />
-        {/* //customer */}
-        <Route path='/' element={<Home />} />
-        <Route path='/product/:id' element={<Order />} />
-        <Route path='customer'>
-          <Route path='profile' element={<Profile />} />
-        </Route>
-        <Route path='/vendor'>
-          <Route path='login' element={<LoginVendor />} />
-          <Route path='forgot-password' element={<VendorForgotPassword />} />
-          <Route path='reset-password' element={<VendorResetPassword />} />
-          <Route index element={<Dashboard />} />
-          <Route path='profile' element={<ProfileVendor />} />
-          <Route path='dashboard' element={<Dashboard />} />
-          <Route path='verify' element={<KycVendor />} />
-          <Route path='sign-up-message' element={<VendorSignUpMessage />} />
-          <Route path='kyc-sign-up-message' element={<KycSignUpMessage />} />
-          <Route path='order-status'>
-            <Route index element={<OrderStatus />} />
-            <Route path=':id' element={<OrderDetailsVendor />} />
+    <Context.Provider
+      value={{ product: { paymentPayload, setPaymentPayload } }}>
+      <Router>
+        <Routes>
+          <Route path='/start-page' element={<LoginPage />} />
+          <Route path='/checkout/:id' element={<Checkout />} />
+          <Route path='/cart' element={<Cart />} />
+          <Route path='/orders' element={<Orders />} />
+          <Route path='/login' element={<Login />} />
+          <Route path='/signup' element={<SignUp />} />
+          <Route path='/support' element={<Support />} />
+          <Route path='/forgot-password' element={<ForgotPassword />} />
+          <Route
+            path='/forgot-password-notification'
+            element={<ForgotPasswordMessage />}
+          />
+          <Route path='/reset-password' element={<ResetPassword />} />
+          <Route path='/sign-up-message' element={<SignUpMessage />} />
+          <Route path='/kyc-notification' element={<KycNotification />} />
+          {/* //customer */}
+          <Route path='/' element={<Home />} />
+          <Route path='/product/:id' element={<Order />} />
+          <Route path='customer'>
+            <Route path='profile' element={<Profile />} />
           </Route>
-          <Route path='product-list'>
-            <Route index element={<ProductList />} />
-            <Route path=':id' element={<ProductInfo />} />
-          </Route>
-          <Route path='notification' element={<Notification />} />
-          <Route path='report'>
-            <Route index element={<Report />} />
-            <Route path='new' element={<NewReport />} />
-          </Route>
-        </Route>
-        <Route path='/admin'>
-          <Route index element={<LoginAdmin />} />
-          <Route path='login-issue' element={<CannotLoginAdmin />} />
-          <Route path='notification' element={<NotificationAdmin />} />
-          <Route path='dashboard' element={<DashboardAdmin />} />
-          <Route path='settings' element={<SettingsAdmin />} />
-          <Route path='manage-users/*' element={<ManageUsersAdmin />} />
-          <Route path='manage-orders'>
-            <Route index element={<ManageOrdersAdmin />} />
-            <Route path=':id'>
-              <Route index element={<OrderDetailsAdmin />} />
-              <Route
-                path='profile-customer'
-                element={<CustomerProfileAdmin />}
-              />
-              <Route path='profile-vendor' element={<VendorProfileAdmin />} />
-              <Route path='track-order' element={<TrackOrderAdmin />} />
+          <Route path='/vendor'>
+            <Route path='login' element={<LoginVendor />} />
+            <Route path='forgot-password' element={<VendorForgotPassword />} />
+            <Route path='reset-password' element={<VendorResetPassword />} />
+            <Route index element={<Dashboard />} />
+            <Route path='profile' element={<ProfileVendor />} />
+            <Route path='dashboard' element={<Dashboard />} />
+            <Route path='verify' element={<KycVendor />} />
+            <Route path='sign-up-message' element={<VendorSignUpMessage />} />
+            <Route path='kyc-sign-up-message' element={<KycSignUpMessage />} />
+            <Route path='order-status'>
+              <Route index element={<OrderStatus />} />
+              <Route path=':id' element={<OrderDetailsVendor />} />
+            </Route>
+            <Route path='product-list'>
+              <Route index element={<ProductList />} />
+              <Route path=':id' element={<ProductInfo />} />
+            </Route>
+            <Route path='notification' element={<Notification />} />
+            <Route path='report'>
+              <Route index element={<Report />} />
+              <Route path='new' element={<NewReport />} />
             </Route>
           </Route>
-          <Route path='complaints-log'>
-            <Route index element={<ComplaintsLogAdmin />} />
-            <Route path='custom-message' element={<CustomMessageAdmin />} />
-          </Route>
-          <Route path='activity-log' element={<ActivityLogAdmin />} />
-        </Route>
-        <Route path='/super-admin'>
-          <Route index element={<LoginSuperAdmin />} />
-          <Route path='login-issue' element={<CannotLoginSuperAdmin />} />
-          <Route path='notification' element={<NotificationSuperAdmin />} />
-          <Route path='dashboard' element={<DashboardSuperAdmin />} />
-          <Route path='settings' element={<SettingsSuperAdmin />} />
-          <Route path='manage-users/*' element={<ManageUsersSuperAdmin />} />
-          <Route path='manage-products'>
-            <Route index element={<ManageProducts />} />
-            <Route path=':id' element={<ProductDetails />} />
-          </Route>
-          <Route path='manage-orders'>
-            <Route index element={<ManageOrdersSuperAdmin />} />
-            <Route path=':id'>
-              <Route index element={<OrderDetailsSuperAdmin />} />
-              <Route
-                path='profile-vendor'
-                element={<VendorProfileSuperAdmin />}
-              />
-              <Route
-                path='profile-customer'
-                element={<CustomerProfileSuperAdmin />}
-              />
-              <Route path='track-order' element={<TrackOrderSuperAdmin />} />
+          <Route path='/admin'>
+            <Route index element={<LoginAdmin />} />
+            <Route path='login-issue' element={<CannotLoginAdmin />} />
+            <Route path='notification' element={<NotificationAdmin />} />
+            <Route path='dashboard' element={<DashboardAdmin />} />
+            <Route path='settings' element={<SettingsAdmin />} />
+            <Route path='manage-users/*' element={<ManageUsersAdmin />} />
+            <Route path='manage-orders'>
+              <Route index element={<ManageOrdersAdmin />} />
+              <Route path=':id'>
+                <Route index element={<OrderDetailsAdmin />} />
+                <Route
+                  path='profile-customer'
+                  element={<CustomerProfileAdmin />}
+                />
+                <Route path='profile-vendor' element={<VendorProfileAdmin />} />
+                <Route path='track-order' element={<TrackOrderAdmin />} />
+              </Route>
             </Route>
+            <Route path='complaints-log'>
+              <Route index element={<ComplaintsLogAdmin />} />
+              <Route path='custom-message' element={<CustomMessageAdmin />} />
+            </Route>
+            <Route path='activity-log' element={<ActivityLogAdmin />} />
           </Route>
-          <Route path='complaints-log'>
-            <Route index element={<ComplaintsLogSuperAdmin />} />
-            <Route
-              path='custom-message'
-              element={<CustomMessageSuperAdmin />}
-            />
+          <Route path='/super-admin'>
+            <Route index element={<LoginSuperAdmin />} />
+            <Route path='login-issue' element={<CannotLoginSuperAdmin />} />
+            <Route path='notification' element={<NotificationSuperAdmin />} />
+            <Route path='dashboard' element={<DashboardSuperAdmin />} />
+            <Route path='settings' element={<SettingsSuperAdmin />} />
+            <Route path='manage-users/*' element={<ManageUsersSuperAdmin />} />
+            <Route path='manage-products'>
+              <Route index element={<ManageProducts />} />
+              <Route path=':id' element={<ProductDetails />} />
+            </Route>
+            <Route path='manage-orders'>
+              <Route index element={<ManageOrdersSuperAdmin />} />
+              <Route path=':id'>
+                <Route index element={<OrderDetailsSuperAdmin />} />
+                <Route
+                  path='profile-vendor'
+                  element={<VendorProfileSuperAdmin />}
+                />
+                <Route
+                  path='profile-customer'
+                  element={<CustomerProfileSuperAdmin />}
+                />
+                <Route path='track-order' element={<TrackOrderSuperAdmin />} />
+              </Route>
+            </Route>
+            <Route path='complaints-log'>
+              <Route index element={<ComplaintsLogSuperAdmin />} />
+              <Route
+                path='custom-message'
+                element={<CustomMessageSuperAdmin />}
+              />
+            </Route>
+            <Route path='activity-log' element={<ActivityLogSuperAdmin />} />
           </Route>
-          <Route path='activity-log' element={<ActivityLogSuperAdmin />} />
-        </Route>
-      </Routes>
-    </Router>
+        </Routes>
+      </Router>
+    </Context.Provider>
   );
 }
 

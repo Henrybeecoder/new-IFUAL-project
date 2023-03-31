@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import styles from "./style.module.css";
 import LayoutCustomer from "../../containers/LayoutCustomer";
 import { useNavigate } from "react-router-dom";
@@ -12,42 +12,36 @@ import checkSuccess from "../../assets/svg/modalCheck.svg";
 import Loading from "../../Components/Loading";
 import { customerBaseUrl } from "../../utils/baseUrl";
 import axios from "axios";
-import { getUser } from "../../../src/Custom hooks/Hooks";
+import { useUser } from "../../../src/Custom hooks/Hooks";
 import { EditBtn } from "../../../src/Components/PageHeader";
 import EmptyStates from "../../../src/containers/EmptyStates";
 import useMediaQuery from "../../../src/Custom hooks/useMediaQuery";
 import { toast } from "react-toastify";
+import { PayWAccountPayload, usePPInitialValues } from "./types";
+import { useFormik } from "formik";
+import { Context } from "../../../src/utils/context";
 
 const Checkout = () => {
   const matches = useMediaQuery("(min-width: 800px)");
+  let params = useParams();
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
+  const user = useUser();
+
   const [activeModal, setActiveModal] = useState<string | null>(null);
 
   const [orderSuccessful, setOrderSuccessful] = useState(false);
 
-  const confirm = () => {
-    setActiveModal(null);
-    setOrderSuccessful(true);
-    setTimeout(() => {
-      setOrderSuccessful(false);
-      navigate({ pathname: "/", search: "order=successful" });
-    }, 2000);
-  };
-
   const modalState = {
-    pWSA: !!(activeModal === "pWSA"),
+    pwsa: !!(activeModal === "pwsa"),
+    pwoa: !!(activeModal === "pwoa"),
     otp: !!(activeModal === "otp"),
     confm: !!(activeModal === "confm"),
   };
 
   const closeModals = () => setActiveModal(null);
 
-  const user = getUser();
-
-  const [data, setData] = useState();
-
-  let params = useParams();
+  const [data, setData] = useState<any>();
 
   useEffect(() => {
     if (!params.id) return;
@@ -93,15 +87,51 @@ const Checkout = () => {
       toast.error("Wrong OTP, Please Try Again");
       return;
     } else {
-      try {
-        // await axios.get(
-        //   `${customerBaseUrl}Account/ChangeAccountNumber/${values.accountNo}`
-        // );
-        setActiveModal("confm");
-        return;
-      } catch (err) {
-        setLoading(false);
-      }
+      setActiveModal("confm");
+    }
+  };
+
+  const { product } = useContext(Context);
+  const initialPPValues = usePPInitialValues({
+    deliveryTime: data?.deliveryTime || "6 hours",
+    price: data?.unitPrice || "2000",
+    productId: data?.productId,
+    quantity: "1",
+    discountPrice: 0,
+    interval: 0,
+    productName: data?.title || "product Title",
+    total: "0",
+    vendorId: data?.vendorId,
+    intervalOf: 0,
+  });
+
+  const { isValid, submitForm, values, setFieldValue } = useFormik({
+    initialValues: product.paymentPayload || initialPPValues,
+    onSubmit: () => {},
+    enableReinitialize: true,
+  });
+
+  const paymentWithAccountPayload: PayWAccountPayload = {
+    bankAccount: user.bankAccountNumber,
+    data: [values],
+  };
+
+  const confirm = async () => {
+    setLoading(true);
+    try {
+      await axios.post(
+        `${customerBaseUrl}Product/PaymentwithBankAccount`,
+        paymentWithAccountPayload
+      );
+      setActiveModal(null);
+      setOrderSuccessful(true);
+      setTimeout(() => {
+        setOrderSuccessful(false);
+        navigate({ pathname: "/", search: "order=successful" });
+      }, 2000);
+      setLoading(false);
+    } catch (err) {
+      setLoading(false);
     }
   };
 
@@ -109,7 +139,39 @@ const Checkout = () => {
     <>
       {loading && <Loading />}
       <LayoutCustomer>
-        <Modal openModal={modalState.pWSA} closeModal={closeModals}>
+        <Modal
+          openModal={modalState.pwoa}
+          closeModal={closeModals}
+          variant='unstyled'
+          style={{ top: "30px" }}>
+          <div className={styles.payWOA}>
+            <h3>Pay with other account</h3>
+            <p>Enter the OTP sent to your email or Phone Number</p>
+            <PinInput
+              inputStyle={{
+                borderRadius: "5px",
+                width: !matches ? "39px" : "50px",
+                marginTop: !matches && "10px",
+              }}
+              autoSelect={true}
+              length={6}
+              initialValue=''
+              onComplete={(value) => setFormOtp(value)}
+            />
+            <Button
+              variant='primary'
+              text='Submit'
+              width={"100%"}
+              onClick={() => {}}
+            />
+            <div className={styles.btnPWSA}>
+              <p>You have not received an OTP, </p>
+              <button>click here</button>
+            </div>
+          </div>
+        </Modal>
+
+        <Modal openModal={modalState.pwsa} closeModal={closeModals}>
           <h3>Pay with saved account</h3>
           <h2>{`${user?.bankAccountNumber} - ${user?.name}`}</h2>
           <p>Request for a one-time passcode (OTP)</p>
@@ -120,6 +182,7 @@ const Checkout = () => {
             onClick={requestOtp}
           />
         </Modal>
+
         <Modal
           variant='unstyled'
           style={{ top: "30px" }}
@@ -151,6 +214,7 @@ const Checkout = () => {
             </div>
           </div>
         </Modal>
+
         <Modal openModal={modalState.confm} closeModal={closeModals}>
           <h3>Confirm</h3>
           <p>
@@ -189,15 +253,31 @@ const Checkout = () => {
           </>
         ) : (
           <>
-            <OrderDetailsForm selectedProduct={data} />
+            <OrderDetailsForm values={values} onValueChange={setFieldValue} />
 
             <div className={styles.btns}>
               <Button
                 variant='primary'
                 text='Pay with Saved Account'
-                onClick={() => setActiveModal("pWSA")}
+                onClick={async () => {
+                  await submitForm();
+                  if (isValid) {
+                    setActiveModal("pwsa");
+                  }
+                }}
+                type='submit'
+                // invalid={!isValid}
               />
-              <Button text='Pay with Other Account' />
+              <Button
+                text='Pay with Other Account'
+                type='submit'
+                onClick={async () => {
+                  await submitForm();
+                  if (isValid) {
+                    setActiveModal("pwoa");
+                  }
+                }}
+              />
             </div>
           </>
         )}

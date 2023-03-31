@@ -149,6 +149,33 @@
   width: 100%;
 }
 
+.payWOA {
+  padding: 50px 90px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  align-items: center;
+  justify-content: center;
+}
+
+.btnPWSA {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.btnPWSA p {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 300;
+}
+
+.btnPWSA button {
+  margin: 0;
+  color: #36b44a;
+}
+
 @media screen and (max-width: 800px) {
   /* .filterArea {
     display: none;

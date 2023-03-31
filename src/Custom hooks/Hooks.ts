@@ -1,5 +1,5 @@
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { User } from "src/t/shared";
 import { customerBaseUrl } from "../../src/utils/baseUrl";
 
@@ -7,6 +7,13 @@ export const getUser: () => User | null = () => {
   const str = localStorage.getItem("user");
   return str ? (JSON.parse(str) as User) : null;
 };
+
+export const useUser = () =>
+  useMemo(() => {
+    const str = localStorage.getItem("user");
+    return str ? (JSON.parse(str) as User) : null;
+  }, []);
+
 type Type = any[] | {} | null;
 
 export const useData = <T extends Type>(

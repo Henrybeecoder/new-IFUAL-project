@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import styles from "./style.module.css";
 import visa from "../../../assets/changePaymentCard/visa.svg";
 import mastercard from "../../../assets/changePaymentCard/mastercard.svg";
@@ -12,6 +12,7 @@ import Modal from "../../../../src/Components/Modals";
 import PinInput from "react-pin-input";
 import { getUser } from "../../../../src/Custom hooks/Hooks";
 import useMediaQuery from "../../../../src/Custom hooks/useMediaQuery";
+import Loading from "../../../../src/Components/Loading";
 
 export default function ChangePaymentCard({
   backToProfile,
@@ -24,6 +25,12 @@ export default function ChangePaymentCard({
   const matches = useMediaQuery("(min-width: 800px)");
 
   const [activeModal, setAM] = useState<string | null>(null);
+  const [values, setValues] = useState({
+    cardNo: "",
+    expDate: "",
+    cvv: "",
+    cardPin: "",
+  });
 
   const [formOtp, setFormOtp] = useState<string>("");
   const [serverOtp, setServerOtp] = useState<string>("");
@@ -61,10 +68,11 @@ export default function ChangePaymentCard({
 
   return (
     <div className={styles.container}>
+      {loading && <Loading />}
       <Modal
         variant='unstyled'
         style={{ top: "30px" }}
-        openModal={activeModal !== "otp"}
+        openModal={activeModal === "otp"}
         closeModal={() => setAM(null)}>
         <div className={styles.requestOtp}>
           <h2>Add Payment Card</h2>
@@ -102,12 +110,44 @@ export default function ChangePaymentCard({
         </div>
       </div>
 
-      <InputTemp label='Card number' />
+      <InputTemp
+        label='Card number'
+        placeholder='Enter Card Number'
+        value={values.cardNo}
+        inputStyle={{ letterSpacing: "15px" }}
+        inputType='number'
+        onChange={(e) =>
+          setValues((state) => ({ ...state, cardNo: e.target.value }))
+        }
+      />
 
       <div className={styles.inputFlexes}>
-        <InputTemp label='EXPIRATION DATE' placeholder='MM/YY' />
-        <InputTemp label='CVV' placeholder='000' />
-        <InputTemp label='CARD PIN' placeholder='Card PIN' />
+        <InputTemp
+          label='EXPIRATION DATE'
+          placeholder='MM/YY'
+          value={values.expDate}
+          onChange={(e) =>
+            setValues((state) => ({ ...state, expDate: e.target.value }))
+          }
+        />
+        <InputTemp
+          label='CVV'
+          placeholder='000'
+          inputType='number'
+          value={values.cvv}
+          onChange={(e) =>
+            setValues((state) => ({ ...state, cvv: e.target.value }))
+          }
+        />
+        <InputTemp
+          label='CARD PIN'
+          placeholder='Card PIN'
+          inputType='number'
+          value={values.cardPin}
+          onChange={(e) =>
+            setValues((state) => ({ ...state, cardPin: e.target.value }))
+          }
+        />
       </div>
 
       <div className='flex-btwn'>
@@ -116,7 +156,12 @@ export default function ChangePaymentCard({
           text='Add Card'
           width='60%'
           variant='primary'
-          invalid
+          invalid={
+            values.cardNo.length !== 16 ||
+            values.cardPin.length !== 4 ||
+            values.cvv.length !== 3 ||
+            values.expDate.length !== 5
+          }
           onClick={addCard}
         />
       </div>

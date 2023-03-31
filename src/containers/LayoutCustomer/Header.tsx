@@ -50,7 +50,12 @@ const Header = ({ user }: { user: User }) => {
       <div className={`${styles.flexHeaderRight}`}>
         <div className={styles.lg}>
           <div className={`${styles.searchBar}`}>
-            <input placeholder='Enter Keyword' />
+            <input
+              placeholder='Enter Keyword'
+              type={"text"}
+              name='search'
+              id='search'
+            />
             <SvgSearchIcon className={styles.searchIcon} />
           </div>
 

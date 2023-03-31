@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import Layout from "../../../containers/LayoutCustomer";
 import { useNavigate } from "react-router-dom";
 import { useParams } from "react-router-dom";
@@ -12,6 +12,9 @@ import { customerBaseUrl } from "../../../utils/baseUrl";
 import axios from "axios";
 import { getUser } from "../../../../src/Custom hooks/Hooks";
 import EmptyStates from "../../../../src/containers/EmptyStates";
+import { usePPInitialValues } from "../../../../src/screens/Checkout/types";
+import { Formik } from "formik";
+import { Context } from "../../../../src/utils/context";
 
 const Order = () => {
   const user = getUser();
@@ -45,6 +48,22 @@ const Order = () => {
       //   search: `checkout=${selectedProduct.id}`,
     });
   };
+
+  const { product } = useContext(Context);
+
+  const initialValues = usePPInitialValues({
+    deliveryTime: data?.deliveryTime || "6 hours",
+    price: data?.unitPrice || "2000",
+    productId: data?.productId,
+    quantity: "1",
+    discountPrice: 0,
+    interval: 0,
+    productName: data?.title || "product Title",
+    total: "0",
+    vendorId: data?.vendorId,
+    intervalOf: 0,
+  });
+
   return (
     <>
       {loading && <Loading />}
@@ -94,15 +113,31 @@ const Order = () => {
               </div>
             </div>
             {/* gridlike */}
-            <OrderDetailsForm selectedProduct={data} />
-            <div className={styles.footer}>
-              <Button
-                variant='primary'
-                text='Proceed to Payment'
-                onClick={checkout}
-              />
-              <Button text='Add to Cart' />
-            </div>
+            <Formik
+              initialValues={initialValues}
+              enableReinitialize
+              onSubmit={(values) => {
+                product.setPaymentPayload(values);
+                checkout();
+              }}>
+              {({ isValid, values, setFieldValue, submitForm }) => (
+                <>
+                  <OrderDetailsForm
+                    values={values}
+                    onValueChange={setFieldValue}
+                  />
+                  <div className={styles.footer}>
+                    <Button
+                      variant='primary'
+                      text='Proceed to Payment'
+                      onClick={submitForm}
+                      invalid={!isValid}
+                    />
+                    <Button text='Add to Cart' />
+                  </div>
+                </>
+              )}
+            </Formik>
           </div>
         )}
       </Layout>
