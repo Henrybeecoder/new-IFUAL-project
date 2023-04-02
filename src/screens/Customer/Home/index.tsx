@@ -164,7 +164,7 @@ const Home = () => {
     <>
       {loading && <Loading />}
       <ToastContainer
-        position='bottom-right'
+        position="bottom-right"
         autoClose={5000}
         hideProgressBar={false}
         newestOnTop={false}
@@ -173,12 +173,13 @@ const Home = () => {
         pauseOnFocusLoss
         draggable
         pauseOnHover
-        theme='light'
+        theme="light"
       />
       <Layout>
         <Modal
           openModal={confmDelivery}
-          closeModal={() => setConfmDelivery(false)}>
+          closeModal={() => setConfmDelivery(false)}
+        >
           <h3>Confirm Delivery</h3>
           <p>
             Sunny Jay has delivered{" "}
@@ -190,20 +191,21 @@ const Home = () => {
             <span className={styles.spanGreen}>code 0234</span>
           </p>
           <div className={"flex-btwn"}>
-            <Button text='Cancel' width={"180px"} onClick={confirmDelivery} />
+            <Button text="Cancel" width={"180px"} onClick={confirmDelivery} />
             <Button
-              variant='primary'
-              text='Confirm'
+              variant="primary"
+              text="Confirm"
               width={"260px"}
               onClick={confirmDelivery}
             />
           </div>
         </Modal>
         <Modal
-          variant='unstyled'
+          variant="unstyled"
           style={{ top: "50px" }}
           openModal={reviewModal}
-          closeModal={() => setReviewModal(false)}>
+          closeModal={() => setReviewModal(false)}
+        >
           <div className={styles.reviewOrder}>
             <h2>Rate Sunny Jay & Co’s service</h2>
             <div>
@@ -211,12 +213,12 @@ const Home = () => {
             </div>
             <div className={styles.divider} />
             <p>Please share your opinion about their service</p>
-            <textarea placeholder='Write review' rows={5} />
+            <textarea placeholder="Write review" rows={5} />
             <div className={styles.btnCfm}>
-              <Button text='Cancel' width={"40%"} onClick={review} />
+              <Button text="Cancel" width={"40%"} onClick={review} />
               <Button
-                variant='primary'
-                text='Submit'
+                variant="primary"
+                text="Submit"
                 width={"55%"}
                 onClick={review}
               />
@@ -224,7 +226,7 @@ const Home = () => {
           </div>
         </Modal>
         <>
-          <PageHeader pageTitle='Available Products'>
+          <PageHeader pageTitle="Available Products">
             {matches && <PaginationOf current={[1, 20]} total={45} />}
             <FilterComponent
               applyFilter={setFilter}
@@ -240,7 +242,8 @@ const Home = () => {
                 <button
                   onClick={() =>
                     setFilter((state) => ({ ...state, state: undefined }))
-                  }>
+                  }
+                >
                   <FilterTagX />
                 </button>
               </div>
@@ -251,7 +254,8 @@ const Home = () => {
                 <button
                   onClick={() =>
                     setFilter((state) => ({ ...state, lga: undefined }))
-                  }>
+                  }
+                >
                   <FilterTagX />
                 </button>
               </div>
@@ -262,7 +266,8 @@ const Home = () => {
                 <button
                   onClick={() =>
                     setFilter((state) => ({ ...state, productType: undefined }))
-                  }>
+                  }
+                >
                   <FilterTagX />
                 </button>
               </div>
@@ -273,7 +278,8 @@ const Home = () => {
                 <button
                   onClick={() =>
                     setFilter((state) => ({ ...state, priceRange: undefined }))
-                  }>
+                  }
+                >
                   <FilterTagX />
                 </button>
               </div>
@@ -284,7 +290,8 @@ const Home = () => {
                 <button
                   onClick={() =>
                     setFilter((state) => ({ ...state, supplyTime: undefined }))
-                  }>
+                  }
+                >
                   <FilterTagX />
                 </button>
               </div>
@@ -302,74 +309,73 @@ const Home = () => {
                 borderRadius: "17px",
                 borderTop: "0.5px solid rgba(52, 68, 55, 0.3)",
               }}
-              component={Paper}>
+              component={Paper}
+            >
               {matches ? (
-                <Table sx={{ minWidth: 700 }} aria-label='customized table'>
+                <Table sx={{ minWidth: 700 }} aria-label="customized table">
                   <TableBody>
                     <StyledTableRow>
                       <StyledTableCell>
                         <h2 className={"Tabletitle"}>Company</h2>
                       </StyledTableCell>
-                      <StyledTableCell align='center'>
+                      <StyledTableCell align="center">
                         <h2 className={"Tabletitle"}>Location</h2>
                       </StyledTableCell>
-                      <StyledTableCell align='center'>
+                      <StyledTableCell align="center">
                         <h2 className={"Tabletitle"}>Category</h2>
                       </StyledTableCell>
-                      <StyledTableCell align='center'>
+                      <StyledTableCell align="center">
                         <h2 className={"Tabletitle"}>Supply Time</h2>
                       </StyledTableCell>
-                      <StyledTableCell align='center'>
+                      <StyledTableCell align="center">
                         <h2 className={"Tabletitle"}>Price/Ltr</h2>
                       </StyledTableCell>
-                      <StyledTableCell align='right'></StyledTableCell>
+                      <StyledTableCell align="right"></StyledTableCell>
                     </StyledTableRow>
 
                     <>
                       {filterProducts()?.map((row) => (
                         <StyledTableRow key={row.productId}>
-                          <StyledTableCell component='th' scope='row'>
+                          <StyledTableCell component="th" scope="row">
                             <div className={styles.companyLogo}>
-                              <img alt='company-logo' src={companyLogo} />
+                              <img alt="company-logo" src={companyLogo} />
                               <h3 className={"TablesubText"}>
                                 {row.productName}
                               </h3>
                             </div>
                           </StyledTableCell>
-                          <StyledTableCell align='center'>
+                          <StyledTableCell align="center">
                             <h3 className={"TablesubText"}>{row.state}</h3>
                           </StyledTableCell>
-                          <StyledTableCell align='center'>
+                          <StyledTableCell align="center">
                             <h3
                               className={
                                 row.category === "Diesel"
                                   ? `${styles.subTextGreen}`
                                   : `${styles.subTextRed}`
-                              }>
+                              }
+                            >
                               {row.category}
                             </h3>
                           </StyledTableCell>
-                          <StyledTableCell align='center'>
+                          <StyledTableCell align="center">
                             <h3
-                              className={
-                                "TablesubText"
-                              }>{`${row.intervalOf} hours`}</h3>
+                              className={"TablesubText"}
+                            >{`${row.intervalOf} hours`}</h3>
                           </StyledTableCell>
-                          <StyledTableCell align='center'>
+                          <StyledTableCell align="center">
                             <h3
-                              className={
-                                "TablesubText"
-                              }>{`N${row.unitPrice}.00`}</h3>
+                              className={"TablesubText"}
+                            >{`N${row.unitPrice}.00`}</h3>
                             <p
-                              className={
-                                styles.discountedPrice
-                              }>{`-${row.discountPrice}%`}</p>
+                              className={styles.discountedPrice}
+                            >{`-${row.discountPrice}%`}</p>
                           </StyledTableCell>
-                          <StyledTableCell align='right'>
+                          <StyledTableCell align="right">
                             <Button
-                              text='Buy'
-                              width='70px'
-                              height='40px'
+                              text="Buy"
+                              width="70px"
+                              height="40px"
                               onClick={() => buyNow(row.productId)}
                             />
                           </StyledTableCell>
@@ -379,40 +385,42 @@ const Home = () => {
                   </TableBody>
                 </Table>
               ) : (
-                <Table sx={{ width: "100%" }} aria-label='customized table'>
+                <Table sx={{ width: "100%" }} aria-label="customized table">
                   <TableBody>
                     <StyledTableRow>
                       <StyledTableCell>
                         <h2 className={"Tabletitle"}>Company</h2>
                       </StyledTableCell>
-                      <StyledTableCell align='center'>
+                      <StyledTableCell align="center">
                         <h2 className={"Tabletitle"}>Cat.</h2>
                       </StyledTableCell>
-                      <StyledTableCell align='center'>
+                      <StyledTableCell align="center">
                         <h2 className={"Tabletitle"}>N/Ltr</h2>
                       </StyledTableCell>
-                      <StyledTableCell align='right'></StyledTableCell>
+                      <StyledTableCell align="right"></StyledTableCell>
                     </StyledTableRow>
                     {filterProducts()?.map((row, index) => (
                       <StyledTableRow key={row.productId}>
                         <StyledTableCell
-                          align='center'
-                          style={{ padding: "15x 3px" }}>
+                          align="center"
+                          style={{ padding: "15x 3px" }}
+                        >
                           <h3 className={"TablesubText"}>
                             {limitText(row.productName, 9)}
                           </h3>
                         </StyledTableCell>
-                        <StyledTableCell align='center'>
+                        <StyledTableCell align="center">
                           <h3 className={"TablesubText"}>
                             {limitText(row.category, 3)}
                           </h3>
                         </StyledTableCell>
-                        <StyledTableCell align='center'>
+                        <StyledTableCell align="center">
                           <h3 className={"TablesubText"}>{row.unitPrice}</h3>
                         </StyledTableCell>
                         <StyledTableCell
-                          align='left'
-                          style={{ padding: "10px 3px" }}>
+                          align="left"
+                          style={{ padding: "10px 3px" }}
+                        >
                           <ArrowRight
                             style={{ cursor: "pointer" }}
                             onClick={() => {
