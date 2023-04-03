@@ -156,8 +156,8 @@ const NotificationModal = ({
 }: {
   setOpen: (state: boolean) => void;
 }) => {
-  const navigate = useNavigate();
-  const matches = useMediaQuery("(min-width: 800px)");
+  // const navigate = useNavigate();
+  // const matches = useMediaQuery("(min-width: 800px)");
 
   const [active, setActive] = useState<string | undefined>();
   const activeNData = notData.find((not) => active === not.id);

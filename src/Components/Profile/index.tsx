@@ -38,6 +38,7 @@ interface VendorProfileProps {
   children?: ReactNode;
   data?: any;
   setActiveModal?: (string: string | null) => void;
+  edit: boolean;
 }
 
 type SelectEvent = { label: string; value?: string };
@@ -427,6 +428,7 @@ export const VendorProfile = ({
   children,
   data,
   setActiveModal = () => {},
+  edit,
 }: VendorProfileProps) => {
   const page = undefined;
 
