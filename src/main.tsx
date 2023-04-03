@@ -1,16 +1,16 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import axios from "./lib/axios";
+// import axios from "./lib/axios";
 import React from "react";
 import ReactDOM from "react-dom/client";
 import App from "./App";
 import "./index.css";
-import 'semantic-ui-css/semantic.min.css';
+import "semantic-ui-css/semantic.min.css";
 
-const defaultQueryFn = async ({ queryKey }: any) => {
-  const [key, args] = queryKey;
-  const response = await axios.get(`${key}`, {});
-  return response?.data;
-};
+// const defaultQueryFn = async ({ queryKey }: any) => {
+//   const [key, args] = queryKey;
+//   const response = await axios.get(`${key}`, {});
+//   return response?.data;
+// };
 
 // const mutationFn = async ({}) => {
 //   const key = "ll";
@@ -20,7 +20,13 @@ const defaultQueryFn = async ({ queryKey }: any) => {
 
 const queryClient = new QueryClient({
   defaultOptions: {
-    queries: { networkMode: "offlineFirst", queryFn: defaultQueryFn },
+    queries: {
+      networkMode: "offlineFirst",
+      retry: (failed) => false,
+      refetchOnMount: false,
+      refetchOnWindowFocus: false,
+      refetchOnReconnect: false,
+    },
     mutations: { mutationFn: async () => {} },
   },
 });

@@ -81,7 +81,7 @@ export default function ChangePaymentCard({
             inputStyle={{
               borderRadius: "5px",
               width: !matches ? "39px" : "50px",
-              marginTop: !matches && "10px",
+              marginTop: !matches ? "10px" : undefined,
             }}
             autoSelect={true}
             length={6}

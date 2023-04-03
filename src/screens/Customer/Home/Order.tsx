@@ -117,7 +117,7 @@ const Order = () => {
               initialValues={initialValues}
               enableReinitialize
               onSubmit={(values) => {
-                product.setPaymentPayload(values);
+                product?.setPaymentPayload(values);
                 checkout();
               }}>
               {({ isValid, values, setFieldValue, submitForm }) => (

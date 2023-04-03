@@ -67,12 +67,15 @@ import NotificationSuperAdmin from "./screens/SuperAdmin/Notification";
 import Order from "./screens/Customer/Home/Order";
 import { Context } from "./utils/context";
 import { useState } from "react";
+import { PaymentPayload } from "./screens/Checkout/types";
 
 // shared admin
 // import CustomMessage from "./screens/SharedAdmin/ComplaintsLog/CustomMessage";
 
 function App() {
-  const [paymentPayload, setPaymentPayload] = useState();
+  const [paymentPayload, setPaymentPayload] = useState<
+    PaymentPayload | undefined
+  >();
   return (
     <Context.Provider
       value={{ product: { paymentPayload, setPaymentPayload } }}>

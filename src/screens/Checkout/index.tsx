@@ -106,13 +106,13 @@ const Checkout = () => {
   });
 
   const { isValid, submitForm, values, setFieldValue } = useFormik({
-    initialValues: product.paymentPayload || initialPPValues,
+    initialValues: product?.paymentPayload || initialPPValues,
     onSubmit: () => {},
     enableReinitialize: true,
   });
 
   const paymentWithAccountPayload: PayWAccountPayload = {
-    bankAccount: user.bankAccountNumber,
+    bankAccount: user?.bankAccountNumber || "",
     data: [values],
   };
 
@@ -151,7 +151,7 @@ const Checkout = () => {
               inputStyle={{
                 borderRadius: "5px",
                 width: !matches ? "39px" : "50px",
-                marginTop: !matches && "10px",
+                marginTop: !matches ? "10px" : undefined,
               }}
               autoSelect={true}
               length={6}
@@ -196,7 +196,7 @@ const Checkout = () => {
               inputStyle={{
                 borderRadius: "5px",
                 width: !matches ? "39px" : "50px",
-                marginTop: !matches && "10px",
+                marginTop: !matches ? "10px" : undefined,
               }}
               autoSelect={true}
               length={6}

@@ -20,14 +20,15 @@ import { ReactComponent as ArrowRight } from "../../../assets/svg/dark-arrow-rig
 import { limitText } from "../../../Custom hooks/helpers";
 import Loading from "../../../Components/Loading";
 import { customerBaseUrl } from "../../../utils/baseUrl";
-import { ToastContainer, toast } from "react-toastify";
+import { ToastContainer } from "react-toastify";
 import axios from "axios";
 import EmptyStates from "../../../containers/EmptyStates";
 import { getUser } from "../../../../src/Custom hooks/Hooks";
 import FilterComponent from "./FilterComponent";
-import { ProductFilterValues } from "../../../../src/t/shared";
+import { ProductFilterValues, ServerData } from "../../../../src/t/shared";
 import { FullProduct } from "../../../../src/t/payloads";
 import { ReactComponent as FilterTagX } from "../../../assets/svg/filterTagX.svg";
+import { useMutation, useQueries } from "@tanstack/react-query";
 
 const Home = () => {
   const navigate = useNavigate();
@@ -37,16 +38,56 @@ const Home = () => {
   const [filter, setFilter] = useState<ProductFilterValues>({});
 
   const orderStatus = searchParams.get("order");
-  const [loading, setLoading] = useState(false);
 
   const [confmDelivery, setConfmDelivery] = useState(false);
   const [reviewModal, setReviewModal] = useState(false);
 
-  const [data, setData] = useState<{
-    products?: FullProduct[];
-    states: any[];
-    lgas: any[];
-  }>({ products: [], states: [], lgas: [] });
+  const {
+    data: lgas,
+    mutate,
+    isLoading: fetchingL,
+  } = useMutation({
+    mutationFn: async (value: string) => {
+      const { data } = await axios.get<{ data: ServerData[] }>(
+        `${customerBaseUrl}Account/GetLocalGovt/${value}`
+      );
+      return data.data;
+    },
+  });
+
+  const [
+    { data: products, isFetching: fetchingP },
+    { data: states, isFetching: fetchingS },
+  ] = useQueries({
+    queries: [
+      {
+        queryKey: ["Products"],
+        queryFn: async () => {
+          const { data } = await axios.get<{ data: FullProduct[] }>(
+            `${customerBaseUrl}Product/Product`,
+            {
+              headers: { Authorization: `${user?.token}` },
+            }
+          );
+          return data.data;
+        },
+      },
+      {
+        queryKey: ["States"],
+        queryFn: async () => {
+          const { data } = await axios.get<{ data: ServerData[] }>(
+            `${customerBaseUrl}Account/GetState`
+          );
+          return data.data;
+        },
+        onSuccess: (data: ServerData[]) => {
+          const userState = data?.find((state) => state.text === user?.state);
+          if (!userState) return;
+          mutate(userState.value);
+        },
+      },
+    ],
+  });
 
   useEffect(() => {
     if (!orderStatus) {
@@ -56,7 +97,7 @@ const Home = () => {
       setReviewModal(false);
       navigate("/", { replace: true });
     }
-  }, [orderStatus]);
+  }, [orderStatus, navigate]);
 
   const confirmDelivery = () => {
     setConfmDelivery(false);
@@ -70,69 +111,37 @@ const Home = () => {
   //filter function
   const filterProducts = () => {
     if (filter.productType) {
-      return data.products.filter(
-        (product) => filter.productType.value === product.category
+      return products?.filter(
+        (product) => filter?.productType?.value === product.category
       );
     }
-    return data.products;
+    return products;
   };
 
-  useEffect(() => {
-    (async () => {
-      setLoading(true);
-      try {
-        const { data: products } = await axios.get(
-          `${customerBaseUrl}Product/Product`,
-          {
-            headers: { Authorization: `${user?.token}` },
-          }
-        );
-        const { data: states } = await axios.get(
-          `${customerBaseUrl}Account/GetState`
-        );
-        const userState = states.data?.find(
-          (state) => state.text === user?.state
-        );
-        const { data: lgas } = await axios.get(
-          `${customerBaseUrl}Account/GetLocalGovt/${userState?.value}`
-        );
-        setData({
-          products: products.data,
-          lgas: lgas.data,
-          states: states.data,
-        });
-        setLoading(false);
-      } catch (err) {
-        console.log(err);
-        setLoading(false);
-      }
-    })();
-  }, [user?.token, user?.state]);
+  // const [state, setState] = useState<string>("Active");
+  // const [count, setCount] = useState<number>(0);
+  // const [remaining, setRemaining] = useState<number>(0);
 
-  const [state, setState] = useState<string>("Active");
-  const [count, setCount] = useState<number>(0);
-  const [remaining, setRemaining] = useState<number>(0);
+  // const onIdle = () => {
+  //   setState("Idle");
+  // };
 
-  const onIdle = () => {
-    setState("Idle");
-  };
+  // const onActive = () => {
+  //   setState("Active");
+  // };
 
-  const onActive = () => {
-    setState("Active");
-  };
+  // const onAction = () => {
+  //   setCount(count + 1);
+  // };
 
-  const onAction = () => {
-    setCount(count + 1);
-  };
-
-  const { getRemainingTime } = useIdleTimer({
-    onIdle,
-    onActive,
-    onAction,
-    // Change to 10
-    // timeout: 40_000,
-    throttle: 500,
-  });
+  // const { getRemainingTime } = useIdleTimer({
+  //   onIdle,
+  //   onActive,
+  //   onAction,
+  //   // Change to 10
+  //   // timeout: 40_000,
+  //   throttle: 500,
+  // });
 
   const logout = useCallback(() => {
     localStorage.removeItem("user");
@@ -141,20 +150,20 @@ const Home = () => {
     window.location.reload(false);
   }, [navigate]);
 
-  useEffect(() => {
-    if (state === "Idle") {
-      logout();
-    }
-    if (user?.token) {
-      const interval = setInterval(() => {
-        setRemaining(Math.ceil(getRemainingTime() / 1000));
-      }, 500);
+  // useEffect(() => {
+  //   if (state === "Idle") {
+  //     logout();
+  //   }
+  //   if (user?.token) {
+  //     const interval = setInterval(() => {
+  //       setRemaining(Math.ceil(getRemainingTime() / 1000));
+  //     }, 500);
 
-      return () => {
-        clearInterval(interval);
-      };
-    }
-  }, [getRemainingTime, user, logout, state]);
+  //     return () => {
+  //       clearInterval(interval);
+  //     };
+  //   }
+  // }, [getRemainingTime, user, logout, state]);
 
   const buyNow = (productId?: string) => {
     if (user) {
@@ -164,9 +173,13 @@ const Home = () => {
     }
   };
 
+  const fetchLga = (e: string) => {
+    mutate(e);
+  };
+
   return (
     <>
-      {loading && <Loading />}
+      {fetchingP || ((fetchingS || fetchingL) && <Loading />)}
       <ToastContainer
         position='bottom-right'
         autoClose={5000}
@@ -232,8 +245,9 @@ const Home = () => {
             {matches && <PaginationOf current={[1, 20]} total={45} />}
             <FilterComponent
               applyFilter={setFilter}
-              lgas={data.lgas}
-              states={data?.states}
+              lgas={lgas}
+              states={states}
+              fetchLga={fetchLga}
             />
           </PageHeader>
 
@@ -295,11 +309,7 @@ const Home = () => {
             )}
           </div>
 
-          {data.products.length < 1 ? (
-            <>
-              <EmptyStates table />
-            </>
-          ) : (
+          {products && products.length > 1 ? (
             <TableContainer
               style={{
                 marginTop: "35px",
@@ -430,6 +440,10 @@ const Home = () => {
                 </Table>
               )}
             </TableContainer>
+          ) : (
+            <>
+              <EmptyStates table />
+            </>
           )}
         </>
       </Layout>

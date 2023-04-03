@@ -53,7 +53,7 @@ const Cart = () => {
   const backHome = () => navigate("/");
 
   const [loading, setLoading] = useState(false);
-  const [cartData, setCartData] = useState([]);
+  const [cartData, setCartData] = useState<any[]>([]);
 
   const newUser = getUser();
 

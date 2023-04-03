@@ -4,16 +4,16 @@ import styles from "./style.module.css";
 import { SelectTemp } from "../../../Components/InputTemp";
 import { useState } from "react";
 import Button from "../../../../src/Components/Button";
-import { ProductFilterValues } from "../../../../src/t/shared";
-type ServerData = { value: string; text: string };
+import { ProductFilterValues, ServerData } from "../../../../src/t/shared";
 
 interface Props {
-  states: ServerData[];
-  lgas: ServerData[];
+  states: ServerData[] | undefined;
+  lgas: ServerData[] | undefined;
   applyFilter: (values: ProductFilterValues) => void;
+  fetchLga: (e: string) => void;
 }
 
-const FilterComponent = ({ states, lgas, applyFilter }: Props) => {
+const FilterComponent = ({ states, lgas, applyFilter, fetchLga }: Props) => {
   const [values, setValues] = useState<ProductFilterValues>({});
 
   const [open, setOpen] = useState<boolean | undefined>();
@@ -30,9 +30,10 @@ const FilterComponent = ({ states, lgas, applyFilter }: Props) => {
               value: state.value,
             }))}
             value={values?.state}
-            onValueChange={(e: any) =>
-              setValues((state) => ({ ...state, state: e }))
-            }
+            onValueChange={(e: any) => {
+              setValues((state) => ({ ...state, state: e }));
+              fetchLga(e?.value);
+            }}
             className={styles.singleFilterSelect}
           />
         </div>

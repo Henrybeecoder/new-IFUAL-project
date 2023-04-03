@@ -5,7 +5,7 @@ import OrderDetailsForm from "../../../Components/OrderDetailsForm";
 import { usePPInitialValues } from "../../../../src/screens/Checkout/types";
 
 const OrderDetails = () => {
-  const data = undefined;
+  const data: any = undefined;
 
   const initialValues = usePPInitialValues({
     deliveryTime: data?.deliveryTime || "6 hours",

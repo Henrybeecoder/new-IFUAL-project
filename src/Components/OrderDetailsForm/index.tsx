@@ -39,12 +39,14 @@ const OrderDetailsForm = ({ values, onValueChange }: Props) => {
                   type='tel'
                   value={values.productDetail.quantity}
                   onChange={(e) =>
+                    onValueChange &&
                     onValueChange("productDetail.quantity", e.target.value)
                   }
                 />
                 <div className={styles.controls}>
                   <button
                     onClick={() =>
+                      onValueChange &&
                       onValueChange(
                         "productDetail.quantity",
                         (Number(values.productDetail.quantity) + 1).toString()
@@ -55,6 +57,7 @@ const OrderDetailsForm = ({ values, onValueChange }: Props) => {
                   <button
                     type='button'
                     onClick={() =>
+                      onValueChange &&
                       onValueChange(
                         "productDetail.quantity",
                         (Number(values.productDetail.quantity) - 1).toString()
@@ -80,6 +83,7 @@ const OrderDetailsForm = ({ values, onValueChange }: Props) => {
               label='FIRST NAME'
               value={values.deliveryDetail.firstName}
               onChange={(e) =>
+                onValueChange &&
                 onValueChange("deliveryDetail.firstName", e.target.value)
               }
               marginRight
@@ -88,6 +92,7 @@ const OrderDetailsForm = ({ values, onValueChange }: Props) => {
               label='SURNAME'
               value={values.deliveryDetail.surName}
               onChange={(e) =>
+                onValueChange &&
                 onValueChange("deliveryDetail.surName", e.target.value)
               }
               marginLeft
@@ -98,6 +103,7 @@ const OrderDetailsForm = ({ values, onValueChange }: Props) => {
               label='PHONE NUMBER'
               value={values.deliveryDetail.phoneNumber}
               onChange={(e) =>
+                onValueChange &&
                 onValueChange("deliveryDetail.phoneNumber", e.target.value)
               }
               marginRight
@@ -106,6 +112,7 @@ const OrderDetailsForm = ({ values, onValueChange }: Props) => {
               label='EMAIL ADDRESS'
               value={values.deliveryDetail.emailAddress}
               onChange={(e) =>
+                onValueChange &&
                 onValueChange("deliveryDetail.emailAddress", e.target.value)
               }
               marginLeft
@@ -116,6 +123,7 @@ const OrderDetailsForm = ({ values, onValueChange }: Props) => {
               label='DELIVERY ADDRESS'
               value={values.deliveryDetail.deliveryAdress}
               onChange={(e) =>
+                onValueChange &&
                 onValueChange("deliveryDetail.deliveryAdress", e.target.value)
               }
               marginRight
@@ -126,7 +134,7 @@ const OrderDetailsForm = ({ values, onValueChange }: Props) => {
               placeholder='Lagos'
               options={statesOptions}
               onValueChange={(e) => {
-                onValueChange("state", e.value);
+                onValueChange && onValueChange("state", e.value);
               }}
             />
           </div>

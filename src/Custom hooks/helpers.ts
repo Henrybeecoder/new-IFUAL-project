@@ -2,8 +2,8 @@ import { CSSProperties } from "react";
 import { User } from "src/t/shared";
 import { states } from "../utils/state";
 
-export const limitText = (text: string, limit: number) =>
-  text?.length > limit ? text.slice(0, limit) + "..." : text;
+export const limitText = (text: string | undefined, limit: number) =>
+  text ? (text?.length > limit ? text.slice(0, limit) + "..." : text) : text;
 
 export const statesOptions = states.map((state) => ({
   value: state.name.toLowerCase(),
