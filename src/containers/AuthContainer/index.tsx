@@ -28,7 +28,11 @@ export default function AuthContainer({ page, children }: AuthContainerProps) {
         </div>
         <div className={styles.holder}>
           <div className={styles.formContainer}>{children}</div>
-          <img src={emoji} alt='' className={styles.emoji} />
+          <img
+            src={emoji}
+            alt=''
+            className={page === "login" ? styles.emoji : styles.emojiR}
+          />
         </div>
       </div>
     </PrimaryContainer>

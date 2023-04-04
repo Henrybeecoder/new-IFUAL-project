@@ -51,6 +51,12 @@
   left: -18%;
 }
 
+.emojiR {
+  position: absolute;
+  bottom: -2%;
+  left: -23%;
+}
+
 @media screen and (max-width: 800px) {
   .emoji {
     display: none;
