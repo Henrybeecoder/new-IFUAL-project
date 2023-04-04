@@ -66,8 +66,19 @@ export default function SignUp() {
     setOtp(res);
   };
 
+  const payload = {
+    firstName: formValues?.firstName,
+    surname: formValues?.lastName,
+    phoneNumber: formValues?.phoneNumber,
+    emailAddress: formValues?.email,
+    houseAddress: formValues?.houseAddress,
+    state: formValues?.stateValue,
+    password: formValues?.password,
+    confirmPassword: formValues?.confirmPassword,
+  };
+
   const { mutate, isLoading } = useMutation({
-    mutationFn: async (variables: CreatePayload) => {
+    mutationFn: async (variables: Partial<CreatePayload>) => {
       const { data } = await axios.post<any>(
         `${customerBaseUrl}Account/CreateCustomer`,
         variables
@@ -96,13 +107,20 @@ export default function SignUp() {
     if (newDataOTP === dataOTP) {
       toast.success("successful");
       setAM("accountSaved");
-      setTimeout(
-        () => navigate({ pathname: "/login", search: "type=customer" }),
-        7000
-      );
+      setTimeout(() => navigate({ pathname: "/login" }), 7000);
     } else {
       toast.error("Wrong OTP, Please Try Again");
     }
+  };
+
+  const skipAccount = () => {
+    if (!formValues) return;
+    mutate(payload, {
+      onSuccess: () => {
+        setAM("accountSaved");
+        setTimeout(() => navigate({ pathname: "/login" }), 7000);
+      },
+    });
   };
 
   const getCustomOTP = async () => {
@@ -188,7 +206,11 @@ export default function SignUp() {
             onClick={() => setAM("personalAccount")}
           />
           <Button variant='outlinePrimary' text='Create a new Account' />
-          <Button variant='outlinePrimary' text='Skip for now, add later' />
+          <Button
+            variant='outlinePrimary'
+            text='Skip for now, add later'
+            onClick={skipAccount}
+          />
         </div>
       </Modal>
       <PersonalAccountModal
@@ -199,18 +221,7 @@ export default function SignUp() {
         fullAccountName={fullAccountName}
         onSubmit={(accountNumber) => {
           if (!formValues) return;
-          const payload = {
-            firstName: formValues.firstName,
-            surname: formValues.lastName,
-            phoneNumber: formValues.phoneNumber,
-            emailAddress: formValues.email,
-            houseAddress: formValues.houseAddress,
-            state: formValues.stateValue,
-            bankAccountNumber: accountNumber,
-            password: formValues.password,
-            confirmPassword: formValues.confirmPassword,
-          };
-          mutate(payload);
+          mutate({ ...payload, bankAccountNumber: accountNumber });
         }}
       />
       <Modal

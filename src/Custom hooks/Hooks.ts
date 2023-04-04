@@ -58,6 +58,7 @@ export const useGetStates = () => {
     },
     placeholderData: [],
     initialData: [],
+    refetchOnReconnect: true,
     // onSuccess: (data: ServerData[]) => {
     //   const userState = data?.find((state) => state.text === user?.state);
     //   if (!userState) return;

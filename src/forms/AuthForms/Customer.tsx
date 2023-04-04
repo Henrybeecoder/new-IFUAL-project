@@ -253,6 +253,7 @@ export const SignUpForm = ({
 
                   <InputTemp
                     label='HOUSE ADDRESS'
+                    mode='light'
                     placeholder='Enter address'
                     {...getFieldProps("houseAddress")}
                   />
@@ -262,7 +263,7 @@ export const SignUpForm = ({
                       label: state.text,
                       value: state.value,
                     }))}
-                    // label='SELECT STATE'
+                    label='SELECT STATE'
                     value={values.stateValue}
                     onValueChange={(e: any) =>
                       setFieldValue("stateValue", e.value)
