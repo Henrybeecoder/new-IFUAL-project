@@ -182,6 +182,8 @@ export const SignUpForm = ({
   const [visible, setV] = useState({ password: false, confirmPassword: false });
   const { states, loading } = useGetStates();
 
+  console.log(states, loading);
+
   const [acceptTermsAndConditions, setATC] = useState(false);
 
   const [phase, setPhase] = useState("first");
@@ -263,6 +265,7 @@ export const SignUpForm = ({
                       label: state.text,
                       value: state.value,
                     }))}
+                    disabled={states.length < 1}
                     label='SELECT STATE'
                     value={values.stateValue}
                     onValueChange={(e: any) =>

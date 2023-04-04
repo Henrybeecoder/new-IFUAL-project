@@ -160,6 +160,7 @@ export const SelectTemp = ({
         {label}
       </label>
       <Select
+        autoFocus={false}
         isDisabled={disabled}
         value={value}
         onChange={onValueChange}

@@ -53,8 +53,7 @@ export default function SignUp() {
 
   const [accountLoading, setAccountLoading] = useState(false);
   const [fullAccountName, setFAN] = useState("");
-  const [dataOTP, setDataOTP] = useState("");
-  const [otp, setOtp] = useState("");
+  const [otp, setOtp] = useState({ server: "", client: "" });
 
   const navigateToSignUp = () => {
     navigate({ pathname: "/signup", search: "type=customer" });
@@ -62,8 +61,8 @@ export default function SignUp() {
     window.location.reload(false);
   };
 
-  const handleOnChange = (res: string) => {
-    setOtp(res);
+  const handleOnChange = (otp: string) => {
+    setOtp((state) => ({ server: state.server, client: otp }));
   };
 
   const payload = {
@@ -78,6 +77,7 @@ export default function SignUp() {
   };
 
   const { mutate, isLoading } = useMutation({
+    mutationKey: ["create-customer"],
     mutationFn: async (variables: Partial<CreatePayload>) => {
       const { data } = await axios.post<any>(
         `${customerBaseUrl}Account/CreateCustomer`,
@@ -85,26 +85,11 @@ export default function SignUp() {
       );
       return data.data;
     },
-    onSuccess: async (data: any) => {
-      if (!formValues) return;
-      if (data) {
-        const otp = await getOtp({
-          email: formValues.email,
-          firstName: formValues?.firstName,
-        });
-        setDataOTP(otp);
-        setAM("otp");
-      } else {
-        setAM("accountFailure");
-      }
-    },
     onError: () => setAM("accountFailure"),
   });
 
-  const newDataOTP = otp?.toString();
-
   const verifyOtp = () => {
-    if (newDataOTP === dataOTP) {
+    if (otp.server === otp.client) {
       toast.success("successful");
       setAM("accountSaved");
       setTimeout(() => navigate({ pathname: "/login" }), 7000);
@@ -123,16 +108,19 @@ export default function SignUp() {
     });
   };
 
-  const getCustomOTP = async () => {
+  const resendOtp = async () => {
     setAccountLoading(true);
-    if (!formValues) return;
+    if (!formValues) {
+      setAccountLoading(false);
+      return;
+    }
     try {
       const otp = await getOtp({
         email: formValues?.email,
         firstName: formValues?.firstName,
       });
       toast.success("OTP sent to your mail");
-      setDataOTP(otp);
+      setOtp((state) => ({ client: state.client, server: otp }));
       setAccountLoading(false);
     } catch (err) {
       console.log(err);
@@ -147,7 +135,7 @@ export default function SignUp() {
         `${customerBaseUrl}Account/VerifyAccount/${accountNumber}`
       );
       setAccountLoading(false);
-      if (data.data.responseCode === "00") {
+      if (data.responseCode === "00") {
         setFAN(data.data.accountName);
       } else {
         toast.error("Account is not active");
@@ -156,6 +144,36 @@ export default function SignUp() {
     } catch (err) {
       setAccountLoading(false);
     }
+  };
+
+  const submitBankAccount = (accountNumber: string) => {
+    if (!formValues) return;
+    mutate(
+      { ...payload, bankAccountNumber: accountNumber },
+      {
+        onSuccess: async (data: any) => {
+          if (!formValues) return;
+          if (data) {
+            setAccountLoading(true);
+            try {
+              const otp = await getOtp({
+                email: formValues.email,
+                firstName: formValues?.firstName,
+              });
+              setOtp((state) => ({ client: state.client, server: otp }));
+              setAccountLoading(false);
+              toast.success("OTP sent to your mail");
+              setAM("otp");
+            } catch (err) {
+              setAccountLoading(false);
+              toast.error("failed to send OTP");
+            }
+          } else {
+            setAM("accountFailure");
+          }
+        },
+      }
+    );
   };
 
   const signupType = searchParams.get("type");
@@ -219,10 +237,7 @@ export default function SignUp() {
         setAM={setAM}
         getFAN={getFAN}
         fullAccountName={fullAccountName}
-        onSubmit={(accountNumber) => {
-          if (!formValues) return;
-          mutate({ ...payload, bankAccountNumber: accountNumber });
-        }}
+        onSubmit={submitBankAccount}
       />
       <Modal
         variant='default'
@@ -243,17 +258,15 @@ export default function SignUp() {
           <Button
             variant='primary'
             text='Submit'
-            invalid={otp?.length < 6}
-            onClick={() => {
-              verifyOtp();
-            }}
+            invalid={otp.client?.length < 6}
+            onClick={verifyOtp}
           />
           <p className={styles.otpText}>
             {" "}
             You have not received an OTP,
             <span
               onClick={() => {
-                getCustomOTP();
+                resendOtp();
               }}>
               {" "}
               click here{" "}

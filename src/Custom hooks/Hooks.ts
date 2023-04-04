@@ -48,17 +48,18 @@ export const useData = <T extends Type>(
 };
 
 export const useGetStates = () => {
-  const { data, isFetching } = useQuery({
-    queryKey: ["States"],
+  const { data, isFetching, isLoading } = useQuery({
+    queryKey: ["states"],
     queryFn: async () => {
       const { data } = await axios.get<{ data: ServerData[] }>(
         `${customerBaseUrl}Account/GetState`
       );
       return data.data;
     },
-    placeholderData: [],
     initialData: [],
     refetchOnReconnect: true,
+    refetchOnMount: true,
+    retry: (count) => count < 3,
     // onSuccess: (data: ServerData[]) => {
     //   const userState = data?.find((state) => state.text === user?.state);
     //   if (!userState) return;
@@ -66,7 +67,7 @@ export const useGetStates = () => {
     // },
   });
 
-  return { states: data, loading: isFetching };
+  return { states: data, loading: isLoading };
 };
 
 export const getOtp = async ({

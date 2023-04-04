@@ -23,7 +23,7 @@ const queryClient = new QueryClient({
     queries: {
       networkMode: "offlineFirst",
       retry: (failed) => false,
-      refetchOnMount: false,
+      // refetchOnMount: false,
       refetchOnWindowFocus: false,
       refetchOnReconnect: false,
     },
