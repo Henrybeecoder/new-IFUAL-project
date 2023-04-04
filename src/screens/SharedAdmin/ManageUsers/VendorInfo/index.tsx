@@ -1,14 +1,9 @@
-import {
-  InputTemp,
-  SelectTemp,
-  TextareaTemp,
-} from "../../../../Components/InputTemp";
+import { SelectTemp } from "../../../../Components/InputTemp";
 import styles from "./style.module.css";
 import { ChangeEvent, useRef, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
-import image from "../../../../assets/image/companyName.png";
 import Modal from "../../../../Components/Modals";
-import { customer_data, vendor_data } from "../data";
+import { vendor_data } from "../data";
 import Button from "../../../../Components/Button";
 import { VendorProfile } from "../../../../Components/Profile";
 import Header from "../../../../Components/PageHeader/Admin";
@@ -52,6 +47,8 @@ const VendorInfo = () => {
       : data?.status === "rejected"
       ? "#CA0814"
       : "#2F3930";
+
+  const edit = true;
 
   return (
     <>
@@ -123,7 +120,7 @@ const VendorInfo = () => {
           </div>
         ) : null}
       </>
-      <VendorProfile>
+      <VendorProfile edit={edit}>
         {data?.status && data.status === "onboarded" ? (
           <>
             <Button

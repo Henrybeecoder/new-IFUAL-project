@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useState } from "react";
 import styles from "./style.module.css";
 import Visibility from "@material-ui/icons/Visibility";
 import VisibilityOff from "@material-ui/icons/VisibilityOff";
@@ -13,6 +13,9 @@ import axios from "axios";
 import errorAlert from "../../assets/svg/errorAlert.svg";
 import Error from "../../assets/svg/Error.svg";
 import newX from "../../assets/svg/newX.svg";
+import { useGetStates } from "../../../src/Custom hooks/Hooks";
+import { Formik } from "formik";
+import { CustomerRVS } from "./validation";
 
 export default function LoginForm() {
   const navigate = useNavigate();
@@ -38,10 +41,6 @@ export default function LoginForm() {
     setRememberPassword((state) => !state);
   };
 
-  const getCustomerProfile = () => {
-    setLoading(true);
-  };
-
   const login = () => {
     let loginPayload = {
       emailAddress: email,
@@ -52,7 +51,6 @@ export default function LoginForm() {
       .post(`${customerBaseUrl}Account/Login`, loginPayload)
       .then((response) => {
         const token = response?.data?.data?.token;
-        console.log(token);
         localStorage.setItem(
           "user",
           JSON.stringify({
@@ -65,7 +63,6 @@ export default function LoginForm() {
             headers: { Authorization: `${token}` },
           })
           .then((response) => {
-            console.log(response, "customer profile");
             localStorage.setItem(
               "user",
               JSON.stringify({
@@ -88,14 +85,12 @@ export default function LoginForm() {
             setLoading(false);
           })
           .catch((err) => {
-            console.log(err);
             setLoading(false);
           });
         setLoading(true);
       })
       .catch((err) => {
         setLoginError(true);
-        console.log(err);
         setLoading(false);
       });
   };
@@ -164,354 +159,318 @@ export default function LoginForm() {
   );
 }
 
+const initialValues = {
+  firstName: "",
+  lastName: "",
+  phoneNumber: "",
+  email: "",
+  houseAddress: "",
+  password: "",
+  confirmPassword: "",
+  // accountNumber: "",
+  stateValue: "",
+};
+export type SignUpFormValues = typeof initialValues;
+
 export const SignUpForm = ({
-  setOpenAccountUpdateModal,
-  accountNumber,
-  firstName,
-  setFirstName,
-  lastName,
-  setLastName,
-  phoneNumber,
-  setPhoneNumber,
-  email,
-  setEmail,
-  houseAddress,
-  setHouseAddress,
-  password,
-  setPassword,
-  confirmPassword,
-  setConfirmPassword,
-  stateValue,
-  setStateValue,
-  handleStateGlobalChange,
+  onSubmit,
+}: {
+  onSubmit: (values: SignUpFormValues) => void;
 }) => {
   const navigate = useNavigate();
   const matches = useMediaQuery("(min-width: 800px)");
-  const [passwordVisible, setPasswordVisibility] = useState(false);
-  const [confirmPasswordVisible, setConfirmPasswordVisibility] =
-    useState(false);
-  const [selectState, setSelectState] = useState("");
+  const [visible, setV] = useState({ password: false, confirmPassword: false });
+  const { states, loading } = useGetStates();
+
+  console.log(states, loading);
 
   const [acceptTermsAndConditions, setATC] = useState(false);
 
-  const [loading, setLoading] = useState(false);
   const [phase, setPhase] = useState("first");
-  const [allStateData, setAllStateData] = useState([]);
-  const [passwordMismatch, setPasswordMismatch] = useState(false);
-
-  const handleStateChange = (event: any) => {
-    setSelectState(event.target.value);
-  };
-
-  const togglePasswordVisiblity = () => {
-    setPasswordVisibility((state) => !state);
-  };
-
-  const toggleConfirmPasswordVisiblity = () => {
-    setConfirmPasswordVisibility((state) => !state);
-  };
-
-  const switchPhase = (phase: string) => {
-    setPhase(phase);
-  };
 
   const toggleATC = () => {
     setATC((state) => !state);
   };
 
   const navigateToLogin = () => {
-    navigate({ pathname: "/login", search: "?type=customer" });
-  };
-
-  const getAllState = () => {
-    setLoading(true);
-    axios
-      .get(`${customerBaseUrl}Account/GetState`)
-      .then((response) => {
-        setAllStateData(response.data.data);
-        setLoading(false);
-      })
-      .catch((err) => {
-        console.log(err);
-        setLoading(false);
-      });
-  };
-
-  useEffect(() => {
-    getAllState();
-  }, []);
-
-  // Register customer
-
-  const onRegisterClick = () => {
-    if (password !== confirmPassword) {
-      setPasswordMismatch(true);
-    } else {
-      setOpenAccountUpdateModal(true);
-      setPasswordMismatch(false);
-    }
+    navigate({ pathname: "/login" });
   };
 
   return (
     <>
       {loading && <Loading />}
 
-      {matches && (
-        <>
-          <form>
-            <div className={styles.flexForm}>
-              <InputTemp
-                label='FIRST NAME'
-                placeholder='Name'
-                inputType='text'
-                name='firstName'
-                mode='light'
-                marginRight
-                value={firstName}
-                onChange={(e) => setFirstName(e.target.value)}
-              />
-              <InputTemp
-                label='SURNAME'
-                placeholder='Last name'
-                inputType='text'
-                mode='light'
-                marginLeft
-                name='lastName'
-                value={lastName}
-                onChange={(e) => setLastName(e.target.value)}
-              />
-            </div>
-            <div className={styles.flexForm}>
-              <InputTemp
-                label='PHONE NUMBER'
-                marginRight
-                placeholder='+234  708 ...'
-                inputType='tel'
-                mode='light'
-                name='phoneNo'
-                value={phoneNumber}
-                onChange={(e) => setPhoneNumber(e.target.value)}
-              />
-              <InputTemp
-                label='EMAIL ADDRESS'
-                marginLeft
-                placeholder='email@host.co.. '
-                inputType='email'
-                mode='light'
-                name='email'
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-              />
-            </div>
-
-            <InputTemp
-              label='HOUSE ADDRESS'
-              placeholder='Enter address'
-              value={houseAddress}
-              onChange={(e) => setHouseAddress(e.target.value)}
-            />
-            <SelectTemp
-              mode='light'
-              options={allStateData.map((state) => ({
-                label: state.text,
-                value: state.value,
-              }))}
-              label='SELECT STATE'
-              value={stateValue}
-              onValueChange={handleStateGlobalChange}
-            />
-            <InputTemp
-              visibilityPadding
-              label='PASSWORD'
-              placeholder='Enter Preferred Password'
-              inputType={passwordVisible ? "text" : "password"}
-              mode='light'
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}>
-              <i
-                className={styles.btnVisibility}
-                onClick={togglePasswordVisiblity}>
-                {passwordVisible ? <Visibility /> : <VisibilityOff />}
-              </i>
-            </InputTemp>
-
-            <InputTemp
-              visibilityPadding
-              label='RECONFIRM PASSWORD'
-              inputType={confirmPasswordVisible ? "text" : "password"}
-              placeholder='Enter Preferred Password'
-              mode='light'
-              value={confirmPassword}
-              onChange={(e) => setConfirmPassword(e.target.value)}>
-              <i
-                onClick={toggleConfirmPasswordVisiblity}
-                className={styles.btnVisibility}>
-                {confirmPasswordVisible ? <Visibility /> : <VisibilityOff />}
-              </i>
-            </InputTemp>
-          </form>
-          {passwordMismatch && <PassWordMisMatch />}
-          <div className={styles.rememberMe}>
-            <Checkbox
-              checked={acceptTermsAndConditions}
-              toggleChecked={toggleATC}
-            />
-            <p>
-              I accept the <span>Terms and Conditions</span>
-            </p>
-          </div>
-
-          <div className={styles.footer}>
-            <Button
-              text={"Register"}
-              variant='primary'
-              invalid={
-                false
-                // firstName.length < 1 ||
-                // lastName.length < 1 ||
-                // houseAddress.length < 1 ||
-                // phoneNumber.length < 1 ||
-                // email.length < 1 ||
-                // password.length < 1 ||
-                // confirmPassword.length < 1
-              }
-              onClick={onRegisterClick}
-
-              // onClick={() => signup({ email })}
-            />
-            <p>
-              <div className={styles.signUp}>
-                Already have an account?{" "}
-                <span onClick={navigateToLogin}>Log in</span>
-              </div>
-            </p>
-          </div>
-        </>
-      )}
-      {/* mobile */}
-      <form onSubmit={(e) => e.preventDefault()}>
-        {phase === "first" && !matches ? (
+      <Formik
+        initialValues={initialValues}
+        onSubmit={onSubmit}
+        validationSchema={CustomerRVS}>
+        {({
+          dirty,
+          getFieldProps,
+          values,
+          setFieldValue,
+          submitForm,
+          errors,
+        }) => (
           <>
-            <div className={styles.flexMobileForm}>
-              <InputTemp
-                label='FIRST NAME'
-                placeholder='Name'
-                inputType='text'
-                name='firstName'
-                value={firstName}
-                onChange={(e) => setFirstName(e.target.value)}
-              />
-              <InputTemp
-                label='SURNAME'
-                placeholder='Last name'
-                inputType='text'
-                name='lastName'
-                value={lastName}
-                onChange={(e) => setLastName(e.target.value)}
-              />
-            </div>
-            <InputTemp
-              label='PHONE NUMBER'
-              placeholder='+234  708 ...'
-              inputType='tel'
-              name='phoneNo'
-              value={phoneNumber}
-              onChange={(e) => setPhoneNumber(e.target.value)}
-            />
-            <InputTemp
-              label='EMAIL ADDRESS'
-              placeholder='email@host.co.. '
-              inputType='email'
-              name='email'
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-            />
-            <div className={styles.buttonContainer}>
-              <Button
-                text='Next'
-                onClick={() => switchPhase("second")}
-                variant='primary'
-                invalid={
-                  firstName?.length < 1 ||
-                  lastName?.length < 1 ||
-                  phoneNumber?.length < 1 ||
-                  email?.length < 1
-                }
-              />
-            </div>
-          </>
-        ) : null}
-        {/* mobile second screen */}
-        {phase === "second" && !matches ? (
-          <>
-            <InputTemp
-              label='HOUSE ADDRESS'
-              placeholder='Enter address'
-              inputType='text'
-              name='address'
-              value={houseAddress}
-              onChange={(e) => setHouseAddress(e.target.value)}
-            />
-            <SelectTemp
-              mode='dark'
-              options={allStateData.map((state) => ({
-                label: state.text,
-                value: state.value,
-              }))}
-              label='SELECT STATE'
-              value={stateValue}
-              onValueChange={handleStateGlobalChange}
-            />
-            <InputTemp
-              visibilityPadding
-              label='PASSWORD'
-              placeholder='Enter Preferred Password'
-              inputType={passwordVisible ? "text" : "password"}
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}>
-              <i
-                className={styles.btnVisibility}
-                onClick={togglePasswordVisiblity}>
-                {passwordVisible ? <Visibility /> : <VisibilityOff />}
-              </i>
-            </InputTemp>
+            {matches && (
+              <>
+                <form>
+                  <div className={styles.flexForm}>
+                    <InputTemp
+                      label='FIRST NAME'
+                      placeholder='Name'
+                      inputType='text'
+                      mode='light'
+                      marginRight
+                      {...getFieldProps("firstName")}
+                    />
+                    <InputTemp
+                      label='SURNAME'
+                      placeholder='Last name'
+                      inputType='text'
+                      mode='light'
+                      marginLeft
+                      {...getFieldProps("lastName")}
+                    />
+                  </div>
+                  <div className={styles.flexForm}>
+                    <InputTemp
+                      label='PHONE NUMBER'
+                      marginRight
+                      placeholder='+234  708 ...'
+                      inputType='tel'
+                      mode='light'
+                      {...getFieldProps("phoneNumber")}
+                    />
+                    <InputTemp
+                      label='EMAIL ADDRESS'
+                      marginLeft
+                      placeholder='email@host.co.. '
+                      inputType='email'
+                      mode='light'
+                      {...getFieldProps("email")}
+                    />
+                  </div>
 
-            <InputTemp
-              visibilityPadding
-              label='RECONFIRM PASSWORD'
-              inputType={confirmPasswordVisible ? "text" : "password"}
-              placeholder='Enter Preferred Password'
-              value={confirmPassword}
-              onChange={(e) => setConfirmPassword(e.target.value)}>
-              <i
-                onClick={toggleConfirmPasswordVisiblity}
-                className={styles.btnVisibility}>
-                {confirmPasswordVisible ? <Visibility /> : <VisibilityOff />}
-              </i>
-            </InputTemp>
-            {passwordMismatch && <PassWordMisMatch />}
+                  <InputTemp
+                    label='HOUSE ADDRESS'
+                    mode='light'
+                    placeholder='Enter address'
+                    {...getFieldProps("houseAddress")}
+                  />
+                  <SelectTemp
+                    mode='light'
+                    options={states.map((state) => ({
+                      label: state.text,
+                      value: state.value,
+                    }))}
+                    disabled={states.length < 1}
+                    label='SELECT STATE'
+                    value={values.stateValue}
+                    onValueChange={(e: any) =>
+                      setFieldValue("stateValue", e.value)
+                    }
+                  />
+                  <InputTemp
+                    visibilityPadding
+                    label='PASSWORD'
+                    placeholder='Enter Preferred Password'
+                    inputType={visible.password ? "text" : "password"}
+                    mode='light'
+                    {...getFieldProps("password")}>
+                    <i
+                      className={styles.btnVisibility}
+                      onClick={() =>
+                        setV((state) => ({
+                          ...state,
+                          password: !state.password,
+                        }))
+                      }>
+                      {visible.password ? <Visibility /> : <VisibilityOff />}
+                    </i>
+                  </InputTemp>
 
-            <div className={styles.rememberMe}>
-              <Checkbox
-                checked={acceptTermsAndConditions}
-                toggleChecked={toggleATC}
-              />
-              <p>
-                I accept the <span>Terms and Conditions</span>
-              </p>
-            </div>
-            <div className={styles.footer}>
-              <Button text='Register' onClick={onRegisterClick} />
-              <p>
-                <div className={styles.signUp}>
-                  Already have an account?{" "}
-                  <span onClick={navigateToLogin}>Log in</span>
+                  <InputTemp
+                    visibilityPadding
+                    label='RECONFIRM PASSWORD'
+                    inputType={visible.confirmPassword ? "text" : "password"}
+                    placeholder='Enter Preferred Password'
+                    mode='light'
+                    {...getFieldProps("confirmPassword")}>
+                    <i
+                      onClick={() =>
+                        setV((state) => ({
+                          ...state,
+                          confirmPassword: !state.confirmPassword,
+                        }))
+                      }
+                      className={styles.btnVisibility}>
+                      {visible.confirmPassword ? (
+                        <Visibility />
+                      ) : (
+                        <VisibilityOff />
+                      )}
+                    </i>
+                  </InputTemp>
+                </form>
+                {/* TODO */}
+                {errors.confirmPassword && <PassWordMisMatch />}
+                <div className={styles.rememberMe}>
+                  <Checkbox
+                    checked={acceptTermsAndConditions}
+                    toggleChecked={toggleATC}
+                  />
+                  <p>
+                    I accept the <span>Terms and Conditions</span>
+                  </p>
                 </div>
-              </p>
-            </div>
+
+                <div className={styles.footer}>
+                  <Button
+                    text={"Register"}
+                    variant='primary'
+                    invalid={!dirty}
+                    onClick={submitForm}
+                  />
+                  <div className={styles.signUp}>
+                    Already have an account?{" "}
+                    <span onClick={navigateToLogin}>Log in</span>
+                  </div>
+                </div>
+              </>
+            )}
+            {/* mobile */}
+            <form onSubmit={(e) => e.preventDefault()}>
+              {phase === "first" && !matches ? (
+                <>
+                  <div className={styles.flexMobileForm}>
+                    <InputTemp
+                      label='FIRST NAME'
+                      placeholder='Name'
+                      inputType='text'
+                      {...getFieldProps("firstName")}
+                    />
+                    <InputTemp
+                      label='SURNAME'
+                      placeholder='Last name'
+                      inputType='text'
+                      {...getFieldProps("lastName")}
+                    />
+                  </div>
+                  <InputTemp
+                    label='PHONE NUMBER'
+                    placeholder='+234  708 ...'
+                    inputType='tel'
+                    {...getFieldProps("phoneNumber")}
+                  />
+                  <InputTemp
+                    label='EMAIL ADDRESS'
+                    placeholder='email@host.co.. '
+                    inputType='email'
+                    {...getFieldProps("email")}
+                  />
+                  <div className={styles.buttonContainer}>
+                    <Button
+                      text='Next'
+                      onClick={() => setPhase("second")}
+                      variant='primary'
+                      invalid={!dirty}
+                    />
+                  </div>
+                </>
+              ) : null}
+              {/* mobile second screen */}
+              {phase === "second" && !matches ? (
+                <>
+                  <InputTemp
+                    label='HOUSE ADDRESS'
+                    placeholder='Enter address'
+                    inputType='text'
+                    {...getFieldProps("houseAddress")}
+                  />
+                  <SelectTemp
+                    mode='dark'
+                    options={states.map((state) => ({
+                      label: state.text,
+                      value: state.value,
+                    }))}
+                    label='SELECT STATE'
+                    value={values.stateValue}
+                    onValueChange={(e: any) =>
+                      setFieldValue("stateValue", e.value)
+                    }
+                  />
+                  <InputTemp
+                    visibilityPadding
+                    label='PASSWORD'
+                    placeholder='Enter Preferred Password'
+                    inputType={visible.password ? "text" : "password"}
+                    {...getFieldProps("password")}>
+                    <i
+                      className={styles.btnVisibility}
+                      onClick={() =>
+                        setV((state) => ({
+                          ...state,
+                          password: !state.password,
+                        }))
+                      }>
+                      {visible.password ? <Visibility /> : <VisibilityOff />}
+                    </i>
+                  </InputTemp>
+
+                  <InputTemp
+                    visibilityPadding
+                    label='RECONFIRM PASSWORD'
+                    inputType={visible.password ? "text" : "password"}
+                    placeholder='Enter Preferred Password'
+                    {...getFieldProps("confirmPassword")}>
+                    <i
+                      onClick={() =>
+                        setV((state) => ({
+                          ...state,
+                          confirmPassword: !state.confirmPassword,
+                        }))
+                      }
+                      className={styles.btnVisibility}>
+                      {visible.confirmPassword ? (
+                        <Visibility />
+                      ) : (
+                        <VisibilityOff />
+                      )}
+                    </i>
+                  </InputTemp>
+                  {/* TODO */}
+                  {errors.confirmPassword && <PassWordMisMatch />}
+
+                  <div className={styles.rememberMe}>
+                    <Checkbox
+                      checked={acceptTermsAndConditions}
+                      toggleChecked={toggleATC}
+                    />
+                    <p>
+                      I accept the <span>Terms and Conditions</span>
+                    </p>
+                  </div>
+                  <div className={styles.footer}>
+                    <Button
+                      text='Register'
+                      onClick={submitForm}
+                      invalid={!dirty}
+                    />
+                    <p>
+                      <div className={styles.signUp}>
+                        Already have an account?{" "}
+                        <span onClick={navigateToLogin}>Log in</span>
+                      </div>
+                    </p>
+                  </div>
+                </>
+              ) : null}
+            </form>
           </>
-        ) : null}
-      </form>
+        )}
+      </Formik>
     </>
   );
 };

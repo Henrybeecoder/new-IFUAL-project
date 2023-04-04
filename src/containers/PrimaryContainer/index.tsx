@@ -15,6 +15,7 @@ export default function PrimaryContainer(props: PrimaryContainerProps) {
   const navigateToHomePage = () => {
     navigate("/");
   };
+
   return (
     <div className={styles.container}>
       <div

@@ -62,7 +62,7 @@ export default function ChangeAccount({
         `${customerBaseUrl}Account/OtpEmail/${newUser?.email}/${newUser?.firstName}`
       );
       dispatch({ type: "serverOtp", payload: data.data.otp });
-      setLoading(true);
+      setLoading(false);
     } catch (err) {
       console.log(err);
       setLoading(false);

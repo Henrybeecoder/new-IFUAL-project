@@ -18,8 +18,8 @@ export interface Props {
 
 interface FilterModalProps {
   children?: ReactNode;
-  options?: { value: string; code?: number }[];
-  onSelect?: ({ value, code }: { value: string; code?: number }) => void;
+  options?: { value: string; code: number }[];
+  onSelect?: ({ value, code }: { value: string; code: number }) => void;
   selected?: number;
   table?: boolean;
   currentLabel?: string;
@@ -37,7 +37,7 @@ export const FilterModal = ({
   open: filterOpen,
   setOpen: setFilterOpen,
 }: FilterModalProps) => {
-  const active = (code?: number) => !!(selected === code);
+  const active = (code: number) => !!(selected === code);
 
   const [open, setOpen] = useState<boolean | undefined>();
 
@@ -47,7 +47,7 @@ export const FilterModal = ({
         open={filterOpen ?? open}
         onOpenChange={(state) => {
           setOpen(state);
-          setOpen && setFilterOpen(state);
+          setFilterOpen && setFilterOpen(state);
         }}>
         <Trigger className={"flex-btwn gap-10"}>
           <h3>{currentLabel}</h3>
@@ -70,7 +70,7 @@ export const FilterModal = ({
                   {options?.map((option) => (
                     <button
                       key={option.value}
-                      className={`${active(option?.code) ? "text-green" : ""}`}
+                      className={`${active(option.code) ? "text-green" : ""}`}
                       onClick={() => {
                         setOpen(false);
                         onSelect({ code: option.code, value: option.value });

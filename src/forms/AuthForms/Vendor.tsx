@@ -1,5 +1,4 @@
 import styles from "./style.module.css";
-import emoji from "../../assets/svg/emoji.svg";
 import { useNavigate } from "react-router-dom";
 // import { states } from "../../utils/state";
 import useMediaQuery from "../../Custom hooks/useMediaQuery";
@@ -15,19 +14,19 @@ import { useMutation } from "@tanstack/react-query";
 import axios from "../../lib/axios";
 import { useEffect, useState } from "react";
 import { Button as ButtonX, Label, Message } from "semantic-ui-react";
-import { AxiosResponse } from "axios";
 import { useMutations } from "../../../src/lib/vendorApi/vendorAgent";
 import { endpoints } from "../../../src/lib/vendorApi/vendorServiceLinks";
 import Button from "../../../src/Components/Button";
+import { ServerData } from "src/t/shared";
 
-interface LoginValues {
-  email: string;
-  password: string;
-}
+// interface LoginValues {
+//   email: string;
+//   password: string;
+// }
 
-interface SignUpDetails {
-  email: string;
-}
+// interface SignUpDetails {
+//   email: string;
+// }
 const baseUrl = import.meta.env.VITE_VENDOR_API_URL;
 
 export const LoginForm = () => {
@@ -35,8 +34,8 @@ export const LoginForm = () => {
   const [showPwd, setShowPwd] = useState(false);
   const [rP, setRP] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [resInfo, setResInfo] = useState({
-    status: null,
+  const [resInfo, setResInfo] = useState<{ status: boolean; message: string }>({
+    status: false,
     message: "",
   });
 
@@ -50,7 +49,7 @@ export const LoginForm = () => {
 
   const initialValues = { emailAddress: "", password: "" };
 
-  const { mutate, error } = useMutation({
+  const { mutate } = useMutation({
     mutationFn: async (request) => axios.post("Account/Login", request),
     onError: (error: any) => {
       console.log(error.response.data.responseDescription);
@@ -161,9 +160,12 @@ export const SignUpForm = () => {
   const matches = useMediaQuery("(min-width: 800px)");
   const [pV, setPV] = useState(false);
   const [cPV, setCPV] = useState(false);
-  const [states, setStates] = useState([]);
+  const [states, setStates] = useState<ServerData[]>([]);
   const [selectedState, setSelectedState] = useState({});
-  const [resInfo, setResInfo] = useState({
+  const [resInfo, setResInfo] = useState<{
+    status: boolean | null;
+    message: string;
+  }>({
     status: null,
     message: "",
   });
@@ -318,7 +320,6 @@ export const SignUpForm = () => {
                 label='COMPANY NAME'
                 placeholder='Enter name'
                 inputType='text'
-                name='CompanyName'
                 {...getFieldProps("CompanyName")}
               />
               <ErrorMessage
@@ -334,7 +335,6 @@ export const SignUpForm = () => {
                     marginRight
                     placeholder='+234  708 ...'
                     inputType='tel'
-                    name='PhoneNumber'
                     {...getFieldProps("PhoneNumber")}
                   />
                   <ErrorMessage
@@ -371,7 +371,6 @@ export const SignUpForm = () => {
                 mode='light'
                 label='COMPANY ADDRESS'
                 placeholder='Enter address'
-                name='CompanyAddress'
                 {...getFieldProps("CompanyAddress")}
               />
               <ErrorMessage
@@ -418,7 +417,6 @@ export const SignUpForm = () => {
                 label='PASSWORD'
                 placeholder='Enter Preferred Password'
                 inputType={pV ? "text" : "password"}
-                name='Password'
                 {...getFieldProps("Password")}>
                 <i
                   className={styles.btnVisibility}
@@ -437,7 +435,6 @@ export const SignUpForm = () => {
                 label='RECONFIRM PASSWORD'
                 inputType={cPV ? "text" : "password"}
                 placeholder='Enter Preferred Password'
-                name='ConfirmPassword'
                 {...getFieldProps("ConfirmPassword")}>
                 <i
                   onClick={() => setCPV((state) => !state)}
@@ -510,7 +507,6 @@ export const SignUpForm = () => {
                     label='COMPANY NAME'
                     placeholder='Company Name'
                     inputType='text'
-                    name='CompanyName'
                     marginRightSm
                     {...getFieldProps("CompanyName")}
                   />
@@ -534,7 +530,6 @@ export const SignUpForm = () => {
                   label='PHONE NUMBER'
                   placeholder='+234  708 ...'
                   inputType='tel'
-                  name='PhoneNumber'
                   {...getFieldProps("PhoneNumber")}
                 />
                 <InputTemp
@@ -588,7 +583,6 @@ export const SignUpForm = () => {
                   label='COMPANY ADDRESS'
                   placeholder='Enter address'
                   inputType='text'
-                  name='CompanyAddress'
                   {...getFieldProps("CompanyAddress")}
                 />
                 {/* <div className={styles.formHolder}>
@@ -642,7 +636,6 @@ export const SignUpForm = () => {
                   label='PASSWORD'
                   placeholder='Enter Preferred Password'
                   inputType={pV ? "text" : "password"}
-                  name={"Password"}
                   {...getFieldProps("Password")}>
                   <i
                     className={styles.btnVisibility}
@@ -657,7 +650,6 @@ export const SignUpForm = () => {
                   label='RECONFIRM PASSWORD'
                   inputType={cPV ? "text" : "password"}
                   placeholder='Enter Preferred Password'
-                  name={"ConfirmPassword"}
                   {...getFieldProps("ConfirmPassword")}>
                   <i
                     onClick={() => setCPV((state) => !state)}

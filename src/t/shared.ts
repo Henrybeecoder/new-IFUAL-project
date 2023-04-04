@@ -32,3 +32,5 @@ export interface ProductFilterValues {
   priceRange?: { value?: string; label?: string };
   supplyTime?: { value?: string; label?: string };
 }
+
+export type ServerData = { value: string; text: string };

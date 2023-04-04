@@ -10,6 +10,8 @@ import Loading from "../../../Components/Loading";
 import { customerBaseUrl } from "../../../utils/baseUrl";
 import axios from "axios";
 import EmptyStates from "../../../containers/EmptyStates";
+import { EditBtn } from "../../../../src/Components/PageHeader";
+import { getUser } from "../../../../src/Custom hooks/Hooks";
 
 const promoProducts = [
   {
@@ -51,30 +53,23 @@ const Cart = () => {
   const backHome = () => navigate("/");
 
   const [loading, setLoading] = useState(false);
-  const [cartData, setCartData] = useState([]);
+  const [cartData, setCartData] = useState<any[]>([]);
 
-  const str = localStorage.getItem("user");
-  const newUser = str && JSON.parse(str);
-
-  console.log(newUser.token, "Heelo");
+  const newUser = getUser();
 
   useEffect(() => {
     setLoading(true);
-
-    axios
-      .get(`${customerBaseUrl}Order/GetAllCart`, {
-        headers: { Authorization: `${newUser?.token}` },
-      })
-      .then((response) => {
-        console.log(response, "These are the carts");
-        setCartData(response.data.data);
-        console.log(cartData);
-        setLoading(false);
-      })
-      .catch((err) => {
+    (async () => {
+      try {
+        const { data } = await axios.get(`${customerBaseUrl}Order/GetAllCart`, {
+          headers: { Authorization: `${newUser?.token}` },
+        });
+        setCartData(data.data);
+      } catch (err) {
         console.log(err);
         setLoading(false);
-      });
+      }
+    })();
   }, [newUser?.token]);
 
   return (
@@ -87,13 +82,9 @@ const Cart = () => {
         </button>
         <div className={styles.header}>
           <h2>Shopping Cart</h2>
-          <button>
-            <p>Edit</p>
-            <SvgEdit />
-          </button>
+          <EditBtn />
         </div>
         <div className={styles.container}>
-          {" "}
           {cartData.length < 1 ? (
             <div className={styles.cartContainer}>
               <EmptyStates cart />
@@ -108,7 +99,7 @@ const Cart = () => {
                         <h3>Product 1</h3>
                         <p>Price (N)</p>
                       </div>
-                      <div className="divider" />
+                      <div className='divider' />
                       <div className={styles.flexDetail}>
                         <p>Product:</p>
                         <span className={styles.flexBetween}>
@@ -139,7 +130,7 @@ const Cart = () => {
                           {`${data?.recipient} / ${newUser?.phoneNumber}`}
                         </span>
                       </div>
-                      <div className="divider" />
+                      <div className='divider' />
                       <div className={styles.total}>
                         <h3>{`Total (1): ${
                           data.totalAmount ? data.totalAmount : 0
@@ -148,7 +139,7 @@ const Cart = () => {
                     </div>
                     <div className={styles.btnCheckout}>
                       <Button
-                        text="Proceed to Checkout"
+                        text='Proceed to Checkout'
                         width={matches ? "400px" : "100%"}
                       />
                     </div>
@@ -163,7 +154,7 @@ const Cart = () => {
             <div className={styles.overflowY}>
               {promoProducts.map((product) => (
                 <div key={product.id} className={styles.promoProduct}>
-                  <img src={companyLogo} />
+                  <img alt='' src={companyLogo} />
                   <div className={styles.promoProductTextArea}>
                     <h2>{product.company}</h2>
                     <h3>
@@ -173,7 +164,7 @@ const Cart = () => {
                   </div>
                   <div className={styles.ratingView}>
                     <SvgRating />
-                    <Button text="View" width="60px" height="36px" />
+                    <Button text='View' width='60px' height='36px' />
                   </div>
                 </div>
               ))}

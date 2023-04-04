@@ -50,7 +50,12 @@ const Header = ({ user }: { user: User }) => {
       <div className={`${styles.flexHeaderRight}`}>
         <div className={styles.lg}>
           <div className={`${styles.searchBar}`}>
-            <input placeholder='Enter Keyword' />
+            <input
+              placeholder='Enter Keyword'
+              type={"text"}
+              name='search'
+              id='search'
+            />
             <SvgSearchIcon className={styles.searchIcon} />
           </div>
 
@@ -151,8 +156,8 @@ const NotificationModal = ({
 }: {
   setOpen: (state: boolean) => void;
 }) => {
-  const navigate = useNavigate();
-  const matches = useMediaQuery("(min-width: 800px)");
+  // const navigate = useNavigate();
+  // const matches = useMediaQuery("(min-width: 800px)");
 
   const [active, setActive] = useState<string | undefined>();
   const activeNData = notData.find((not) => active === not.id);

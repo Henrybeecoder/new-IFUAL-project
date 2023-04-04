@@ -1,26 +1,17 @@
-import { useEffect, useState } from "react";
 import { statesOptions } from "../../Custom hooks/helpers";
 import { SvgArrowDown, SvgArrowUp } from "../../assets/Svgs";
 import useMediaQuery from "../../Custom hooks/useMediaQuery";
 import { InputTemp, SelectTemp } from "../InputTemp";
 import styles from "./style.module.css";
+import { PaymentPayload } from "src/screens/Checkout/types";
 
-const OrderDetailsForm = ({ selectedProduct }: { selectedProduct: any }) => {
+interface Props {
+  values: PaymentPayload;
+  onValueChange?: (field: string, value: string | number) => void;
+}
+
+const OrderDetailsForm = ({ values, onValueChange }: Props) => {
   const matches = useMediaQuery("(min-width: 800px)");
-  const [productQuantity, setPQ] = useState(0);
-  const [productPrice, setProductPrice] = useState("");
-
-  useEffect(() => {
-    setPQ(selectedProduct?.quantity);
-    setProductPrice(selectedProduct?.unitPrice);
-  }, [selectedProduct?.quantity, selectedProduct?.unitPrice]);
-
-  const increment = () => {
-    setPQ((state) => state + 1);
-  };
-  const decrement = () => {
-    setPQ((state) => state - 1);
-  };
 
   return (
     <>
@@ -31,25 +22,48 @@ const OrderDetailsForm = ({ selectedProduct }: { selectedProduct: any }) => {
           <div style={{ width: "100%" }}>
             <div className={styles.flexDetail}>
               <p>Product</p>
-              <span>{selectedProduct?.productName}</span>
+              <span>{values.productDetail?.productName}</span>
             </div>
             <div className={styles.flexDetail}>
               <p>Delivery time</p>
-              <span>6 hours</span>
+              <span>{values.productDetail.deliveryTime}</span>
             </div>
             <div className={styles.flexDetail}>
               <p>Price</p>
-              <span> {`N${productPrice} / 1tr`}</span>
+              <span> {`N${values.productDetail.price} / 1tr`}</span>
             </div>
             <div className={styles.flexDetail}>
               <p>Quantity</p>
               <span className={styles.inputGroup}>
-                <input type='tel' value={productQuantity} />
+                <input
+                  type='tel'
+                  value={values.productDetail.quantity}
+                  onChange={(e) =>
+                    onValueChange &&
+                    onValueChange("productDetail.quantity", e.target.value)
+                  }
+                />
                 <div className={styles.controls}>
-                  <button onClick={increment}>
+                  <button
+                    onClick={() =>
+                      onValueChange &&
+                      onValueChange(
+                        "productDetail.quantity",
+                        (Number(values.productDetail.quantity) + 1).toString()
+                      )
+                    }>
                     <SvgArrowUp />
                   </button>
-                  <button onClick={decrement}>
+                  <button
+                    type='button'
+                    onClick={() =>
+                      onValueChange &&
+                      onValueChange(
+                        "productDetail.quantity",
+                        (Number(values.productDetail.quantity) - 1).toString()
+                      )
+                    }
+                    disabled={Number(values.productDetail.quantity) < 2}>
                     <SvgArrowDown />
                   </button>
                 </div>
@@ -57,7 +71,7 @@ const OrderDetailsForm = ({ selectedProduct }: { selectedProduct: any }) => {
             </div>
             <div className={styles.flexDetail}>
               <p>Total</p>
-              <span>{`N${selectedProduct?.unitPrice} / 1tr`}</span>
+              <span>{`₦${values.productDetail.price} / 1tr`}</span>
             </div>
           </div>
         </div>
@@ -65,21 +79,53 @@ const OrderDetailsForm = ({ selectedProduct }: { selectedProduct: any }) => {
         <div className={styles.deliveryDetials}>
           <h3>Delivery Details</h3>
           <div className={styles.flexLg}>
-            <InputTemp label='FIRST NAME' value='Beatrice' marginRight />
-            <InputTemp label='SURNAME' value='Bimpe' marginLeft />
+            <InputTemp
+              label='FIRST NAME'
+              value={values.deliveryDetail.firstName}
+              onChange={(e) =>
+                onValueChange &&
+                onValueChange("deliveryDetail.firstName", e.target.value)
+              }
+              marginRight
+            />
+            <InputTemp
+              label='SURNAME'
+              value={values.deliveryDetail.surName}
+              onChange={(e) =>
+                onValueChange &&
+                onValueChange("deliveryDetail.surName", e.target.value)
+              }
+              marginLeft
+            />
           </div>
           <div className={styles.flexLg}>
-            <InputTemp label='PHONE NUMBER' value='08123456789' marginRight />
+            <InputTemp
+              label='PHONE NUMBER'
+              value={values.deliveryDetail.phoneNumber}
+              onChange={(e) =>
+                onValueChange &&
+                onValueChange("deliveryDetail.phoneNumber", e.target.value)
+              }
+              marginRight
+            />
             <InputTemp
               label='EMAIL ADDRESS'
-              value='dash@ifuel.com'
+              value={values.deliveryDetail.emailAddress}
+              onChange={(e) =>
+                onValueChange &&
+                onValueChange("deliveryDetail.emailAddress", e.target.value)
+              }
               marginLeft
             />
           </div>
           <div className={styles.flexLg}>
             <InputTemp
               label='DELIVERY ADDRESS'
-              value='No. 1, Bosipo district, Ikoyi'
+              value={values.deliveryDetail.deliveryAdress}
+              onChange={(e) =>
+                onValueChange &&
+                onValueChange("deliveryDetail.deliveryAdress", e.target.value)
+              }
               marginRight
             />
             <SelectTemp
@@ -87,6 +133,9 @@ const OrderDetailsForm = ({ selectedProduct }: { selectedProduct: any }) => {
               label='STATE'
               placeholder='Lagos'
               options={statesOptions}
+              onValueChange={(e) => {
+                onValueChange && onValueChange("state", e.value);
+              }}
             />
           </div>
         </div>

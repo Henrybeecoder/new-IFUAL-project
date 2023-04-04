@@ -59,26 +59,26 @@ const Orders = () => {
 
   const [sort, setSort] = useState(100);
   const { data, loading } = useData("Order/OrderbyCustomer");
-  const orderData: Order[] | null = data || [];
+  const orderData: Order[] | undefined = data || [];
   const filterOrders = () => {
     switch (sort) {
       case 100:
-        return orderData.sort(
+        return orderData?.sort(
           (a, b) => getDateInMs(a.dateCreated) - getDateInMs(b.dateCreated)
         );
       case 101:
-        return orderData.sort(
+        return orderData?.sort(
           (a, b) => getDateInMs(b.dateCreated) - getDateInMs(a.dateCreated)
         );
       case 0:
       case 4:
-        return orderData.filter(
+        return orderData?.filter(
           (order) => order.orderStatus === 0 || order.orderStatus === 4
         );
       case 2:
-        return orderData.filter((order) => order.orderStatus === 2);
+        return orderData?.filter((order) => order.orderStatus === 2);
       case 5:
-        return orderData.filter((order) => order.orderStatus === 5);
+        return orderData?.filter((order) => order.orderStatus === 5);
       default:
         return [];
     }
@@ -93,7 +93,7 @@ const Orders = () => {
         {matches && <PaginationOf current={[1, 20]} total={20} />}
         <FilterModal
           selected={sort}
-          currentLabel={options.find((opt) => sort === opt.code).value}
+          currentLabel={options.find((opt) => sort === opt.code)?.value}
           options={options}
           onSelect={({ code }) => setSort(code)}
         />

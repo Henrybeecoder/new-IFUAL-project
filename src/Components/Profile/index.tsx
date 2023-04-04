@@ -38,6 +38,7 @@ interface VendorProfileProps {
   children?: ReactNode;
   data?: any;
   setActiveModal?: (string: string | null) => void;
+  edit: boolean;
 }
 
 type SelectEvent = { label: string; value?: string };
@@ -48,7 +49,7 @@ export const CustomerProfile = ({
   changePassword,
   setChangePassword,
   backHome,
-  edit = true,
+  edit = false,
   setEditFalse,
 }: CustomerProfileProps) => {
   const str = localStorage.getItem("user");
@@ -242,7 +243,7 @@ export const CustomerProfile = ({
             onChange={handleImage}
             src={profileImagePreview?.url}
           />
-          <div>
+          <div style={{ padding: "7px 0" }}>
             <h3>Account Details</h3>
             <p>{newUser?.bankAccountNumber}</p>
             <h2>Sterling Bank</h2>
@@ -295,12 +296,14 @@ export const CustomerProfile = ({
                 <>
                   <div className={styles.inputFlex}>
                     <InputTemp
+                      disabled={!edit}
                       marginRightSm
                       label={"FIRST NAME"}
                       placeholder='Enter first name'
                       {...getFieldProps("firstName")}
                     />
                     <InputTemp
+                      disabled={!edit}
                       marginLeftSm
                       label='SURNAME'
                       placeholder='Enter last name'
@@ -309,12 +312,14 @@ export const CustomerProfile = ({
                   </div>
                   <div className={styles.inputFlex}>
                     <InputTemp
+                      disabled={!edit}
                       marginRightSm
                       label='PHONE NUMBER'
                       placeholder='Enter phone number'
                       {...getFieldProps("phoneNumber")}
                     />
                     <InputTemp
+                      disabled={!edit}
                       marginLeftSm
                       label='EMAIL ADDRESS'
                       placeholder='Enter email address'
@@ -322,11 +327,13 @@ export const CustomerProfile = ({
                     />
                   </div>
                   <InputTemp
+                    disabled={!edit}
                     label='HOUSE ADDRESS'
                     placeholder='Enter house address'
                     {...getFieldProps("homeAddress")}
                   />
                   <InputTemp
+                    disabled={!edit}
                     label='COMPANY ADDRESS'
                     placeholder='Enter Company Address'
                     {...getFieldProps("companyAddress")}
@@ -421,6 +428,7 @@ export const VendorProfile = ({
   children,
   data,
   setActiveModal = () => {},
+  edit,
 }: VendorProfileProps) => {
   const page = undefined;
 
@@ -503,11 +511,13 @@ export const VendorProfile = ({
             <h3>COMPANY DETAILS</h3>
             <div className={styles.inputFlex}>
               <InputTemp
+                disabled={!edit}
                 marginRightSm
                 label={"COMPANY NAME"}
                 placeholder='Aristocrat Plc'
               />
               <InputTemp
+                disabled={!edit}
                 marginLeftSm
                 label='REPRESENTATIVE NAME'
                 placeholder='Aliu Jinadu'
@@ -515,11 +525,13 @@ export const VendorProfile = ({
             </div>
             <div className={styles.inputFlex}>
               <InputTemp
+                disabled={!edit}
                 marginRightSm
                 label='DATE OF REGISTRATION'
                 placeholder='23/12/2012'
               />
               <InputTemp
+                disabled={!edit}
                 marginLeftSm
                 label='REGISTRATION NUMBER'
                 placeholder='37198jdhs83892'

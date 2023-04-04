@@ -1,15 +1,17 @@
-import React, { useState, useCallback, useEffect } from "react";
+import React, { useState } from "react";
 import styles from "./style.module.css";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import AuthContainer from "../../containers/AuthContainer";
 import StartPage from "../../screens/StartPage";
 import { SignUpForm as Vendor } from "../../forms/AuthForms/Vendor";
-import { SignUpForm as Customer } from "../../forms/AuthForms/Customer";
+import {
+  SignUpForm as Customer,
+  SignUpFormValues,
+} from "../../forms/AuthForms/Customer";
 import { RenderPageProps } from "../../t/shared";
 import Button from "../../Components/Button";
 import Modal from "../../Components/Modals";
 import { InputTemp } from "../../Components/InputTemp";
-import { customerBaseUrl } from "../../utils/baseUrl";
 import InputLoader from "../../Components/InputLoader";
 import Loading from "../../Components/Loading";
 import { ToastContainer, toast } from "react-toastify";
@@ -17,35 +19,41 @@ import AuthCode from "react-auth-code-input";
 import checkSuccess from "../../assets/svg/modalCheck.svg";
 import failure from "../../assets/svg/failure.svg";
 import "react-toastify/dist/ReactToastify.css";
+import { useMutation } from "@tanstack/react-query";
 import axios from "axios";
+import { customerBaseUrl } from "../../../src/utils/baseUrl";
+import { getOtp } from "../../../src/Custom hooks/Hooks";
+
+type ModalNames =
+  | "accountUpdate"
+  | "personalAccount"
+  | "otp"
+  | "accountSaved"
+  | "accountFailure"
+  | null;
+
+interface CreatePayload {
+  firstName: string;
+  surname: string;
+  phoneNumber: string;
+  emailAddress: string;
+  houseAddress: string;
+  state: string;
+  bankAccountNumber: string;
+  password: string;
+  confirmPassword: string;
+}
 
 export default function SignUp() {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
-  const [openAccountUpdateModal, setOpenAccountUpdateModal] = useState(false);
-  const [enterPersonalAccountModal, setEnterPersonalAccountNumberModal] =
-    useState(false);
-  const [enterOTPModal, setEnterOTPModal] = useState(false);
-  const [loading, setLoading] = useState(false);
+  const [activeModal, setAM] = useState<ModalNames>(null);
 
-  const [accountNumberLoading, setAccountNumberLoading] = useState(false);
-  const [fullAccountName, setFullAccountName] = useState("");
-  const [dataOTP, setDataOTP] = useState("");
-  const [accountSaved, setAccountSaved] = useState(false);
-  const [otp, setOtp] = useState("");
-  const [accountFaliure, setAccountFailure] = useState(false);
+  const [formValues, setFV] = useState<SignUpFormValues | undefined>();
 
-  //Register customer states
-
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
-  const [phoneNumber, setPhoneNumber] = useState("");
-  const [email, setEmail] = useState("");
-  const [houseAddress, setHouseAddress] = useState("");
-  const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
-  const [accountNumber, setAccountNumber] = useState("");
-  const [stateValue, setStateValue] = useState<any>({});
+  const [accountLoading, setAccountLoading] = useState(false);
+  const [fullAccountName, setFAN] = useState("");
+  const [otp, setOtp] = useState({ server: "", client: "" });
 
   const navigateToSignUp = () => {
     navigate({ pathname: "/signup", search: "type=customer" });
@@ -53,161 +61,130 @@ export default function SignUp() {
     window.location.reload(false);
   };
 
-  const handleOnChange = (res: string) => {
-    setOtp(res);
-  };
-  const handleStateGlobalChange = (event: any) => {
-    setStateValue(event);
+  const handleOnChange = (otp: string) => {
+    setOtp((state) => ({ server: state.server, client: otp }));
   };
 
-  const onChangeAccountNumber = useCallback((e) => {
-    setAccountNumber(e.target.value);
-  }, []);
-
-  const submitAccountNumber = () => {
-    setLoading(true);
-    let registerCustomerPayload = {
-      firstName: firstName,
-      surname: lastName,
-      phoneNumber: phoneNumber,
-      emailAddress: email,
-      houseAddress: houseAddress,
-      state: stateValue.value,
-      bankAccountNumber: accountNumber,
-      password: password,
-      confirmPassword: confirmPassword,
-    };
-    axios
-      .post(`${customerBaseUrl}Account/CreateCustomer`, registerCustomerPayload)
-      .then((response) => {
-        if (response) {
-          setEnterOTPModal(true);
-          setEnterPersonalAccountNumberModal(false);
-          setOpenAccountUpdateModal(false);
-          getOTP();
-          setLoading(false);
-        } else {
-          setAccountFailure(true);
-          setEnterOTPModal(false);
-          setEnterPersonalAccountNumberModal(false);
-          setOpenAccountUpdateModal(false);
-          setLoading(false);
-        }
-      })
-      .catch((err) => {
-        setAccountFailure(true);
-        setEnterOTPModal(false);
-        setEnterPersonalAccountNumberModal(false);
-        setOpenAccountUpdateModal(false);
-        setLoading(false);
-        console.log(err);
-        setLoading(false);
-      });
+  const payload = {
+    firstName: formValues?.firstName,
+    surname: formValues?.lastName,
+    phoneNumber: formValues?.phoneNumber,
+    emailAddress: formValues?.email,
+    houseAddress: formValues?.houseAddress,
+    state: formValues?.stateValue,
+    password: formValues?.password,
+    confirmPassword: formValues?.confirmPassword,
   };
 
-  const newDataOTP = otp?.toString();
+  const { mutate, isLoading } = useMutation({
+    mutationKey: ["create-customer"],
+    mutationFn: async (variables: Partial<CreatePayload>) => {
+      const { data } = await axios.post<any>(
+        `${customerBaseUrl}Account/CreateCustomer`,
+        variables
+      );
+      return data.data;
+    },
+    onError: () => setAM("accountFailure"),
+  });
 
   const verifyOtp = () => {
-    if (newDataOTP === dataOTP) {
+    if (otp.server === otp.client) {
       toast.success("successful");
-      setAccountSaved(true);
-      setEnterOTPModal(false);
-      setEnterPersonalAccountNumberModal(false);
-      setOpenAccountUpdateModal(false);
-      setTimeout(
-        () => navigate({ pathname: "/login", search: "type=customer" }),
-        7000
-      );
+      setAM("accountSaved");
+      setTimeout(() => navigate({ pathname: "/login" }), 7000);
     } else {
       toast.error("Wrong OTP, Please Try Again");
     }
   };
 
-  const getOTP = () => {
-    axios
-      .get(`${customerBaseUrl}Account/OtpEmail/${email}/${firstName}`)
-      .then((response) => {
-        setDataOTP(response.data.data.otp);
-      })
-      .catch((err) => {
-        console.log(err);
-        setAccountNumberLoading(false);
-      });
+  const skipAccount = () => {
+    if (!formValues) return;
+    mutate(payload, {
+      onSuccess: () => {
+        setAM("accountSaved");
+        setTimeout(() => navigate({ pathname: "/login" }), 7000);
+      },
+    });
   };
 
-  const getCustomOTP = () => {
-    axios
-      .get(`${customerBaseUrl}Account/OtpEmail/${email}/${firstName}`)
-      .then((response) => {
-        toast.success("OTP sent to your mail");
-        setDataOTP(response.data.data.otp);
-      })
-      .catch((err) => {
-        console.log(err);
-        setAccountNumberLoading(false);
-      });
-  };
-
-  useEffect(() => {
-    if (accountNumber?.length === 10) {
-      setAccountNumberLoading(true);
-      axios
-        .get(`${customerBaseUrl}Account/VerifyAccount/${accountNumber}`)
-        .then((response) => {
-          if (response.data.responseCode === "00") {
-            setFullAccountName(response.data.data.accountName);
-            setAccountNumberLoading(false);
-          } else {
-            toast.error("Account is not active");
-            setAccountNumberLoading(false);
-            setFullAccountName("");
-          }
-        })
-        .catch((err) => {
-          console.log(err);
-          setAccountNumberLoading(false);
-        });
+  const resendOtp = async () => {
+    setAccountLoading(true);
+    if (!formValues) {
+      setAccountLoading(false);
+      return;
     }
-  }, [accountNumber]);
-
-  const enterPersonalAccountClick = () => {
-    setEnterPersonalAccountNumberModal(true);
-    setOpenAccountUpdateModal(false);
+    try {
+      const otp = await getOtp({
+        email: formValues?.email,
+        firstName: formValues?.firstName,
+      });
+      toast.success("OTP sent to your mail");
+      setOtp((state) => ({ client: state.client, server: otp }));
+      setAccountLoading(false);
+    } catch (err) {
+      console.log(err);
+      setAccountLoading(false);
+    }
   };
 
-  const goBackToOpenAccountUpdateModal = () => {
-    setEnterPersonalAccountNumberModal(false);
-    setAccountNumber("");
-    setFullAccountName("");
-    setOpenAccountUpdateModal(true);
+  const getFAN = async (accountNumber: string) => {
+    setAccountLoading(true);
+    try {
+      const { data } = await axios.get(
+        `${customerBaseUrl}Account/VerifyAccount/${accountNumber}`
+      );
+      setAccountLoading(false);
+      if (data.responseCode === "00") {
+        setFAN(data.data.accountName);
+      } else {
+        toast.error("Account is not active");
+        setFAN("");
+      }
+    } catch (err) {
+      setAccountLoading(false);
+    }
   };
 
-  const registerCustomer = () => {};
+  const submitBankAccount = (accountNumber: string) => {
+    if (!formValues) return;
+    mutate(
+      { ...payload, bankAccountNumber: accountNumber },
+      {
+        onSuccess: async (data: any) => {
+          if (!formValues) return;
+          if (data) {
+            setAccountLoading(true);
+            try {
+              const otp = await getOtp({
+                email: formValues.email,
+                firstName: formValues?.firstName,
+              });
+              setOtp((state) => ({ client: state.client, server: otp }));
+              setAccountLoading(false);
+              toast.success("OTP sent to your mail");
+              setAM("otp");
+            } catch (err) {
+              setAccountLoading(false);
+              toast.error("failed to send OTP");
+            }
+          } else {
+            setAM("accountFailure");
+          }
+        },
+      }
+    );
+  };
 
   const signupType = searchParams.get("type");
 
   const renderPage: RenderPageProps = {
     customer: (
       <Customer
-        setOpenAccountUpdateModal={setOpenAccountUpdateModal}
-        accountNumber={accountNumber}
-        firstName={firstName}
-        setFirstName={setFirstName}
-        lastName={lastName}
-        setLastName={setLastName}
-        phoneNumber={phoneNumber}
-        setPhoneNumber={setPhoneNumber}
-        email={email}
-        setEmail={setEmail}
-        houseAddress={houseAddress}
-        setHouseAddress={setHouseAddress}
-        password={password}
-        setPassword={setPassword}
-        confirmPassword={confirmPassword}
-        setConfirmPassword={setConfirmPassword}
-        stateValue={stateValue}
-        setStateValue={setStateValue}
-        handleStateGlobalChange={handleStateGlobalChange}
+        onSubmit={(values) => {
+          setFV(values);
+          setAM("accountUpdate");
+        }}
       />
     ),
     vendor: <Vendor />,
@@ -215,9 +192,10 @@ export default function SignUp() {
 
   if (signupType !== "customer" && signupType !== "vendor")
     return <StartPage />;
+
   return (
-    <div>
-      {loading && <Loading />}
+    <>
+      {isLoading && <Loading />}
       <ToastContainer
         position='bottom-right'
         autoClose={5000}
@@ -232,8 +210,8 @@ export default function SignUp() {
       />
       <Modal
         variant='default'
-        openModal={openAccountUpdateModal}
-        closeModal={() => setOpenAccountUpdateModal(false)}
+        openModal={activeModal === "accountUpdate"}
+        closeModal={() => setAM(null)}
         style={{ position: "fixed" }}>
         <div className={styles.accountUpdateModal}>
           <h2>Account Update</h2>
@@ -243,61 +221,28 @@ export default function SignUp() {
           <Button
             variant='primary'
             text='Enter Personal Account Number'
-            onClick={() => enterPersonalAccountClick()}
+            onClick={() => setAM("personalAccount")}
           />
           <Button variant='outlinePrimary' text='Create a new Account' />
-          <Button variant='outlinePrimary' text='Skip for now, add later' />
-        </div>
-      </Modal>
-      <Modal
-        variant='default'
-        openModal={enterPersonalAccountModal}
-        closeModal={() => setEnterPersonalAccountNumberModal(false)}
-        style={{ position: "fixed" }}>
-        <div className={styles.accountUpdateModal}>
-          <h2>Enter account details</h2>
-          <p className={styles.paragraph}>
-            Enter your Sterling account details to be saved on your iFuel
-            account.
-          </p>
-          <InputTemp
-            label='ACCOUNT NUMBER'
-            placeholder='Enter account number'
-            inputType='text'
-            name='accountNumber'
-            value={accountNumber}
-            onChange={onChangeAccountNumber}
+          <Button
+            variant='outlinePrimary'
+            text='Skip for now, add later'
+            onClick={skipAccount}
           />
-          {accountNumberLoading ? (
-            <InputLoader />
-          ) : (
-            <InputTemp label='ACCOUNT NAME' value={fullAccountName} />
-          )}
-          <div className={styles.buttonFlex}>
-            <Button
-              variant='outlinePrimary'
-              text='Back'
-              onClick={() => {
-                goBackToOpenAccountUpdateModal();
-              }}
-              width={"47%"}
-            />
-            <Button
-              variant='primary'
-              text='Submit'
-              invalid={fullAccountName?.length < 1}
-              width={"47%"}
-              onClick={() => {
-                submitAccountNumber();
-              }}
-            />
-          </div>
         </div>
       </Modal>
+      <PersonalAccountModal
+        loading={accountLoading}
+        open={activeModal === "personalAccount"}
+        setAM={setAM}
+        getFAN={getFAN}
+        fullAccountName={fullAccountName}
+        onSubmit={submitBankAccount}
+      />
       <Modal
         variant='default'
-        openModal={enterOTPModal}
-        closeModal={() => setEnterOTPModal(false)}
+        openModal={activeModal === "otp"}
+        closeModal={() => setAM(null)}
         style={{ position: "fixed" }}>
         <div className={styles.accountUpdateModal}>
           <h2>Verify account details</h2>
@@ -313,17 +258,15 @@ export default function SignUp() {
           <Button
             variant='primary'
             text='Submit'
-            invalid={otp?.length < 6}
-            onClick={() => {
-              verifyOtp();
-            }}
+            invalid={otp.client?.length < 6}
+            onClick={verifyOtp}
           />
           <p className={styles.otpText}>
             {" "}
             You have not received an OTP,
             <span
               onClick={() => {
-                getCustomOTP();
+                resendOtp();
               }}>
               {" "}
               click here{" "}
@@ -333,8 +276,8 @@ export default function SignUp() {
       </Modal>
       <Modal
         variant='default'
-        openModal={accountSaved}
-        closeModal={() => setAccountSaved(false)}
+        openModal={activeModal === "accountSaved"}
+        closeModal={() => setAM(null)}
         style={{ position: "fixed" }}>
         <div className={styles.accountUpdateModal}>
           <h2>Account Saved Successfully</h2>
@@ -344,8 +287,8 @@ export default function SignUp() {
       </Modal>
       <Modal
         variant='default'
-        openModal={accountFaliure}
-        closeModal={() => setAccountFailure(false)}
+        openModal={activeModal === "accountFailure"}
+        closeModal={() => setAM(null)}
         style={{ position: "fixed" }}>
         <div className={styles.accountUpdateModal}>
           <h2>Customer Account Creation Failed</h2>
@@ -375,6 +318,73 @@ export default function SignUp() {
         </div>
       </Modal>
       <AuthContainer page='register'>{renderPage[signupType]}</AuthContainer>
-    </div>
+    </>
   );
 }
+
+const PersonalAccountModal = ({
+  open,
+  setAM,
+  onSubmit,
+  fullAccountName,
+  getFAN,
+  loading,
+}: {
+  open: boolean;
+  setAM: (name: ModalNames) => void;
+  onSubmit: (accountNumber: string) => void;
+  fullAccountName: string;
+  getFAN: (accountNumber: string) => void;
+  loading: boolean;
+}) => {
+  const [accountNumber, setAccountNumber] = useState("");
+
+  return (
+    <Modal
+      variant='default'
+      openModal={open}
+      closeModal={() => setAM(null)}
+      style={{ position: "fixed" }}>
+      <div className={styles.accountUpdateModal}>
+        <h2>Enter account details</h2>
+        <p className={styles.paragraph}>
+          Enter your Sterling account details to be saved on your iFuel account.
+        </p>
+        <InputTemp
+          label='ACCOUNT NUMBER'
+          placeholder='Enter account number'
+          inputType='text'
+          name='accountNumber'
+          value={accountNumber}
+          onChange={(e) => {
+            if (e.target.value.length === 10) {
+              getFAN(e.target.value);
+            }
+            setAccountNumber(e.target.value);
+          }}
+        />
+        {loading ? (
+          <InputLoader />
+        ) : (
+          <InputTemp label='ACCOUNT NAME' disabled value={fullAccountName} />
+        )}
+
+        <div className={styles.buttonFlex}>
+          <Button
+            variant='outlinePrimary'
+            text='Back'
+            onClick={() => setAM("accountUpdate")}
+            width={"47%"}
+          />
+          <Button
+            variant='primary'
+            text='Submit'
+            invalid={fullAccountName ? fullAccountName.length < 1 : true}
+            width={"47%"}
+            onClick={() => onSubmit(accountNumber)}
+          />
+        </div>
+      </div>
+    </Modal>
+  );
+};

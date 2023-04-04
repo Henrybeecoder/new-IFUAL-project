@@ -1,10 +1,10 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import styles from "./style.module.css";
 import Visibility from "@material-ui/icons/Visibility";
 import VisibilityOff from "@material-ui/icons/VisibilityOff";
 import Modal from "../../../Components/Modals";
 import checkSuccess from "../../../assets/svg/modalCheck.svg";
-import { InputTemp, TextareaTemp } from "../../InputTemp";
+import { InputTemp } from "../../InputTemp";
 import errorAlert from "../../../assets/svg/errorAlert.svg";
 import { customerBaseUrl } from "../../../utils/baseUrl";
 import Button from "../../Button";
@@ -61,69 +61,66 @@ export default function ChangePassword({ newUser, setLoading, backToProfile }) {
         });
     }
   };
+
   return (
     <div className={styles.changePassword}>
       <h2>Change Password</h2>
       <InputTemp
         visibilityPadding
-        label="CURRENT PASSWORD"
-        placeholder="Enter current Password"
+        label='CURRENT PASSWORD'
+        placeholder='Enter current Password'
         inputType={passwordVisible ? "text" : "password"}
         value={currentPassword}
-        onChange={(e) => setCurrentPassword(e.target.value)}
-      >
+        onChange={(e) => setCurrentPassword(e.target.value)}>
         <i className={styles.btnVisibility} onClick={togglePasswordVisiblity}>
           {passwordVisible ? <Visibility /> : <VisibilityOff />}
         </i>
       </InputTemp>
       {currentPasswordError && (
         <div className={styles.passwordMisMatch}>
-          <img src={errorAlert} alt="" />
+          <img src={errorAlert} alt='' />
           <p>Password is not correct</p>
         </div>
       )}
       <InputTemp
         visibilityPadding
-        label="NEW PASSWORD"
-        placeholder="Enter new password"
+        label='NEW PASSWORD'
+        placeholder='Enter new password'
         inputType={newpasswordVisible ? "text" : "password"}
         value={newPassword}
-        onChange={(e) => setNewPassword(e.target.value)}
-      >
+        onChange={(e) => setNewPassword(e.target.value)}>
         <i
           className={styles.btnVisibility}
-          onClick={toggleNewPasswordVisiblity}
-        >
+          onClick={toggleNewPasswordVisiblity}>
           {newpasswordVisible ? <Visibility /> : <VisibilityOff />}
         </i>
       </InputTemp>
       <InputTemp
         visibilityPadding
-        label="CONFIRM PASSWORD"
-        placeholder="Enter new password"
+        label='CONFIRM PASSWORD'
+        placeholder='Enter new password'
         inputType={confirmpasswordVisible ? "text" : "password"}
         value={confirmPassword}
-        onChange={(e) => setConfirmPassword(e.target.value)}
-      >
+        onChange={(e) => setConfirmPassword(e.target.value)}>
         <i
           className={styles.btnVisibility}
-          onClick={toggleConfirmPasswordVisiblity}
-        >
+          onClick={toggleConfirmPasswordVisiblity}>
           {confirmpasswordVisible ? <Visibility /> : <VisibilityOff />}
         </i>
       </InputTemp>
       {passwordMismatch && <PassWordMisMatch />}
       <div className={styles.buttonFlex}>
         <Button
-          text="Back"
-          variant="outlinePrimary"
-          width="40%"
+          text='Back'
+          variant='outlinePrimary'
+          width='40%'
           className={styles.cancelButton}
+          onClick={backToProfile}
         />
         <Button
-          text="Change"
-          variant="primary"
-          width="60%"
+          text='Change'
+          variant='primary'
+          width='60%'
           invalid={
             currentPassword.length < 1 ||
             newPassword.length < 1 ||
@@ -133,14 +130,13 @@ export default function ChangePassword({ newUser, setLoading, backToProfile }) {
         />
       </div>
       <Modal
-        variant="default"
+        variant='default'
         openModal={successModal}
         closeModal={() => setSuccessModal(false)}
-        style={{ position: "fixed" }}
-      >
+        style={{ position: "fixed" }}>
         <div className={styles.accountUpdateModal}>
           <h2>Password Changed Successful</h2>
-          <img src={checkSuccess} alt="" />
+          <img src={checkSuccess} alt='' />
           <p>Redirecting to Profile Page ...</p>
         </div>
       </Modal>
@@ -151,7 +147,7 @@ export default function ChangePassword({ newUser, setLoading, backToProfile }) {
 const PassWordMisMatch = () => {
   return (
     <div className={styles.passwordMisMatch}>
-      <img src={errorAlert} alt="" />
+      <img src={errorAlert} alt='' />
       <p>Both passwords don’t match</p>
     </div>
   );

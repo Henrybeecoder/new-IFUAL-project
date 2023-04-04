@@ -38,6 +38,7 @@ interface InputTempProps {
   mode?: "light" | "dark";
   width?: string;
   style?: CSSProperties;
+  inputStyle?: CSSProperties;
   disabled?: boolean;
 }
 
@@ -61,6 +62,7 @@ export const InputTemp = ({
   width,
   style,
   disabled,
+  inputStyle = {},
 }: InputTempProps) => {
   return (
     <div
@@ -83,7 +85,10 @@ export const InputTemp = ({
           value={value}
           defaultValue={defaultValue}
           onBlur={onBlur}
-          style={{ paddingRight: visibilityPadding ? "48px" : "7px" }}
+          style={{
+            paddingRight: visibilityPadding ? "48px" : "7px",
+            ...inputStyle,
+          }}
           onChange={onChange}
         />
         {children}
@@ -155,6 +160,7 @@ export const SelectTemp = ({
         {label}
       </label>
       <Select
+        autoFocus={false}
         isDisabled={disabled}
         value={value}
         onChange={onValueChange}
@@ -165,7 +171,7 @@ export const SelectTemp = ({
             fontStyle: "normal",
             fontWeight: 400,
             fontSize: "15px",
-            lineHeight: "18px",
+            // lineHeight: "18px",
           }),
           indicatorSeparator: (styles) => ({
             ...styles,
@@ -180,13 +186,15 @@ export const SelectTemp = ({
             ...styles,
             height: "45px",
             paddingTop: "0px",
-            margin: "0px",
+            // margin: "0px",
             borderRadius: "8px",
-            alignItems: "center",
+            // alignItems: "center",
           }),
           singleValue: (styles) => ({
             ...styles,
+            // height: "100%",
             // padding: "13px 10px",
+            margin: "auto 5px",
           }),
 
           container: (styles) => ({
@@ -206,10 +214,6 @@ export const SelectTemp = ({
             fontWeight: 400,
             fontSize: "14px",
             lineHeight: "18px",
-            // backgroundColor: "green",
-            // padding: "13px 10px",
-
-            // height: "45px",
           }),
           multiValueRemove: (styles) => ({
             ...styles,
@@ -218,6 +222,11 @@ export const SelectTemp = ({
           clearIndicator: (styles) => ({
             ...styles,
             backgroundColor: "transparent",
+          }),
+          input: (styles) => ({
+            ...styles,
+            backgroundColor: "transparent",
+            // margin: "auto 0",
           }),
           //   container: (styles) => ({ ...styles, borderRadius: "8px" }),
         }}

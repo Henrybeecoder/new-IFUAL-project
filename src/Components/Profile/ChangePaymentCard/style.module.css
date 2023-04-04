@@ -32,3 +32,33 @@
   display: flex;
   gap: 20px;
 }
+
+.requestOtp {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 70px 90px;
+  gap: 30px;
+}
+
+.retryOtp {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.requestOtp h2,
+.requestOtp p {
+  margin: auto;
+}
+
+.retryOtp p,
+button {
+  margin: auto;
+}
+
+.retryOtp button {
+  margin: auto;
+  color: #36b44a;
+}
